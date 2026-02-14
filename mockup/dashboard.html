@@ -133,6 +133,21 @@
   <!-- Tree Stats (shown after generation) -->
   <div id="treeStats" class="tree-stats" style="display: none; margin-bottom: var(--space-lg);"></div>
 
+  <!-- Loading overlay (shown during generation) -->
+  <div id="treeLoading" style="display: none; text-align: center; padding: var(--space-2xl) var(--space-xl);">
+    <div class="tree-loading-orb">
+      <div style="width: 56px; height: 56px; border: 3px solid var(--border); border-top-color: var(--deep-forest); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto;"></div>
+    </div>
+    <h3 id="treeLoadingTitle" style="font-family: var(--font-display); font-size: 1.2rem; color: var(--deep-forest); margin-top: var(--space-lg); margin-bottom: var(--space-xs);">Generating your skill tree...</h3>
+    <p id="treeLoadingStep" style="font-size: 0.85rem; color: var(--text-muted); font-family: var(--font-mono);">Analyzing content</p>
+    <div style="display: flex; justify-content: center; gap: 6px; margin-top: var(--space-lg);">
+      <div class="load-dot load-dot-1" style="width: 8px; height: 8px; border-radius: 50%; background: var(--deep-forest); opacity: 0.3;"></div>
+      <div class="load-dot load-dot-2" style="width: 8px; height: 8px; border-radius: 50%; background: var(--deep-forest); opacity: 0.3;"></div>
+      <div class="load-dot load-dot-3" style="width: 8px; height: 8px; border-radius: 50%; background: var(--deep-forest); opacity: 0.3;"></div>
+      <div class="load-dot load-dot-4" style="width: 8px; height: 8px; border-radius: 50%; background: var(--deep-forest); opacity: 0.3;"></div>
+    </div>
+  </div>
+
   <!-- PoE-Style Interactive Skill Tree Canvas (hardcoded demo) -->
   <div id="staticTreeContainer" class="skill-tree-canvas-container reveal">
     <canvas id="skillTreeCanvas" aria-label="Interactive skill tree showing interconnected knowledge nodes across AI, Finance, Ethics, and Product Strategy clusters"></canvas>
@@ -570,6 +585,7 @@
     margin: 0 auto;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes slideUp {
     from { transform: translateY(20px); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
@@ -795,15 +811,60 @@
     }, 2200);
   }
 
-  // --- Main generate handler (hybrid) ---
+  // --- Main generate handler (mocked for demo) ---
   function handleGenerate() {
     var topic = sourceInput.value.trim();
     if (!topic) return;
 
     clearError();
+    generateBtn.disabled = true;
+    generateBtn.style.opacity = '0.6';
 
-    // Just scroll to the tree
+    var treeLoading = document.getElementById('treeLoading');
+    var loadingStep = document.getElementById('treeLoadingStep');
+    var dots = document.querySelectorAll('#treeLoading .load-dot');
+
+    // Hide tree, show loading
+    staticTreeContainer.style.display = 'none';
+    treeStats.style.display = 'none';
+    treeLoading.style.display = '';
     scrollToTree();
+
+    var steps = [
+      'Analyzing content...',
+      'Mapping knowledge clusters...',
+      'Building node connections...',
+      'Rendering skill tree...'
+    ];
+
+    // Animate through steps
+    steps.forEach(function (step, i) {
+      setTimeout(function () {
+        loadingStep.textContent = step;
+        dots.forEach(function (d, j) { d.style.opacity = j <= i ? '1' : '0.3'; });
+      }, i * 800);
+    });
+
+    // Reveal tree after animation
+    setTimeout(function () {
+      treeLoading.style.display = 'none';
+
+      treeTitle.textContent = 'Skill Tree: ' + topic;
+      treeMeta.textContent = '25 nodes across 5 clusters -- your learning path is ready';
+      treeStats.style.display = '';
+      treeStats.innerHTML =
+        '<div class="stat-pill"><span class="stat-pill-val">25</span> Nodes</div>' +
+        '<div class="stat-pill"><span class="stat-pill-val">5</span> Clusters</div>' +
+        '<div class="stat-pill"><span class="stat-pill-val">32</span> Connections</div>' +
+        '<div class="stat-pill"><span class="stat-pill-val">7</span> Tiers</div>';
+
+      staticTreeContainer.style.display = '';
+      staticTreeContainer.style.animation = 'fadeIn 0.6s ease';
+
+      generateBtn.disabled = false;
+      generateBtn.style.opacity = '1';
+    }, steps.length * 800 + 400);
+
     return;
 
     // --- Below: live generation (disabled for demo) ---
