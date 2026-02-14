@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SkillGarden Dashboard: Track your mastery, assess your knowledge, earn verified credentials.">
+  <meta name="theme-color" content="#1B4332">
+  <title>SkillGarden -- Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Skip to content (accessibility) -->
+<a href="#dashboard" class="skip-link">Skip to main content</a>
+
+<!-- Navigation -->
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <a href="index.html" class="nav-logo">Skill<span>Garden</span></a>
+  <ul class="nav-links">
+    <li><a href="#dashboard" class="active">Dashboard</a></li>
+    <li><a href="#skill-tree">Skill Tree</a></li>
+    <li><a href="#credential">Credential</a></li>
+    <li><a href="#assess">Assessment</a></li>
+    <li><a href="#capture">Capture</a></li>
+  </ul>
+  <div class="nav-profile">
+    <div class="nav-avatar">YA</div>
+    <div>
+      <div class="nav-name">Yavuz</div>
+      <div class="nav-level">Lv 76 Expert</div>
+    </div>
+  </div>
+</nav>
+
+<!-- Dashboard -->
+<section class="section" id="dashboard" style="padding-top: calc(var(--space-xl) + 60px);">
+  <div class="section-header">
+    <h2>Mastery Dashboard</h2>
+    <p>Yavuz -- Active Skills</p>
+  </div>
+
+  <!-- Stats Row -->
+  <div class="stats-row reveal">
+    <div class="stat-card">
+      <div class="stat-value">4</div>
+      <div class="stat-label">Active Skills</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">1284</div>
+      <div class="stat-label">Claims Validated</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">37</div>
+      <div class="stat-label">Debates Completed</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" style="font-size: 1.2rem;">2 days ago</div>
+      <div class="stat-label">Last Assessed</div>
+    </div>
+  </div>
+
+  <!-- Knowledge Gaps -->
+  <div class="knowledge-gaps reveal" style="margin-bottom: var(--space-xl);">
+    <div class="gap-card decay-active">
+      <div class="gap-info">
+        <h4>Concept Decay Detected</h4>
+        <div class="gap-details">
+          <div class="gap-item">
+            <span class="gap-concept">AI Boom in Finance</span>
+            <span class="gap-decay">Lv 76 <span class="decay-arrow">&#8594;</span> Lv 73</span>
+            <span class="gap-reason">14 days inactive -- natural forgetting</span>
+          </div>
+          <div class="gap-item">
+            <span class="gap-concept">Regulatory Risk Analysis</span>
+            <span class="gap-decay">Lv 68 <span class="decay-arrow">&#8594;</span> Lv 65</span>
+            <span class="gap-reason">21 days inactive</span>
+          </div>
+        </div>
+      </div>
+      <div class="gap-actions">
+        <button class="decay-action">Reinforce (5-10 min)</button>
+        <div class="gap-context">2 concepts ready for reinforcement</div>
+      </div>
+    </div>
+    <div class="gap-card gap-debate">
+      <div class="gap-info">
+        <h4>Debate Gap</h4>
+        <div class="gap-details">
+          <div class="gap-item">
+            <span class="gap-concept">You've only argued one side of "Is AI overvalued or undervalued?"</span>
+            <span class="gap-reason">Steelman the overvalued position to unlock full mastery</span>
+          </div>
+        </div>
+      </div>
+      <div class="gap-actions">
+        <button class="decay-action" style="background: var(--tier-expert);">Take Steelman Challenge</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Skills Grid -->
+  <div class="skills-grid">
+
+    <!-- AI Boom in Finance (PRIMARY) -->
+    <div class="skill-card" data-tier="expert">
+      <div class="skill-card-header">
+        <span class="skill-name">AI Boom in Finance</span>
+        <span class="tier-badge expert">Expert</span>
+      </div>
+      <div class="skill-level-row">
+        <span class="level-number" style="color: var(--tier-expert);">76</span>
+        <span class="level-label">/ 99</span>
+        <span class="percentile">Top 8%</span>
+      </div>
+      <div class="xp-bar-container">
+        <div class="xp-bar expert" style="width: 76.8%;"></div>
+      </div>
+      <div class="xp-text">1,336,443 / 3,597,792 XP to Lv 86 (Master)</div>
+      <div class="skill-sub-nodes">
+        <div class="sub-node">
+          <span class="sub-node-name">AI Market Dynamics</span>
+          <span class="sub-node-level" style="color: var(--tier-master);">Lv 82</span>
+        </div>
+        <div class="sub-node">
+          <span class="sub-node-name">Valuation Models</span>
+          <span class="sub-node-level" style="color: var(--tier-expert);">Lv 73</span>
+        </div>
+        <div class="sub-node">
+          <span class="sub-node-name">Bubble vs Value Analysis</span>
+          <span class="sub-node-level" style="color: var(--tier-adept);">Lv 70</span>
+        </div>
+        <div class="sub-node">
+          <span class="sub-node-name">Regulatory Risk Analysis</span>
+          <span class="sub-node-level" style="color: var(--tier-adept);">Lv 68</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Machine Learning Foundations -->
+    <div class="skill-card" data-tier="adept">
+      <div class="skill-card-header">
+        <span class="skill-name">Machine Learning Foundations</span>
+        <span class="tier-badge adept">Adept</span>
+      </div>
+      <div class="skill-level-row">
+        <span class="level-number" style="color: var(--tier-adept);">58</span>
+        <span class="level-label">/ 99</span>
+        <span class="percentile">Top 22%</span>
+      </div>
+      <div class="xp-bar-container">
+        <div class="xp-bar adept" style="width: 58.6%;"></div>
+      </div>
+      <div class="xp-text">224,466 / 814,445 XP to Lv 71 (Expert)</div>
+      <div class="skill-sub-nodes">
+        <div class="sub-node">
+          <span class="sub-node-name">Supervised Learning</span>
+          <span class="sub-node-level" style="color: var(--tier-adept);">Lv 65</span>
+        </div>
+        <div class="sub-node">
+          <span class="sub-node-name">Neural Networks</span>
+          <span class="sub-node-level" style="color: var(--tier-adept);">Lv 52</span>
+        </div>
+        <div class="sub-node">
+          <span class="sub-node-name">Feature Engineering</span>
+          <span class="sub-node-level" style="color: var(--tier-journeyman);">Lv 48</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI Ethics & Governance -->
+    <div class="skill-card" data-tier="journeyman">
+      <div class="skill-card-header">
+        <span class="skill-name">AI Ethics & Governance</span>
+        <span class="tier-badge journeyman">Journeyman</span>
+      </div>
+      <div class="skill-level-row">
+        <span class="level-number" style="color: var(--tier-journeyman);">41</span>
+        <span class="level-label">/ 99</span>
+        <span class="percentile">Top 45%</span>
+      </div>
+      <div class="xp-bar-container">
+        <div class="xp-bar journeyman" style="width: 41.4%;"></div>
+      </div>
+      <div class="xp-text">41,171 / 111,945 XP to Lv 51 (Adept)</div>
+      <div class="skill-sub-nodes">
+        <div class="sub-node">
+          <span class="sub-node-name">Bias & Fairness</span>
+          <span class="sub-node-level" style="color: var(--tier-journeyman);">Lv 47</span>
+        </div>
+        <div class="sub-node">
+          <span class="sub-node-name">Governance Frameworks</span>
+          <span class="sub-node-level" style="color: var(--tier-journeyman);">Lv 38</span>
+        </div>
+        <div class="sub-node">
+          <span class="sub-node-name">Responsible AI Practices</span>
+          <span class="sub-node-level" style="color: var(--tier-apprentice);">Lv 30</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI Product Strategy -->
+    <div class="skill-card" data-tier="journeyman">
+      <div class="skill-card-header">
+        <span class="skill-name">AI Product Strategy</span>
+        <span class="tier-badge journeyman">Journeyman</span>
+      </div>
+      <div class="skill-level-row">
+        <span class="level-number" style="color: var(--tier-journeyman);">33</span>
+        <span class="level-label">/ 99</span>
+        <span class="percentile">Top 52%</span>
+      </div>
+      <div class="xp-bar-container">
+        <div class="xp-bar journeyman" style="width: 33.3%;"></div>
+      </div>
+      <div class="xp-text">18,247 / 111,945 XP to Lv 51 (Adept)</div>
+      <div class="skill-sub-nodes">
+        <div class="sub-node">
+          <span class="sub-node-name">Market Sizing & TAM</span>
+          <span class="sub-node-level" style="color: var(--tier-journeyman);">Lv 40</span>
+        </div>
+        <div class="sub-node">
+          <span class="sub-node-name">Go-to-Market Strategy</span>
+          <span class="sub-node-level" style="color: var(--tier-apprentice);">Lv 28</span>
+        </div>
+        <div class="sub-node">
+          <span class="sub-node-name">Competitive Analysis</span>
+          <span class="sub-node-level" style="color: var(--tier-apprentice);">Lv 25</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Skill Tree -->
+<section class="section" id="skill-tree" style="background: var(--warm-white);">
+  <div class="section-header">
+    <h2>Skill Tree: AI Boom in Finance</h2>
+    <p>Interconnected knowledge graph -- every node feeds into mastery</p>
+  </div>
+
+  <!-- XP Transparency -->
+  <div class="xp-transparency reveal" style="margin-bottom: var(--space-xl);">
+    <div class="xp-trans-row">
+      <div class="xp-trans-item">
+        <span class="xp-trans-label">Your level</span>
+        <span class="xp-trans-val" style="color: var(--tier-expert);">76</span>
+      </div>
+      <div class="xp-trans-item">
+        <span class="xp-trans-label">XP to next level</span>
+        <span class="xp-trans-val">139,138</span>
+      </div>
+      <div class="xp-trans-item">
+        <span class="xp-trans-label">XP for Lv 98 &#8594; 99</span>
+        <span class="xp-trans-val" style="color: var(--tier-grandmaster);">1,228,825</span>
+      </div>
+      <div class="xp-trans-item">
+        <span class="xp-trans-label">Your percentile</span>
+        <span class="xp-trans-val">Top 8%</span>
+      </div>
+    </div>
+    <div class="xp-trans-note">You've entered Mastery tier. From here, you teach, create frameworks, and face human expert review.</div>
+  </div>
+
+  <!-- PoE-Style Interactive Skill Tree Canvas -->
+  <div class="skill-tree-canvas-container reveal">
+    <canvas id="skillTreeCanvas" aria-label="Interactive skill tree showing interconnected knowledge nodes across AI, Finance, Ethics, and Product Strategy clusters"></canvas>
+    <div id="skillTreeLegend" class="tree-legend"></div>
+  </div>
+
+  <!-- Progression Gates (compact version below canvas) -->
+  <div class="tree-gates-compact reveal" style="margin-top: var(--space-lg);">
+    <div class="gate-compact passed">
+      <span class="gate-compact-icon">&#10003;</span>
+      <div>
+        <div class="gate-compact-title">Foundations &#8594; Frameworks</div>
+        <div class="gate-compact-desc">Define 5 key terms, explain why AI matters to finance</div>
+      </div>
+    </div>
+    <div class="gate-compact passed">
+      <span class="gate-compact-icon">&#10003;</span>
+      <div>
+        <div class="gate-compact-title">Frameworks &#8594; Application</div>
+        <div class="gate-compact-desc">Analyze an AI company's financials</div>
+      </div>
+    </div>
+    <div class="gate-compact passed">
+      <span class="gate-compact-icon">&#10003;</span>
+      <div>
+        <div class="gate-compact-title">Application &#8594; Analysis</div>
+        <div class="gate-compact-desc">Build an investment thesis for an AI company</div>
+      </div>
+    </div>
+    <div class="gate-compact passed">
+      <span class="gate-compact-icon">&#10003;</span>
+      <div>
+        <div class="gate-compact-title">Analysis &#8594; Mastery</div>
+        <div class="gate-compact-desc">Steelman both sides of the AI valuation debate</div>
+      </div>
+    </div>
+    <div class="gate-compact locked">
+      <span class="gate-compact-icon">&#128274;</span>
+      <div>
+        <div class="gate-compact-title">Mastery &#8594; Grandmaster</div>
+        <div class="gate-compact-desc">Human Expert Review -- Requires Lv 92</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Credential -->
+<section class="section" id="credential">
+  <div class="section-header">
+    <h2>Verified Skill Credential</h2>
+    <p>Current mastery, not peak. Radical honesty builds trust.</p>
+  </div>
+
+  <div class="credential-section">
+    <div class="credential-card">
+      <div class="credential-top">
+        <div class="credential-top-label">SkillGarden Verified Skill Credential</div>
+        <div class="credential-top-name">Yavuz</div>
+      </div>
+      <div class="credential-body">
+        <div class="credential-skill-main">
+          <div>
+            <div class="credential-skill-name">AI Boom in Finance</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">Verified through 37 Socratic debates</div>
+          </div>
+          <div class="credential-level">
+            <div class="credential-level-num" style="color: var(--tier-expert);">76</div>
+            <div class="credential-level-tier" style="color: var(--tier-expert);">Expert</div>
+          </div>
+        </div>
+
+        <div class="credential-sub-skills">
+          <div class="credential-sub-skill">
+            <span class="credential-sub-name">
+              <span style="color: var(--text-muted); margin-right: 4px;">&#9500;&#9472;</span>
+              AI Market Dynamics
+              <span style="font-size: 0.7rem; color: var(--text-muted); margin-left: 6px;">voice-verified depth</span>
+            </span>
+            <span class="credential-sub-level" style="color: var(--tier-master);">Lv 82</span>
+          </div>
+          <div class="credential-sub-skill">
+            <span class="credential-sub-name">
+              <span style="color: var(--text-muted); margin-right: 4px;">&#9500;&#9472;</span>
+              Valuation Models
+              <span style="font-size: 0.7rem; color: var(--text-muted); margin-left: 6px;">3 frameworks mastered</span>
+            </span>
+            <span class="credential-sub-level" style="color: var(--tier-expert);">Lv 73</span>
+          </div>
+          <div class="credential-sub-skill">
+            <span class="credential-sub-name">
+              <span style="color: var(--text-muted); margin-right: 4px;">&#9500;&#9472;</span>
+              Bubble vs Value Analysis
+            </span>
+            <span class="credential-sub-level" style="color: var(--tier-adept);">Lv 70</span>
+          </div>
+          <div class="credential-sub-skill">
+            <span class="credential-sub-name">
+              <span style="color: var(--text-muted); margin-right: 4px;">&#9492;&#9472;</span>
+              Regulatory Risk Analysis
+            </span>
+            <span class="credential-sub-level" style="color: var(--tier-adept);">Lv 68</span>
+          </div>
+        </div>
+
+        <div class="credential-verification">
+          <h4>Credential Earned Via</h4>
+          <div class="verification-item">
+            <span class="verification-check">&#10003;</span> White Circle validation (no self-reporting)
+          </div>
+          <div class="verification-item">
+            <span class="verification-check">&#10003;</span> Voice assessment (not multiple choice alone)
+          </div>
+          <div class="verification-item">
+            <span class="verification-check">&#10003;</span> Exponential XP curve (Level 92 = halfway to 99)
+          </div>
+          <div class="verification-item">
+            <span class="verification-check">&#10003;</span> 1,284 claims validated | 96% accuracy rate
+          </div>
+        </div>
+
+        <div class="credential-footer">
+          <span class="credential-id">SG-2026-Y8K2M</span>
+          <span class="credential-verify-link">skillgarden.io/verify/SG-2026-Y8K2M</span>
+        </div>
+
+        <div class="credential-validators">
+          <span class="validator-tag">White Circle AI -- assessment integrity</span>
+          <span class="validator-tag">Human expert review at L86+</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Assessment -->
+<section class="section" id="assess" style="background: var(--warm-white);">
+  <div class="section-header">
+    <h2>Assessment Engine</h2>
+    <p>Bloom's taxonomy from recall to synthesis -- voice debates at Expert+</p>
+  </div>
+
+  <div class="tabs" role="tablist" aria-label="Assessment modes">
+    <button class="tab active" data-tab="quiz" role="tab" aria-selected="true" aria-controls="tab-quiz" id="tab-btn-quiz">Quiz Mode</button>
+    <button class="tab" data-tab="voice" role="tab" aria-selected="false" aria-controls="tab-voice" id="tab-btn-voice">Voice Debate</button>
+    <button class="tab" data-tab="debate" role="tab" aria-selected="false" aria-controls="tab-debate" id="tab-btn-debate">Debate Cluster</button>
+  </div>
+
+  <!-- Quiz Tab -->
+  <div class="tab-content active" id="tab-quiz" role="tabpanel" aria-labelledby="tab-btn-quiz">
+    <div class="assessments-grid">
+      <div class="assessment-card">
+        <div class="assessment-header">
+          <span class="assessment-type">AI in Finance</span>
+          <span class="assessment-bloom">Bloom L1: Remember</span>
+        </div>
+        <div class="assessment-body">
+          <div class="assessment-question">What distinguishes a high-risk AI system under the EU AI Act's classification?</div>
+          <div class="assessment-options">
+            <div class="assessment-option">It uses more than 1B parameters</div>
+            <div class="assessment-option correct">It poses significant risk to health, safety, or fundamental rights</div>
+            <div class="assessment-option">It processes financial data</div>
+            <div class="assessment-option">It operates without human oversight</div>
+          </div>
+          <div class="quiz-feedback correct-feedback" style="margin-top: var(--space-md); display: none;">
+            <div class="feedback-text">Correct. The EU AI Act classifies risk by impact on people, not by model size. This directly affects AI trading systems and credit scoring models.</div>
+            <div class="feedback-xp">+25 XP</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="assessment-card">
+        <div class="assessment-header">
+          <span class="assessment-type">AI in Finance</span>
+          <span class="assessment-bloom">Bloom L5: Evaluate</span>
+        </div>
+        <div class="assessment-body">
+          <div class="assessment-question">Compare the current AI investment boom to the dot-com bubble of 1999-2000. What structural similarities and differences determine whether AI valuations are justified?</div>
+          <div style="background: var(--canvas); border-radius: var(--radius-md); padding: var(--space-lg); min-height: 120px; border: 2px dashed var(--border); display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.85rem;">
+            Open response -- evaluated by Anthropic + White Circle AI
+          </div>
+          <div class="quiz-context" style="margin-top: var(--space-md);">
+            Why this matters: This tests your ability to evaluate competing frameworks. Your response will be scored on revenue fundamentals, market concentration, adoption curves, and historical pattern analysis.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Voice Tab -->
+  <div class="tab-content" id="tab-voice" role="tabpanel" aria-labelledby="tab-btn-voice">
+    <div class="voice-assessment">
+      <div style="display: flex; align-items: center; gap: var(--space-md); margin-bottom: var(--space-lg);">
+        <div style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em;">Feynman Voice Test</div>
+        <span class="tier-badge expert" style="font-size: 0.6rem;">Expert+ Required</span>
+      </div>
+      <div class="voice-prompt">
+        Explain to me why NVIDIA's market cap is justified or unjustified, like I'm a retail investor who only knows the stock went up.
+      </div>
+
+      <div class="capture-audio-bar">
+        <div class="play-btn">&#9654;</div>
+        <div class="audio-wave">
+          <span style="height: 8px;"></span>
+          <span style="height: 14px;"></span>
+          <span style="height: 20px;"></span>
+          <span style="height: 12px;"></span>
+          <span style="height: 18px;"></span>
+          <span style="height: 10px;"></span>
+          <span style="height: 16px;"></span>
+          <span style="height: 6px;"></span>
+        </div>
+        <span class="audio-duration">2:31</span>
+      </div>
+
+      <div class="voice-scores">
+        <div class="voice-score">
+          <div class="voice-score-value">91%</div>
+          <div class="voice-score-label">Accuracy</div>
+        </div>
+        <div class="voice-score">
+          <div class="voice-score-value">78%</div>
+          <div class="voice-score-label">Completeness</div>
+        </div>
+        <div class="voice-score">
+          <div class="voice-score-value">94%</div>
+          <div class="voice-score-label">Clarity</div>
+        </div>
+      </div>
+
+      <div class="voice-feedback" style="margin-top: var(--space-lg);">
+        <div class="voice-feedback-section">
+          <div class="voice-fb-label correct-label">Covered correctly</div>
+          <div class="voice-fb-items">
+            <span>GPU monopoly thesis</span>
+            <span>Revenue growth vs P/E ratio</span>
+            <span>CUDA ecosystem moat</span>
+          </div>
+        </div>
+        <div class="voice-feedback-section">
+          <div class="voice-fb-label gap-label">Gap identified</div>
+          <div class="voice-fb-items">
+            <span>Custom silicon competition (Google TPU, Amazon Trainium) not addressed</span>
+          </div>
+          <div class="voice-fb-action">
+            Review: Skill Tree > Analysis > Competitive Landscape (Lv 63 node)
+          </div>
+        </div>
+        <div class="voice-feedback-section">
+          <div class="voice-fb-label context-label">Assessment context</div>
+          <div class="voice-fb-items">
+            <span>This was a Feynman test -- if you can teach it simply, you own it. Your moat analysis was strong but incomplete without addressing the emerging custom silicon threat.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Debate Cluster Tab -->
+  <div class="tab-content" id="tab-debate" role="tabpanel" aria-labelledby="tab-btn-debate">
+    <div class="debate-card">
+      <div class="debate-cluster-title">Debate Cluster: Is AI Overvalued or Undervalued?</div>
+
+      <div class="perspectives-grid">
+        <div class="perspective-card" style="border-color: var(--verified);">
+          <div class="perspective-name">Undervalued <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--tier-expert);">Lv 72</span></div>
+          <div class="perspective-arg">Revenue growth outpaces valuation. Enterprise adoption is early innings. AI is infrastructure, not a feature.</div>
+          <div class="perspective-proof">
+            <div class="proof-item done"><span>&#10003;</span> Can explain (voice-verified)</div>
+            <div class="proof-item done"><span>&#10003;</span> Can defend (3/3 challenges)</div>
+            <div class="proof-item done"><span>&#10003;</span> Can steelman (argued against own view)</div>
+          </div>
+        </div>
+        <div class="perspective-card">
+          <div class="perspective-name">Overvalued <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--tier-adept);">Lv 58</span></div>
+          <div class="perspective-arg">Dot-com parallels: concentration in few winners, hype-driven multiples, commodity risk for models.</div>
+          <div class="perspective-proof">
+            <div class="proof-item done"><span>&#10003;</span> Can explain (voice-verified)</div>
+            <div class="proof-item done"><span>&#10003;</span> Can defend (2/3 challenges)</div>
+            <div class="proof-item pending"><span>&#9201;</span> Can steelman -- assessment available</div>
+          </div>
+        </div>
+        <div class="perspective-card">
+          <div class="perspective-name">Paradigm Shift <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--tier-journeyman);">Lv 35</span></div>
+          <div class="perspective-arg">Traditional valuation frameworks don't apply. AI rewrites the rules of productivity itself.</div>
+          <div class="perspective-proof">
+            <div class="proof-item done"><span>&#10003;</span> Can explain (voice-verified)</div>
+            <div class="proof-item pending"><span>&#9201;</span> Can defend -- 1/3 challenges</div>
+            <div class="proof-item locked"><span>&#128274;</span> Can steelman -- locked</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="background: var(--canvas); border-radius: var(--radius-md); padding: var(--space-lg);">
+        <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-sm);">
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Synthesis Ability</span>
+          <span style="font-family: var(--font-mono); font-size: 0.8rem; font-weight: 600;">68%</span>
+        </div>
+        <div class="xp-bar-container">
+          <div class="xp-bar expert" style="width: 68%;"></div>
+        </div>
+        <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: var(--space-sm);">
+          Next challenge: "You lean undervalued. Make the strongest case that AI is a speculative bubble."
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Capture -->
+<section class="section" id="capture">
+  <div class="section-header">
+    <h2>Panel Capture</h2>
+    <p>Be present. Learn everything. White Circle validates before it enters your graph.</p>
+  </div>
+
+  <div class="capture-card">
+    <div class="capture-card-top">
+      <h3>AI Investment Thesis Panel</h3>
+      <div class="capture-meta">Feb 14, 2026 -- Columbia Business School -- 3 speakers</div>
+    </div>
+    <div class="capture-body">
+      <div class="capture-audio-bar">
+        <div class="play-btn">&#9654;</div>
+        <div class="audio-wave">
+          <span style="height: 10px;"></span>
+          <span style="height: 16px;"></span>
+          <span style="height: 12px;"></span>
+          <span style="height: 20px;"></span>
+          <span style="height: 8px;"></span>
+          <span style="height: 14px;"></span>
+          <span style="height: 18px;"></span>
+          <span style="height: 6px;"></span>
+        </div>
+        <span class="audio-duration">2:14 recap</span>
+      </div>
+
+      <h4 style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: var(--space-md);">Key Claims</h4>
+
+      <div class="claim-list">
+        <div class="claim-item">
+          <div class="claim-status verified">&#10003;</div>
+          <div>
+            <div class="claim-text">"NVIDIA controls 80%+ of the AI training GPU market"</div>
+            <div class="claim-detail">Verified -- 4 sources confirmed by White Circle AI</div>
+          </div>
+        </div>
+        <div class="claim-item">
+          <div class="claim-status unverified">!</div>
+          <div>
+            <div class="claim-text">"AI will add $15.7 trillion to global GDP by 2030"</div>
+            <div class="claim-detail">Unverified -- PwC estimate, methodology needs expert review</div>
+          </div>
+        </div>
+        <div class="claim-item">
+          <div class="claim-status verified">&#10003;</div>
+          <div>
+            <div class="claim-text">"Enterprise AI adoption doubled year-over-year since 2024"</div>
+            <div class="claim-detail">Verified with nuance -- varies by sector and company size</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="capture-deeper">
+        <h4>Go Deeper</h4>
+        <a class="deeper-link" href="#">&#8594; McKinsey: "The State of AI in 2026"</a>
+        <a class="deeper-link" href="#">&#8594; Speaker's paper: AI Valuation Frameworks</a>
+        <a class="deeper-link" href="#">&#8594; Related: a16z AI Investment Thesis</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- XP Curve Visualization -->
+<section class="section xp-curve-section" id="xp-curve" style="background: var(--warm-white);">
+  <div class="section-header">
+    <h2>The Exponential Mastery Curve</h2>
+    <p>Inspired by RuneScape. Level 1-92 requires the same XP as 92-99.</p>
+  </div>
+  <div class="xp-curve-container reveal">
+    <canvas id="xpCurveCanvas" width="700" height="320"></canvas>
+    <div class="xp-curve-legend">
+      <div class="xp-legend-item">
+        <span class="xp-legend-dot" style="background: var(--tier-novice);"></span> Novice 1-15
+      </div>
+      <div class="xp-legend-item">
+        <span class="xp-legend-dot" style="background: var(--tier-apprentice);"></span> Apprentice 16-30
+      </div>
+      <div class="xp-legend-item">
+        <span class="xp-legend-dot" style="background: var(--tier-journeyman);"></span> Journeyman 31-50
+      </div>
+      <div class="xp-legend-item">
+        <span class="xp-legend-dot" style="background: var(--tier-adept);"></span> Adept 51-70
+      </div>
+      <div class="xp-legend-item">
+        <span class="xp-legend-dot" style="background: var(--tier-expert);"></span> Expert 71-85
+      </div>
+      <div class="xp-legend-item">
+        <span class="xp-legend-dot" style="background: var(--tier-master);"></span> Master 86-92
+      </div>
+      <div class="xp-legend-item">
+        <span class="xp-legend-dot" style="background: var(--tier-grandmaster);"></span> Grandmaster 93-99
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-logo">
+      Skill<span>Garden</span>
+    </div>
+    <div class="footer-team">
+      <span>Diego</span>
+      <span>Yavuz</span>
+      <span>Jess</span>
+      <span>Josue</span>
+      <span>Ethan</span>
+    </div>
+    <p class="footer-event">
+      Iterate x CBS AI Club Valentine Hackathon 2026
+    </p>
+  </div>
+</footer>
+
+<!-- Supabase CDN -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- App Config & XP System -->
+<script src="config.js"></script>
+
+<!-- Service Modules (order matters: config first, then services, then controller) -->
+<script src="services/supabase-client.js"></script>
+<script src="services/claude-assessment.js"></script>
+<script src="services/elevenlabs-voice.js"></script>
+<script src="services/whitecircle-validate.js"></script>
+
+<!-- Dashboard Controller (wires everything together) -->
+<script src="services/dashboard-controller.js"></script>
+
+<!-- PoE-Style Skill Tree (canvas-based interactive graph) -->
+<script src="skill-tree.js"></script>
+
+<!-- Original app.js (scroll reveals, tabs, XP curve, audio bars) -->
+<script src="app.js"></script>
+
+<style>
+  /* Spinner for loading states */
+  .spinner {
+    width: 24px; height: 24px;
+    border: 3px solid var(--border);
+    border-top-color: var(--deep-forest);
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    margin: 0 auto;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  @keyframes scaleIn {
+    from { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+    to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  }
+
+  /* Open response textarea focus */
+  .open-response-input:focus,
+  .claim-input:focus,
+  .debate-response:focus {
+    outline: none;
+    border-color: var(--deep-forest);
+  }
+
+  /* Incorrect feedback */
+  .incorrect-feedback {
+    background: rgba(211, 47, 47, 0.08);
+    border-left: 3px solid #D32F2F;
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+  }
+  .incorrect-feedback .feedback-xp { color: #D32F2F; }
+</style>
+</body>
+</html>
