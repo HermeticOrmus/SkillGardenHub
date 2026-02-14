@@ -5,7 +5,7 @@
 const DynamicTree = (function () {
   'use strict';
 
-  // --- Tier color map ---
+  // --- Tier color map (only shown after validation) ---
   const TIER_COLORS = {
     novice:      '#8D6E63',
     apprentice:  '#78909C',
@@ -19,10 +19,22 @@ const DynamicTree = (function () {
 
   const TIER_ORDER = ['novice', 'apprentice', 'journeyman', 'adept', 'expert', 'master', 'grandmaster'];
 
+  // Neutral constellation color -- all nodes start as this
+  const NEUTRAL_COLOR = '#7B93A8';
+  const NEUTRAL_CONNECTION = '#5A7088';
+
   // Approximate level from tier name
   function levelFromTier(tier) {
     const map = { novice: 8, apprentice: 23, journeyman: 40, adept: 60, expert: 78, master: 89, grandmaster: 96 };
     return map[tier] || 0;
+  }
+
+  // Resolve node color: validated nodes get tier color, others get neutral
+  function nodeColor(node) {
+    if (validatedMap && validatedMap[node.id]) {
+      return TIER_COLORS[validatedMap[node.id].tier] || NEUTRAL_COLOR;
+    }
+    return NEUTRAL_COLOR;
   }
 
   // --- State ---
@@ -38,6 +50,10 @@ const DynamicTree = (function () {
   // Illumination state
   let illuminatedSet = null; // Set of illuminated node IDs, or null = show all
   let illuminationTime = 0;  // Frame when illumination started (for pulse animation)
+
+  // Validation state -- nodes only get tier colors/levels after assessment
+  // Map of nodeId -> { tier, level } or null (all neutral)
+  let validatedMap = null;
 
   // Layout data
   let clusters = [];
@@ -316,14 +332,20 @@ const DynamicTree = (function () {
   }
 
   function getClusterColor(cluster) {
-    // Determine dominant tier in cluster
+    // If no nodes validated, use neutral
+    if (!validatedMap) return NEUTRAL_COLOR;
+
+    // Check if any node in this cluster is validated
     const clusterNodes = cluster.nodes || [];
-    if (clusterNodes.length === 0) return '#52796F';
-    const tiers = clusterNodes.map(n => n.tier || 'novice');
+    const validatedInCluster = clusterNodes.filter(n => validatedMap[n.id]);
+    if (validatedInCluster.length === 0) return NEUTRAL_COLOR;
+
+    // Determine dominant validated tier in cluster
+    const tiers = validatedInCluster.map(n => validatedMap[n.id].tier);
     const tierCounts = {};
     tiers.forEach(t => { tierCounts[t] = (tierCounts[t] || 0) + 1; });
     const dominant = Object.entries(tierCounts).sort((a, b) => b[1] - a[1])[0][0];
-    return TIER_COLORS[dominant] || '#52796F';
+    return TIER_COLORS[dominant] || NEUTRAL_COLOR;
   }
 
   function drawConnections() {
@@ -351,8 +373,8 @@ const DynamicTree = (function () {
       const x2 = toCanvasX(to.x);
       const y2 = toCanvasY(to.y);
 
-      const fromColor = TIER_COLORS[from.computedTier] || TIER_COLORS.locked;
-      const toColor = TIER_COLORS[to.computedTier] || TIER_COLORS.locked;
+      const fromColor = nodeColor(from);
+      const toColor = nodeColor(to);
 
       // Gradient connection
       const gradient = ctx.createLinearGradient(x1, y1, x2, y2);
@@ -395,10 +417,10 @@ const DynamicTree = (function () {
       const cx = toCanvasX(node.x);
       const cy = toCanvasY(node.y);
       const r = nodeRadius(node) * Math.min(scaleX, scaleY) * 1.2 * zoom;
-      const tier = node.computedTier;
-      const color = TIER_COLORS[tier] || TIER_COLORS.locked;
+      const color = nodeColor(node);
       const isHovered = hoveredNode === node;
       const isLarge = node.size === 'large';
+      const isValidated = validatedMap && validatedMap[node.id];
 
       // Illumination state for this node
       const isIlluminated = !illuminatedSet || illuminatedSet.has(node.id);
@@ -452,12 +474,14 @@ const DynamicTree = (function () {
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
 
-      if (node.size !== 'small') {
+      if (isValidated && node.size !== 'small') {
+        // Show level number only for validated nodes
         ctx.fillStyle = isDimmed ? 'rgba(255,255,255,0.4)' : '#FFFFFF';
         const innerFont = Math.max(8, r * 0.6);
         ctx.font = `700 ${innerFont}px "JetBrains Mono", monospace`;
-        ctx.fillText(node.level || '', cx, cy);
+        ctx.fillText(validatedMap[node.id].level || '', cx, cy);
       } else {
+        // Neutral inner dot for unvalidated nodes
         ctx.beginPath();
         ctx.arc(cx, cy, r * 0.3, 0, Math.PI * 2);
         ctx.fillStyle = isDimmed ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.85)';
@@ -478,14 +502,14 @@ const DynamicTree = (function () {
       ctx.fillStyle = isDimmed ? 'rgba(255,255,255,0.3)' : '#FFFFFF';
       ctx.fillText(labelText, cx, labelY);
 
-      // Level badge for small nodes
-      if (node.size === 'small' && node.level) {
+      // Level badge for validated small nodes only
+      if (isValidated && node.size === 'small') {
         const badgeX = cx + r + 2 * zoom;
         const badgeY = cy - r - 2 * zoom;
         ctx.font = `700 ${Math.max(6, 7 * scaleX * zoom)}px "JetBrains Mono", monospace`;
         ctx.textBaseline = 'bottom';
         ctx.fillStyle = isDimmed ? '#44445560' : color;
-        ctx.fillText(node.level, badgeX, badgeY);
+        ctx.fillText(validatedMap[node.id].level, badgeX, badgeY);
       }
 
       // Restore alpha
@@ -502,14 +526,15 @@ const DynamicTree = (function () {
     const cy = toCanvasY(node.y);
     const r = nodeRadius(node) * Math.min(scaleX, scaleY) * 1.2 * zoom;
 
-    const tier = node.computedTier;
-    const tierName = tier.charAt(0).toUpperCase() + tier.slice(1);
-    const color = TIER_COLORS[tier] || TIER_COLORS.locked;
+    const color = nodeColor(node);
+    const isValidated = validatedMap && validatedMap[node.id];
 
     const title = (node.label || '').replace(/\n/g, ' ');
-    const line1 = `Level ${node.level} -- ${tierName}`;
+    const line1 = isValidated
+      ? `Level ${validatedMap[node.id].level} -- ${validatedMap[node.id].tier.charAt(0).toUpperCase() + validatedMap[node.id].tier.slice(1)}`
+      : (clusterMap[node.cluster] || {}).label || node.cluster;
     const line2 = node.description || `Cluster: ${node.cluster}`;
-    const line3 = node.bloom_level ? `Bloom's Level ${node.bloom_level}` : '';
+    const line3 = isValidated && node.bloom_level ? `Bloom's Level ${node.bloom_level}` : '';
 
     // Measure
     ctx.font = '600 12px "Plus Jakarta Sans", sans-serif';
@@ -654,9 +679,8 @@ const DynamicTree = (function () {
     const existing = document.querySelector('.node-detail-overlay');
     if (existing) existing.remove();
 
-    const tier = node.computedTier;
-    const tierName = tier.charAt(0).toUpperCase() + tier.slice(1);
-    const color = TIER_COLORS[tier] || TIER_COLORS.locked;
+    const color = nodeColor(node);
+    const isValidated = validatedMap && validatedMap[node.id];
     const name = (node.label || '').replace(/\n/g, ' ');
 
     // Find connected nodes
@@ -670,15 +694,21 @@ const DynamicTree = (function () {
     const bloomLabels = ['', 'Remember', 'Understand', 'Apply', 'Analyze', 'Evaluate', 'Create'];
     const bloomText = bloomLabels[node.bloom_level] || '';
 
+    // Build tier/level line based on validation state
+    const tierLine = isValidated
+      ? `${validatedMap[node.id].tier.charAt(0).toUpperCase() + validatedMap[node.id].tier.slice(1)} -- Level ${validatedMap[node.id].level}`
+      : (clusterMap[node.cluster] || {}).label || node.cluster;
+    const levelDisplay = isValidated ? validatedMap[node.id].level : '';
+
     const overlay = document.createElement('div');
     overlay.className = 'node-detail-overlay';
     overlay.innerHTML = `
       <div class="node-detail-card">
         <div class="node-detail-top" style="background: linear-gradient(135deg, ${color}, ${color}dd);">
           <button class="node-detail-close" aria-label="Close">&times;</button>
-          <div class="node-detail-tier">${tierName} -- Level ${node.level_range ? node.level_range.join('-') : node.level}</div>
+          <div class="node-detail-tier">${tierLine}</div>
           <div class="node-detail-name">${name}</div>
-          <div class="node-detail-level">${node.level}</div>
+          ${levelDisplay ? `<div class="node-detail-level">${levelDisplay}</div>` : ''}
         </div>
         <div class="node-detail-body">
           <div class="node-detail-desc">${node.description || 'Master this concept to unlock deeper understanding in connected domains.'}</div>
@@ -687,24 +717,26 @@ const DynamicTree = (function () {
               <div class="node-detail-meta-label">Cluster</div>
               <div class="node-detail-meta-value">${(clusterMap[node.cluster] || {}).label || node.cluster}</div>
             </div>
+            ${bloomText ? `
             <div class="node-detail-meta-item">
               <div class="node-detail-meta-label">Bloom's Level</div>
-              <div class="node-detail-meta-value">${bloomText ? `L${node.bloom_level}: ${bloomText}` : 'N/A'}</div>
-            </div>
+              <div class="node-detail-meta-value">L${node.bloom_level}: ${bloomText}</div>
+            </div>` : ''}
             <div class="node-detail-meta-item">
-              <div class="node-detail-meta-label">Node Size</div>
-              <div class="node-detail-meta-value">${(node.size || 'small').charAt(0).toUpperCase() + (node.size || 'small').slice(1)}</div>
+              <div class="node-detail-meta-label">Connections</div>
+              <div class="node-detail-meta-value">${prereqs.length} prereqs, ${unlocks.length} unlocks</div>
             </div>
+            ${isValidated ? `
             <div class="node-detail-meta-item">
               <div class="node-detail-meta-label">XP Range</div>
               <div class="node-detail-meta-value">${node.level_range ? node.level_range.join(' - ') : 'Varies'}</div>
-            </div>
+            </div>` : ''}
           </div>
           ${prereqs.length > 0 ? `
             <div class="node-detail-connections">
               <h4>Prerequisites</h4>
               <div class="connection-list">
-                ${prereqs.map(p => `<span class="connection-tag" style="background: ${TIER_COLORS[p.computedTier] || '#666'};">${(p.label || '').replace(/\n/g, ' ')}</span>`).join('')}
+                ${prereqs.map(p => `<span class="connection-tag" style="background: ${nodeColor(p)};">${(p.label || '').replace(/\n/g, ' ')}</span>`).join('')}
               </div>
             </div>
           ` : ''}
@@ -712,7 +744,7 @@ const DynamicTree = (function () {
             <div class="node-detail-connections" style="margin-top: var(--space-md);">
               <h4>Unlocks</h4>
               <div class="connection-list">
-                ${unlocks.map(u => `<span class="connection-tag" style="background: ${TIER_COLORS[u.computedTier] || '#666'};">${(u.label || '').replace(/\n/g, ' ')}</span>`).join('')}
+                ${unlocks.map(u => `<span class="connection-tag" style="background: ${nodeColor(u)};">${(u.label || '').replace(/\n/g, ' ')}</span>`).join('')}
               </div>
             </div>
           ` : ''}
@@ -863,27 +895,36 @@ const DynamicTree = (function () {
     const legendEl = document.getElementById(legendId);
     if (!legendEl) return;
 
-    // Determine which tiers are present
-    const presentTiers = new Set(nodes.map(n => n.computedTier));
+    if (validatedMap) {
+      // After validation: show tier legend
+      const validatedTiers = new Set(Object.values(validatedMap).map(v => v.tier));
+      const tierLabels = {
+        novice: 'Novice (1-15)',
+        apprentice: 'Apprentice (16-30)',
+        journeyman: 'Journeyman (31-50)',
+        adept: 'Adept (51-70)',
+        expert: 'Expert (71-85)',
+        master: 'Master (86-92)',
+        grandmaster: 'Grandmaster (93-99)',
+      };
 
-    const tierLabels = {
-      novice: 'Novice (1-15)',
-      apprentice: 'Apprentice (16-30)',
-      journeyman: 'Journeyman (31-50)',
-      adept: 'Adept (51-70)',
-      expert: 'Expert (71-85)',
-      master: 'Master (86-92)',
-      grandmaster: 'Grandmaster (93-99)',
-    };
-
-    legendEl.innerHTML = TIER_ORDER
-      .filter(t => presentTiers.has(t))
-      .map(t =>
+      legendEl.innerHTML = TIER_ORDER
+        .filter(t => validatedTiers.has(t))
+        .map(t =>
+          `<div class="tree-legend-item">
+            <span class="tree-legend-dot" style="background: ${TIER_COLORS[t]};"></span>
+            <span>${tierLabels[t]}</span>
+          </div>`
+        ).join('');
+    } else {
+      // Before validation: show cluster legend
+      legendEl.innerHTML = clusters.map(c =>
         `<div class="tree-legend-item">
-          <span class="tree-legend-dot" style="background: ${TIER_COLORS[t]};"></span>
-          <span>${tierLabels[t]}</span>
+          <span class="tree-legend-dot" style="background: ${NEUTRAL_COLOR};"></span>
+          <span>${c.label}</span>
         </div>`
       ).join('');
+    }
   }
 
   // --- Public API ---
@@ -892,6 +933,9 @@ const DynamicTree = (function () {
     panX = 0; panY = 0; zoom = 1;
     hoveredNode = null;
     animFrame = 0;
+    validatedMap = null;
+    illuminatedSet = null;
+    illuminationTime = 0;
 
     if (rafId) cancelAnimationFrame(rafId);
 
@@ -972,6 +1016,22 @@ const DynamicTree = (function () {
     targetPanY = 0;
   }
 
+  // --- Validate nodes (apply tier colors + levels after assessment) ---
+  // validationData: { nodeId: { tier: 'novice', level: 8 }, ... }
+  function validate(validationData) {
+    validatedMap = validationData;
+    // Redraw legend with tier info
+    const legendEl = document.getElementById('masterTreeLegend');
+    if (legendEl) drawLegend('masterTreeLegend');
+  }
+
+  // --- Reset validation (back to neutral constellation) ---
+  function resetValidation() {
+    validatedMap = null;
+    const legendEl = document.getElementById('masterTreeLegend');
+    if (legendEl) drawLegend('masterTreeLegend');
+  }
+
   // --- Get current state ---
   function getNodes() {
     return nodes;
@@ -981,5 +1041,5 @@ const DynamicTree = (function () {
     return illuminatedSet;
   }
 
-  return { init, illuminate, resetIllumination, getNodes, getIlluminatedSet };
+  return { init, illuminate, resetIllumination, validate, resetValidation, getNodes, getIlluminatedSet };
 })();

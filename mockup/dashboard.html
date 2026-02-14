@@ -999,6 +999,7 @@
   // --- Reset ---
   function handleReset() {
     DynamicTree.resetIllumination();
+    DynamicTree.resetValidation();
     illuminatedNodeIds = [];
     illuminatedSection.style.display = 'none';
     assessSection.style.display = 'none';
@@ -1256,6 +1257,26 @@
       clusterScores: clusterScores,
       topic: assessmentData.topic || document.getElementById('illuminationTitle').textContent
     };
+
+    // Validate illuminated nodes on the tree -- now they get tier colors + levels
+    var validationData = {};
+    illuminatedNodeIds.forEach(function(nid) {
+      validationData[nid] = { tier: resultTier, level: resultLevel };
+    });
+    // Per-cluster levels for more granular coloring
+    Object.keys(clusterScores).forEach(function(cid) {
+      var cs = clusterScores[cid];
+      var clusterPct = cs.correct / Math.max(1, cs.total);
+      var clusterLevel = Math.max(1, Math.round(clusterPct * resultLevel));
+      var clusterTierInfo = getTierForLevel(clusterLevel);
+      illuminatedNodeIds.forEach(function(nid) {
+        var node = masterTree.nodes.find(function(n) { return n.id === nid; });
+        if (node && node.cluster === cid) {
+          validationData[nid] = { tier: clusterTierInfo.name.toLowerCase(), level: clusterLevel };
+        }
+      });
+    });
+    DynamicTree.validate(validationData);
 
     // Show share section
     shareSection.style.display = '';
