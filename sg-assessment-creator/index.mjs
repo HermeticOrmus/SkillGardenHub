@@ -117,7 +117,8 @@ Return ONLY valid JSON, no markdown.`
       }]
     });
 
-    const text = message.content[0].type === "text" ? message.content[0].text : "";
+    const raw = message.content[0].type === "text" ? message.content[0].text : "";
+    const text = raw.replace(/^```(?:json)?\s*\n?/i, "").replace(/\n?```\s*$/i, "").trim();
     const assessment = JSON.parse(text);
 
     return reply.send({

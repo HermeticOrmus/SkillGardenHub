@@ -98,7 +98,9 @@ Return ONLY valid JSON, no markdown.`
       }]
     });
 
-    const text = message.content[0].type === "text" ? message.content[0].text : "";
+    const raw = message.content[0].type === "text" ? message.content[0].text : "";
+    // Strip markdown code fences (Claude often wraps JSON in ```json ... ```)
+    const text = raw.replace(/^```(?:json)?\s*\n?/i, "").replace(/\n?```\s*$/i, "").trim();
     const tree = JSON.parse(text);
 
     return reply.send({

@@ -811,7 +811,7 @@
     }, 2200);
   }
 
-  // --- Main generate handler (mocked for demo) ---
+  // --- Main generate handler (live Blaxel agent) ---
   function handleGenerate() {
     var topic = sourceInput.value.trim();
     if (!topic) return;
@@ -824,8 +824,9 @@
     var loadingStep = document.getElementById('treeLoadingStep');
     var dots = document.querySelectorAll('#treeLoading .load-dot');
 
-    // Hide tree, show loading
+    // Hide trees, show loading
     staticTreeContainer.style.display = 'none';
+    dynamicTreeContainer.style.display = 'none';
     treeStats.style.display = 'none';
     treeLoading.style.display = '';
     scrollToTree();
@@ -836,64 +837,49 @@
       'Building node connections...',
       'Rendering skill tree...'
     ];
+    var stepIndex = 0;
+    var stepInterval = setInterval(function () {
+      if (stepIndex < steps.length) {
+        loadingStep.textContent = steps[stepIndex];
+        dots.forEach(function (d, j) { d.style.opacity = j <= stepIndex ? '1' : '0.3'; });
+        stepIndex++;
+      }
+    }, 5000);
 
-    // Animate through steps
-    steps.forEach(function (step, i) {
-      setTimeout(function () {
-        loadingStep.textContent = step;
-        dots.forEach(function (d, j) { d.style.opacity = j <= i ? '1' : '0.3'; });
-      }, i * 800);
-    });
+    // Start first step immediately
+    loadingStep.textContent = steps[0];
+    dots.forEach(function (d, j) { d.style.opacity = j === 0 ? '1' : '0.3'; });
 
-    // Reveal tree after animation
-    setTimeout(function () {
-      treeLoading.style.display = 'none';
-
-      treeTitle.textContent = 'Skill Tree: ' + topic;
-      treeMeta.textContent = '25 nodes across 5 clusters -- your learning path is ready';
-      treeStats.style.display = '';
-      treeStats.innerHTML =
-        '<div class="stat-pill"><span class="stat-pill-val">25</span> Nodes</div>' +
-        '<div class="stat-pill"><span class="stat-pill-val">5</span> Clusters</div>' +
-        '<div class="stat-pill"><span class="stat-pill-val">32</span> Connections</div>' +
-        '<div class="stat-pill"><span class="stat-pill-val">7</span> Tiers</div>';
-
-      staticTreeContainer.style.display = '';
-      staticTreeContainer.style.animation = 'fadeIn 0.6s ease';
-
-      generateBtn.disabled = false;
-      generateBtn.style.opacity = '1';
-    }, steps.length * 800 + 400);
-
-    return;
-
-    // --- Below: live generation (disabled for demo) ---
-    setLoading(true);
-
-    // Live generation: Try Blaxel agent first
-    generateViaBlaxel(topic, depthSelect.value)
+    // Call live Blaxel agent
+    BlaxelClient.generateSkillTree(topic, { depth: depthSelect.value })
       .then(function (result) {
-        setStatus('Rendering tree...');
-        renderBlaxelTree(result);
-        setLoading(false);
-        scrollToTree();
-      })
-      .catch(function (blaxelErr) {
-        console.warn('[SkillGarden] Blaxel agent failed, trying validator fallback:', blaxelErr.message);
-        setStatus('Agent unavailable, trying fallback...');
+        clearInterval(stepInterval);
 
-        // Fallback to localhost validator
-        generateViaValidator(topic)
-          .then(function (treeData) {
-            renderValidatorTree(treeData, topic);
-            setLoading(false);
-            scrollToTree();
-          })
-          .catch(function (validatorErr) {
-            setLoading(false);
-            showError('Both generators failed. Blaxel: ' + blaxelErr.message + ' | Validator: ' + validatorErr.message);
-            console.error('[SkillGarden] Both pipelines failed:', { blaxel: blaxelErr, validator: validatorErr });
-          });
+        if (!result.success || !result.tree) {
+          throw new Error('Agent returned invalid response');
+        }
+
+        treeLoading.style.display = 'none';
+        renderBlaxelTree(result);
+        dynamicTreeContainer.style.animation = 'fadeIn 0.6s ease';
+        scrollToTree();
+
+        generateBtn.disabled = false;
+        generateBtn.style.opacity = '1';
+      })
+      .catch(function (err) {
+        clearInterval(stepInterval);
+        console.error('[SkillGarden] Generation failed:', err);
+
+        treeLoading.style.display = 'none';
+        // Fall back to static demo tree if available
+        staticTreeContainer.style.display = '';
+        treeTitle.textContent = 'Skill Tree: ' + topic;
+        treeMeta.textContent = 'Demo tree (agent unavailable)';
+        showError('Generation failed: ' + err.message);
+
+        generateBtn.disabled = false;
+        generateBtn.style.opacity = '1';
       });
   }
 
