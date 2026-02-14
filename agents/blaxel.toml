@@ -1,0 +1,52 @@
+# SkillGarden Blaxel Agents Configuration
+# Deploy: bl deploy (from this directory)
+# Each agent is a serverless endpoint on Blaxel
+
+[workspace]
+name = "skillgarden"
+
+# Assessment Agent - Generates & evaluates Bloom's taxonomy questions
+[[agents]]
+name = "sg-assessment"
+runtime = "node"
+entrypoint = "assessment/index.js"
+memory = 512
+timeout = 30
+
+[agents.env]
+ANTHROPIC_API_KEY = "@secret:anthropic-api-key"
+
+# Claim Validator Agent - Fact-checks claims via White Circle + Claude
+[[agents]]
+name = "sg-validator"
+runtime = "node"
+entrypoint = "validator/index.js"
+memory = 256
+timeout = 15
+
+[agents.env]
+WHITE_CIRCLE_API_KEY = "@secret:whitecircle-api-key"
+ANTHROPIC_API_KEY = "@secret:anthropic-api-key"
+
+# XP Engine Agent - Manages OSRS XP calculations, decay, level-ups
+[[agents]]
+name = "sg-xp-engine"
+runtime = "node"
+entrypoint = "xp-engine/index.js"
+memory = 256
+timeout = 5
+
+[agents.env]
+SUPABASE_URL = "@secret:supabase-url"
+SUPABASE_KEY = "@secret:supabase-key"
+
+# Orchestrator Agent - Frontend calls this, it fans out to specialized agents
+[[agents]]
+name = "sg-orchestrator"
+runtime = "node"
+entrypoint = "orchestrator/index.js"
+memory = 512
+timeout = 60
+
+[agents.env]
+ANTHROPIC_API_KEY = "@secret:anthropic-api-key"
