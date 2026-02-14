@@ -16,24 +16,24 @@ const CONFIG = {
     baseUrl: 'https://api.anthropic.com/v1',
   },
 
-  // ElevenLabs
+  // ElevenLabs -- key via Vercel env var, proxied through /api/elevenlabs
   elevenlabs: {
-    apiKey: 'sk_4cbf4173f580827f4ff5afe0e512c6301a24da56e39754b8',
+    apiKey: '',
     baseUrl: 'https://api.elevenlabs.io/v1',
     voiceId: 'EXAVITQu4vr4xnSDxMaL', // Default: Sarah
   },
 
-  // Blaxel (Agent hosting platform)
+  // Blaxel (Agent hosting platform) -- key via Vercel env var, proxied through /api/blaxel
   blaxel: {
-    apiKey: 'bl_aaabfbn6atqdqcsn8gnf05n2gvxddg5p',
+    apiKey: '',
     workspace: 'skillgardenhub',
     skillTreeUrl: 'https://agt-sg-skill-tree-maker-gjvgic.bl.run',
   },
 
   // White Circle AI (AI safety + content verification)
-  // Endpoints: /policies/verify, /metrics/evaluate
+  // key via Vercel env var, proxied through /api/whitecircle
   whitecircle: {
-    apiKey: 'wc-83d40f857681173f9d02bfe1567db311',
+    apiKey: '',
     baseUrl: 'https://api.whitecircle.ai/v1',
   },
 
