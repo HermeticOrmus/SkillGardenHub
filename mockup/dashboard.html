@@ -857,6 +857,8 @@
   var xpTransparency    = document.getElementById('xpTransparency');
   var staticTreeContainer  = document.getElementById('staticTreeContainer');
   var dynamicTreeContainer = document.getElementById('dynamicTreeContainer');
+  var treeGates         = document.querySelector('#skill-tree .tree-gates-compact');
+  var treeSkillsGrid    = document.querySelector('#skill-tree .skills-grid');
 
   if (!sourceInput || !generateBtn) return;
 
@@ -942,10 +944,12 @@
       '<div class="stat-pill"><span class="stat-pill-val">' + result.metadata.cluster_count + '</span> Clusters</div>' +
       '<div class="stat-pill"><span class="stat-pill-val">' + result.metadata.connection_count + '</span> Connections</div>';
 
-    // Swap to dynamic tree canvas
+    // Swap to dynamic tree canvas, hide user-progress
     xpTransparency.style.display = 'none';
     staticTreeContainer.style.display = 'none';
     dynamicTreeContainer.style.display = '';
+    if (treeGates) treeGates.style.display = 'none';
+    if (treeSkillsGrid) treeSkillsGrid.style.display = 'none';
 
     // Render with DynamicTree
     DynamicTree.init('dynamicTreeCanvas', 'dynamicTreeLegend', result.tree);
@@ -987,11 +991,13 @@
     treeTitle.textContent = 'Skill Tree: ' + treeData.skillName;
     treeMeta.textContent = 'Generated via local validator';
 
-    // Use the static tree canvas with loadSkillTreeFromAPI
+    // Use the static tree canvas with loadSkillTreeFromAPI, hide user-progress
     xpTransparency.style.display = 'none';
     staticTreeContainer.style.display = '';
     dynamicTreeContainer.style.display = 'none';
     treeStats.style.display = 'none';
+    if (treeGates) treeGates.style.display = 'none';
+    if (treeSkillsGrid) treeSkillsGrid.style.display = 'none';
 
     if (typeof window.loadSkillTreeFromAPI === 'function') {
       window.loadSkillTreeFromAPI(treeData);
@@ -1014,9 +1020,9 @@
     setTimeout(function () {
       setLoading(false);
 
-      // Restore the hardcoded tree as the "generated" result
+      // Show as a freshly generated tree -- no user progress yet
       treeTitle.textContent = 'Skill Tree: AI Boom in Finance';
-      treeMeta.textContent = '25 nodes across 5 clusters -- generated from topic analysis';
+      treeMeta.textContent = '25 nodes across 5 clusters -- your learning path is ready';
       treeStats.style.display = '';
       treeStats.innerHTML =
         '<div class="stat-pill"><span class="stat-pill-val">25</span> Nodes</div>' +
@@ -1024,10 +1030,14 @@
         '<div class="stat-pill"><span class="stat-pill-val">32</span> Connections</div>' +
         '<div class="stat-pill"><span class="stat-pill-val">7</span> Tiers</div>';
 
-      // Show the static (hardcoded) tree
-      xpTransparency.style.display = '';
+      // Show the tree canvas only
       staticTreeContainer.style.display = '';
       dynamicTreeContainer.style.display = 'none';
+
+      // Hide all user-progress elements (user hasn't been tested yet)
+      xpTransparency.style.display = 'none';
+      if (treeGates) treeGates.style.display = 'none';
+      if (treeSkillsGrid) treeSkillsGrid.style.display = 'none';
 
       scrollToTree();
     }, 2200);
@@ -1090,6 +1100,10 @@
     xpTransparency.style.display = '';
     staticTreeContainer.style.display = '';
     dynamicTreeContainer.style.display = 'none';
+
+    // Restore user-progress elements
+    if (treeGates) treeGates.style.display = '';
+    if (treeSkillsGrid) treeSkillsGrid.style.display = '';
 
     if (typeof window.resetSkillTree === 'function') {
       window.resetSkillTree();
