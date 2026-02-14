@@ -1,52 +1,51 @@
 # SkillGarden Blaxel Agents Configuration
 # Deploy: bl deploy (from this directory)
 # Each agent is a serverless endpoint on Blaxel
+# API: POST https://run.blaxel.ai/skillgarden/agents/{agent-name}
 
 [workspace]
 name = "skillgarden"
 
-# Assessment Agent - Generates & evaluates Bloom's taxonomy questions
+# 1. Skill Tree Maker - Generates interconnected skill trees from any topic
 [[agents]]
-name = "sg-assessment"
+name = "sg-skill-tree-maker"
 runtime = "node"
-entrypoint = "assessment/index.js"
+entrypoint = "skill-tree-maker/index.js"
 memory = 512
 timeout = 30
 
 [agents.env]
 ANTHROPIC_API_KEY = "@secret:anthropic-api-key"
 
-# Claim Validator Agent - Fact-checks claims via White Circle + Claude
+# 2. Pre-Test Creator - Creates diagnostic pre-tests for new learners
 [[agents]]
-name = "sg-validator"
+name = "sg-pre-test-creator"
 runtime = "node"
-entrypoint = "validator/index.js"
-memory = 256
-timeout = 15
+entrypoint = "pre-test-creator/index.js"
+memory = 512
+timeout = 30
 
 [agents.env]
-WHITE_CIRCLE_API_KEY = "@secret:whitecircle-api-key"
 ANTHROPIC_API_KEY = "@secret:anthropic-api-key"
 
-# XP Engine Agent - Manages OSRS XP calculations, decay, level-ups
+# 3. Understanding Assessor - Evaluates depth of understanding (Bloom's taxonomy)
 [[agents]]
-name = "sg-xp-engine"
+name = "sg-understanding-assessor"
 runtime = "node"
-entrypoint = "xp-engine/index.js"
-memory = 256
-timeout = 5
+entrypoint = "understanding-assessor/index.js"
+memory = 512
+timeout = 30
 
 [agents.env]
-SUPABASE_URL = "@secret:supabase-url"
-SUPABASE_KEY = "@secret:supabase-key"
+ANTHROPIC_API_KEY = "@secret:anthropic-api-key"
 
-# Orchestrator Agent - Frontend calls this, it fans out to specialized agents
+# 4. Assessment Creator - Generates quizzes, voice prompts, debate challenges
 [[agents]]
-name = "sg-orchestrator"
+name = "sg-assessment-creator"
 runtime = "node"
-entrypoint = "orchestrator/index.js"
+entrypoint = "assessment-creator/index.js"
 memory = 512
-timeout = 60
+timeout = 30
 
 [agents.env]
 ANTHROPIC_API_KEY = "@secret:anthropic-api-key"

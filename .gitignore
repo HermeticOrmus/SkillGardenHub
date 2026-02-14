@@ -14,8 +14,9 @@ Desktop.ini
 .env.local
 .env.*.local
 
-# API Keys (NEVER commit)
-mockup/config.js
+# API Keys -- hackathon demo keys committed for Vercel auto-deploy
+# TODO: Move to env vars post-hackathon
+# mockup/config.js
 
 # Node
 node_modules/

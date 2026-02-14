@@ -1,0 +1,21 @@
+{
+  "name": "sg-skill-tree-maker",
+  "version": "1.0.0",
+  "description": "SkillGarden Skill Tree Maker Agent",
+  "main": "index.mjs",
+  "type": "module",
+  "keywords": [],
+  "license": "MIT",
+  "author": "SkillGarden",
+  "scripts": {
+    "start": "node index.mjs",
+    "prod": "node index.mjs",
+    "build": "echo 'no build needed'"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.74.0",
+    "@blaxel/core": "0.2.64",
+    "@blaxel/telemetry": "0.2.64",
+    "fastify": "^5.3.2"
+  }
+}

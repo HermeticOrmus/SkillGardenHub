@@ -1,0 +1,127 @@
+import '@blaxel/telemetry';
+import Fastify from "fastify";
+import Anthropic from "@anthropic-ai/sdk";
+
+const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+
+const SYSTEM_PROMPT = `You are the SkillGarden Pre-Test Architect. You create diagnostic assessments that accurately determine a learner's starting level within a skill domain.
+
+Your output must be a JSON object with this exact structure:
+{
+  "topic": "The skill being assessed",
+  "questions": [
+    {
+      "id": "q1",
+      "text": "The question text",
+      "tier": "novice|apprentice|journeyman|adept|expert|master|grandmaster",
+      "bloom_level": 1,
+      "cluster": "which knowledge cluster this tests",
+      "type": "multiple_choice|true_false|short_answer|scenario",
+      "options": ["A) ...", "B) ...", "C) ...", "D) ..."],
+      "correct": "A",
+      "explanation": "Why this answer is correct",
+      "misconception": "Common wrong answer and why people choose it"
+    }
+  ],
+  "scoring": {
+    "novice": { "min_correct": 0, "max_correct": 2, "level_range": [1, 15] },
+    "apprentice": { "min_correct": 3, "max_correct": 5, "level_range": [16, 30] },
+    "journeyman": { "min_correct": 6, "max_correct": 8, "level_range": [31, 50] },
+    "adept": { "min_correct": 9, "max_correct": 11, "level_range": [51, 70] },
+    "expert": { "min_correct": 12, "max_correct": 14, "level_range": [71, 85] },
+    "master": { "min_correct": 15, "max_correct": 16, "level_range": [86, 92] },
+    "grandmaster": { "min_correct": 17, "max_correct": 18, "level_range": [93, 99] }
+  },
+  "clusters_tested": ["list of knowledge clusters covered"]
+}
+
+Rules:
+1. Generate exactly 18 questions (3 per tier, except grandmaster gets 2)
+2. Questions must progressively increase in difficulty following Bloom's taxonomy:
+   - Novice (Bloom 1): Remember -- recall facts, definitions
+   - Apprentice (Bloom 2): Understand -- explain concepts, compare
+   - Journeyman (Bloom 3): Apply -- use knowledge in new situations
+   - Adept (Bloom 4): Analyze -- break down, identify patterns
+   - Expert (Bloom 5): Evaluate -- judge, critique, defend positions
+   - Master (Bloom 6): Create -- synthesize, design frameworks
+   - Grandmaster (Bloom 6): Create -- original contribution level
+3. Each question must map to a specific knowledge cluster
+4. Include common misconceptions to identify knowledge gaps
+5. Multiple choice questions should have plausible distractors
+6. The test should feel challenging but fair at every tier`;
+
+interface PreTestRequest {
+  inputs?: string;
+  topic?: string;
+  skill_tree?: Record<string, unknown>;
+  focus_clusters?: string[];
+}
+
+async function main() {
+  console.info("Booting sg-pre-test-creator...");
+  const app = Fastify();
+
+  app.addHook("onResponse", async (request, reply) => {
+    console.info(`${request.method} ${request.url} ${reply.statusCode} ${Math.round(reply.elapsedTime)}ms`);
+  });
+
+  app.addHook("onError", async (_request, _reply, error) => {
+    console.error("[PreTestCreator] Error:", error);
+  });
+
+  app.post<{ Body: PreTestRequest }>("/", async (request, reply) => {
+    const { topic, skill_tree, focus_clusters, inputs } = request.body || {};
+    const actualTopic = topic || inputs;
+
+    if (!actualTopic) {
+      return reply.status(400).send({ error: "topic is required" });
+    }
+
+    const treeContext = skill_tree
+      ? `\n\nExisting skill tree structure:\n${JSON.stringify(skill_tree, null, 2)}`
+      : "";
+
+    const focusContext = focus_clusters
+      ? `\nFocus on these clusters: ${focus_clusters.join(", ")}`
+      : "";
+
+    const message = await client.messages.create({
+      model: "claude-sonnet-4-5-20250929",
+      max_tokens: 4096,
+      system: SYSTEM_PROMPT,
+      messages: [{
+        role: "user",
+        content: `Create a diagnostic pre-test for: "${actualTopic}"${treeContext}${focusContext}
+
+The test should:
+- Accurately place a learner at their correct level (1-99)
+- Identify which knowledge clusters they're strongest/weakest in
+- Take approximately 10-15 minutes to complete
+- Feel engaging, not like a boring exam
+
+Return ONLY valid JSON, no markdown.`
+      }]
+    });
+
+    const text = message.content[0].type === "text" ? message.content[0].text : "";
+    const preTest = JSON.parse(text);
+
+    return reply.send({
+      success: true,
+      pre_test: preTest,
+      metadata: {
+        question_count: preTest.questions?.length || 0,
+        clusters_tested: preTest.clusters_tested?.length || 0,
+        tiers_covered: [...new Set(preTest.questions?.map((q: { tier: string }) => q.tier) || [])].length,
+        agent: "sg-pre-test-creator",
+      }
+    });
+  });
+
+  const port = parseInt(process.env.PORT || "80");
+  const host = process.env.HOST || "0.0.0.0";
+  await app.listen({ port, host });
+  console.info(`sg-pre-test-creator running on ${host}:${port}`);
+}
+
+main().catch(console.error);
