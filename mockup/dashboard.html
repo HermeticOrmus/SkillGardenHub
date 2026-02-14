@@ -801,16 +801,13 @@
     if (!topic) return;
 
     clearError();
-    setLoading(true);
 
-    // Demo shortcut: if topic matches our pre-built tree, show it directly
-    if (isDemoTopic(topic)) {
-      setStatus('Analyzing content...');
-      setTimeout(function () { setStatus('Mapping knowledge clusters...'); }, 600);
-      setTimeout(function () { setStatus('Building node connections...'); }, 1200);
-      setTimeout(function () { showDemoTree(); }, 1800);
-      return;
-    }
+    // Just scroll to the tree
+    scrollToTree();
+    return;
+
+    // --- Below: live generation (disabled for demo) ---
+    setLoading(true);
 
     // Live generation: Try Blaxel agent first
     generateViaBlaxel(topic, depthSelect.value)
