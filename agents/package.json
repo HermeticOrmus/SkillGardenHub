@@ -1,0 +1,15 @@
+{
+  "name": "skillgarden-agents",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "validator": "node validator/index.js",
+    "orchestrator": "node orchestrator/index.js",
+    "assessment": "node assessment/index.js",
+    "xp-engine": "node xp-engine/index.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0"
+  }
+}

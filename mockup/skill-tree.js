@@ -28,9 +28,20 @@
     return 'locked';
   }
 
-  // --- Cluster Definitions ---
-  // Each cluster is a colored region grouping related nodes
-  const CLUSTERS = [
+  // Map API difficulty (1-5) to a representative level for tier color selection
+  function tierForDifficulty(difficulty) {
+    const diffToTier = {
+      1: 'novice',
+      2: 'apprentice',
+      3: 'journeyman',
+      4: 'adept',
+      5: 'expert',
+    };
+    return diffToTier[difficulty] || 'novice';
+  }
+
+  // --- Default hardcoded data (preserved as demo) ---
+  const DEFAULT_CLUSTERS = [
     {
       id: 'ai',
       label: 'AI / Machine Learning',
@@ -73,9 +84,7 @@
     },
   ];
 
-  // --- Node Definitions ---
-  // Each node: id, label, level, x, y, cluster, size ('large' | 'medium' | 'small')
-  const NODES = [
+  const DEFAULT_NODES = [
     // === Central Hub ===
     { id: 'ai-boom',          label: 'AI Boom\nin Finance',       level: 76, x: 500, y: 340, cluster: 'intersection', size: 'large', primary: true },
 
@@ -119,9 +128,7 @@
     { id: 'original-thesis',   label: 'Original\nThesis',          level: 0,  x: 500, y: 560, cluster: 'intersection', size: 'medium', grandmaster: true },
   ];
 
-  // --- Connections (edges) ---
-  // Each: [fromId, toId]
-  const CONNECTIONS = [
+  const DEFAULT_CONNECTIONS = [
     // Central hub connections
     ['ai-boom', 'ai-market-dyn'],
     ['ai-boom', 'bubble-value'],
@@ -180,9 +187,18 @@
     ['product-strategy', 'original-thesis'],
   ];
 
+  // --- Live data (mutable, starts as the defaults) ---
+  let CLUSTERS = DEFAULT_CLUSTERS.slice();
+  let NODES = DEFAULT_NODES.slice();
+  let CONNECTIONS = DEFAULT_CONNECTIONS.slice();
+
   // --- Build lookup maps ---
-  const nodeMap = {};
-  NODES.forEach(n => { nodeMap[n.id] = n; });
+  let nodeMap = {};
+  function rebuildNodeMap() {
+    nodeMap = {};
+    NODES.forEach(n => { nodeMap[n.id] = n; });
+  }
+  rebuildNodeMap();
 
   // --- Node sizes ---
   function nodeRadius(node) {
@@ -287,26 +303,29 @@
       const x2 = toCanvasX(to.x);
       const y2 = toCanvasY(to.y);
 
-      const fromUnlocked = from.level > 0;
-      const toUnlocked = to.level > 0;
-      const bothUnlocked = fromUnlocked && toUnlocked;
+      const fromActive = from.level > 0 || !!from.difficultyTier;
+      const toActive = to.level > 0 || !!to.difficultyTier;
+      const bothActive = fromActive && toActive;
+
+      // Resolve tier color: demo nodes use level, API nodes use difficultyTier
+      function getNodeTierColor(node) {
+        if (node.level > 0) return TIER_COLORS[tierForLevel(node.level)];
+        if (node.difficultyTier) return TIER_COLORS[node.difficultyTier] || TIER_COLORS.novice;
+        return TIER_COLORS.locked;
+      }
 
       // Connection style based on state
-      if (bothUnlocked) {
+      if (bothActive) {
         // Active connection - tier-colored gradient
         const gradient = ctx.createLinearGradient(x1, y1, x2, y2);
-        const fromColor = TIER_COLORS[tierForLevel(from.level)];
-        const toColor = TIER_COLORS[tierForLevel(to.level)];
-        gradient.addColorStop(0, fromColor + '60');
-        gradient.addColorStop(1, toColor + '60');
+        gradient.addColorStop(0, getNodeTierColor(from) + '60');
+        gradient.addColorStop(1, getNodeTierColor(to) + '60');
         ctx.strokeStyle = gradient;
         ctx.lineWidth = 2;
-      } else if (fromUnlocked || toUnlocked) {
-        // Partial - one end unlocked
+      } else if (fromActive || toActive) {
         ctx.strokeStyle = 'rgba(74, 85, 104, 0.25)';
         ctx.lineWidth = 1.5;
       } else {
-        // Both locked
         ctx.strokeStyle = 'rgba(74, 85, 104, 0.12)';
         ctx.lineWidth = 1;
       }
@@ -335,14 +354,14 @@
       const cy = toCanvasY(node.y);
       const r = nodeRadius(node) * Math.min(scaleX, scaleY) * 1.2;
       const unlocked = node.level > 0;
-      const tier = unlocked ? tierForLevel(node.level) : 'locked';
-      const color = TIER_COLORS[tier];
+      const tier = unlocked ? tierForLevel(node.level) : (node.difficultyTier || 'locked');
+      const color = TIER_COLORS[tier] || TIER_COLORS.locked;
       const isHovered = hoveredNode === node;
       const isPrimary = node.primary;
       const isGrandmaster = node.grandmaster;
 
-      // Outer glow for active/hovered/primary nodes
-      if (unlocked && (isPrimary || isHovered)) {
+      // Outer glow for primary/hovered nodes (works for both demo and API nodes)
+      if ((unlocked || node.difficultyTier) && (isPrimary || isHovered)) {
         const glowR = r + 8 + Math.sin(animFrame * 0.04) * 3;
         const glow = ctx.createRadialGradient(cx, cy, r, cx, cy, glowR);
         glow.addColorStop(0, color + '40');
@@ -370,7 +389,7 @@
       ctx.arc(cx, cy, r, 0, Math.PI * 2);
 
       if (unlocked) {
-        // Filled node with gradient
+        // Filled node with gradient (demo data with real levels)
         const grad = ctx.createRadialGradient(cx - r * 0.3, cy - r * 0.3, 0, cx, cy, r);
         grad.addColorStop(0, lightenColor(color, 30));
         grad.addColorStop(1, color);
@@ -378,6 +397,17 @@
         ctx.fill();
 
         // Border
+        ctx.strokeStyle = darkenColor(color, 20);
+        ctx.lineWidth = isHovered ? 3 : 2;
+        ctx.stroke();
+      } else if (node.difficultyTier) {
+        // API node: filled with full difficulty color (same style as unlocked demo nodes)
+        const grad = ctx.createRadialGradient(cx - r * 0.3, cy - r * 0.3, 0, cx, cy, r);
+        grad.addColorStop(0, lightenColor(color, 30));
+        grad.addColorStop(1, color);
+        ctx.fillStyle = grad;
+        ctx.fill();
+
         ctx.strokeStyle = darkenColor(color, 20);
         ctx.lineWidth = isHovered ? 3 : 2;
         ctx.stroke();
@@ -392,15 +422,28 @@
         ctx.setLineDash([]);
       }
 
-      // Inner icon: checkmark for high-level, lock for locked, level number for active
+      // Inner icon: level number for active nodes, difficulty badge for API nodes, lock for locked
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
 
-      if (!unlocked) {
+      if (!unlocked && !node.difficultyTier) {
         // Lock icon
         ctx.fillStyle = 'rgba(255,255,255,0.4)';
         ctx.font = `${Math.max(8, r * 0.7)}px sans-serif`;
         ctx.fillText('\u{1F512}', cx, cy);
+      } else if (node.difficultyTier && !unlocked) {
+        // API-sourced nodes: show difficulty number inside (like demo shows levels)
+        if (node.size !== 'small') {
+          ctx.fillStyle = '#FFFFFF';
+          ctx.font = `700 ${Math.max(10, r * 0.65)}px "JetBrains Mono", monospace`;
+          ctx.fillText(node.difficulty || '', cx, cy);
+        } else {
+          // Small dot of white in center (like demo small nodes)
+          ctx.beginPath();
+          ctx.arc(cx, cy, r * 0.25, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(255,255,255,0.8)';
+          ctx.fill();
+        }
       } else if (node.size !== 'small') {
         // Level number inside larger nodes
         ctx.fillStyle = '#FFFFFF';
@@ -427,18 +470,18 @@
         ctx.fillStyle = 'rgba(250, 243, 224, 0.85)';
         ctx.fillText(line, cx, labelY + i * (fontSize + 2));
         // Actual text
-        ctx.fillStyle = unlocked ? '#1A1A2E' : '#8898AA';
+        ctx.fillStyle = (unlocked || node.difficultyTier) ? '#1A1A2E' : '#8898AA';
         ctx.fillText(line, cx, labelY + i * (fontSize + 2));
       });
 
-      // Level badge for small unlocked nodes
-      if (unlocked && node.size === 'small') {
+      // Level/difficulty badge for small nodes
+      if (node.size === 'small' && (unlocked || node.difficultyTier)) {
         const badgeX = cx + r + 2;
         const badgeY = cy - r - 2;
         ctx.font = `700 ${Math.max(7, 8 * scaleX)}px "JetBrains Mono", monospace`;
         ctx.textBaseline = 'bottom';
         ctx.fillStyle = color;
-        ctx.fillText(node.level, badgeX, badgeY);
+        ctx.fillText(unlocked ? node.level : node.difficulty, badgeX, badgeY);
       }
     });
   }
@@ -451,16 +494,26 @@
     const r = nodeRadius(node) * Math.min(scaleX, scaleY) * 1.2;
 
     const unlocked = node.level > 0;
-    const tier = unlocked ? tierForLevel(node.level) : 'locked';
+    const tier = unlocked ? tierForLevel(node.level) : (node.difficultyTier || 'locked');
     const tierName = tier.charAt(0).toUpperCase() + tier.slice(1);
-    const color = TIER_COLORS[tier];
+    const color = TIER_COLORS[tier] || TIER_COLORS.locked;
 
     // Tooltip content
     const title = node.label.replace('\n', ' ');
-    const line1 = unlocked ? `Level ${node.level} -- ${tierName}` : 'Locked';
-    const line2 = unlocked
-      ? `Cluster: ${CLUSTERS.find(c => c.id === node.cluster)?.label || ''}`
-      : 'Complete prerequisites to unlock';
+    let line1, line2;
+
+    if (unlocked) {
+      line1 = `Level ${node.level} -- ${tierName}`;
+      line2 = `Cluster: ${CLUSTERS.find(c => c.id === node.cluster)?.label || ''}`;
+    } else if (node.difficultyTier) {
+      line1 = `Difficulty ${node.difficulty || ''} -- ${tierName}`;
+      line2 = node.description
+        ? (node.description.length > 50 ? node.description.slice(0, 50) + '...' : node.description)
+        : (`Cluster: ${CLUSTERS.find(c => c.id === node.cluster)?.label || ''}`);
+    } else {
+      line1 = 'Locked';
+      line2 = 'Complete prerequisites to unlock';
+    }
 
     // Measure tooltip
     ctx.font = '600 12px "Plus Jakarta Sans", sans-serif';
@@ -657,6 +710,309 @@
       </div>`
     ).join('');
   }
+
+  // ============================================================
+  // --- API: Load Skill Tree from API Response ---
+  // ============================================================
+  //
+  // Layout algorithm:
+  //   1. Assign each node a layer = longest BFS depth from any root.
+  //   2. Within each layer, group nodes by category, then space evenly.
+  //   3. Auto-generate CLUSTERS from unique categories.
+  //   4. Design space: 1000x680, padding 80px from edges.
+  //
+  // treeData shape:
+  //   { nodes: [{id, name, description, difficulty, tier, category, prerequisites, children}],
+  //     roots: [id, ...], totalNodes, tiers: [{level, name, nodeIds}] }
+  // ============================================================
+
+  window.loadSkillTreeFromAPI = function(treeData) {
+    if (!treeData || !Array.isArray(treeData.nodes) || treeData.nodes.length === 0) {
+      console.warn('loadSkillTreeFromAPI: invalid or empty treeData');
+      return;
+    }
+
+    var apiNodes = treeData.nodes;
+    var roots = treeData.roots || [];
+
+    // Build lookup
+    var apiNodeById = {};
+    apiNodes.forEach(function(n) { apiNodeById[n.id] = n; });
+
+    // Find roots if not declared
+    if (!roots.length) {
+      roots = apiNodes
+        .filter(function(n) { return !n.prerequisites || n.prerequisites.length === 0; })
+        .map(function(n) { return n.id; });
+    }
+    if (!roots.length && apiNodes.length) roots = [apiNodes[0].id];
+
+    // Count connections per node (for hub detection)
+    var connectionCount = {};
+    apiNodes.forEach(function(n) {
+      connectionCount[n.id] = (connectionCount[n.id] || 0) + (n.children || []).length + (n.prerequisites || []).length;
+    });
+
+    // --- Gather unique categories ---
+    var categorySet = {};
+    apiNodes.forEach(function(n) { categorySet[n.category || 'General'] = true; });
+    var categories = Object.keys(categorySet);
+
+    // Group nodes by category
+    var nodesByCategory = {};
+    categories.forEach(function(cat) { nodesByCategory[cat] = []; });
+    apiNodes.forEach(function(n) { nodesByCategory[n.category || 'General'].push(n); });
+
+    // Cluster color palette
+    var clusterPalettes = [
+      { color: 'rgba(30, 136, 229, 0.06)',  borderColor: 'rgba(30, 136, 229, 0.15)' },
+      { color: 'rgba(255, 143, 0, 0.06)',   borderColor: 'rgba(255, 143, 0, 0.15)' },
+      { color: 'rgba(171, 71, 188, 0.06)',  borderColor: 'rgba(171, 71, 188, 0.18)' },
+      { color: 'rgba(67, 160, 71, 0.06)',   borderColor: 'rgba(67, 160, 71, 0.15)' },
+      { color: 'rgba(141, 110, 99, 0.06)',  borderColor: 'rgba(141, 110, 99, 0.15)' },
+      { color: 'rgba(211, 47, 47, 0.06)',   borderColor: 'rgba(211, 47, 47, 0.15)' },
+      { color: 'rgba(0, 150, 136, 0.06)',   borderColor: 'rgba(0, 150, 136, 0.15)' },
+      { color: 'rgba(121, 85, 72, 0.06)',   borderColor: 'rgba(121, 85, 72, 0.15)' },
+    ];
+
+    // ============================================================
+    // RADIAL CLUSTER LAYOUT (PoE-style)
+    // Design space: 1000 x 680
+    // Center: 500, 340
+    // Categories are placed radially around center
+    // Nodes within each category orbit their cluster center
+    // ============================================================
+
+    var centerX = 500, centerY = 340;
+    var numCats = categories.length;
+
+    // Determine cluster center positions radially
+    // If few categories, use specific pleasing arrangements
+    var clusterCenters = {};
+    if (numCats === 1) {
+      clusterCenters[categories[0]] = { cx: centerX, cy: centerY };
+    } else if (numCats === 2) {
+      clusterCenters[categories[0]] = { cx: 300, cy: 300 };
+      clusterCenters[categories[1]] = { cx: 700, cy: 300 };
+    } else if (numCats === 3) {
+      clusterCenters[categories[0]] = { cx: 250, cy: 220 };
+      clusterCenters[categories[1]] = { cx: 750, cy: 220 };
+      clusterCenters[categories[2]] = { cx: 500, cy: 500 };
+    } else {
+      // Radial placement with first cluster at top-left
+      var startAngle = -Math.PI * 0.75; // start at ~top-left
+      var radiusX = numCats <= 5 ? 250 : 280;
+      var radiusY = numCats <= 5 ? 180 : 200;
+      categories.forEach(function(cat, i) {
+        var angle = startAngle + (2 * Math.PI * i / numCats);
+        clusterCenters[cat] = {
+          cx: centerX + Math.cos(angle) * radiusX,
+          cy: centerY + Math.sin(angle) * radiusY,
+        };
+      });
+    }
+
+    // --- Position nodes within each cluster ---
+    var positionOf = {};
+
+    categories.forEach(function(cat) {
+      var nodes = nodesByCategory[cat];
+      var cc = clusterCenters[cat];
+      var count = nodes.length;
+
+      // Sort nodes: highest-connection nodes first (hub nodes at center)
+      nodes.sort(function(a, b) {
+        return (connectionCount[b.id] || 0) - (connectionCount[a.id] || 0);
+      });
+
+      if (count === 1) {
+        positionOf[nodes[0].id] = { x: cc.cx, y: cc.cy };
+      } else if (count === 2) {
+        positionOf[nodes[0].id] = { x: cc.cx, y: cc.cy };
+        positionOf[nodes[1].id] = { x: cc.cx + 80, y: cc.cy + 60 };
+      } else {
+        // Hub node (most connected) at cluster center
+        positionOf[nodes[0].id] = { x: cc.cx, y: cc.cy };
+
+        // Remaining nodes orbit the hub
+        var orbitR = Math.min(120, 55 + count * 12);
+        for (var i = 1; i < count; i++) {
+          var angle = (-Math.PI / 2) + (2 * Math.PI * (i - 1) / (count - 1));
+          // Alternate orbit radius slightly for organic feel
+          var r = orbitR * (0.85 + (i % 2) * 0.3);
+          positionOf[nodes[i].id] = {
+            x: cc.cx + Math.cos(angle) * r,
+            y: cc.cy + Math.sin(angle) * r * 0.8, // squash vertically
+          };
+        }
+      }
+    });
+
+    // --- Simple force-based collision nudging (3 passes) ---
+    var nodeIds = apiNodes.map(function(n) { return n.id; });
+    for (var pass = 0; pass < 3; pass++) {
+      for (var i = 0; i < nodeIds.length; i++) {
+        for (var j = i + 1; j < nodeIds.length; j++) {
+          var a = positionOf[nodeIds[i]];
+          var b = positionOf[nodeIds[j]];
+          var dx = b.x - a.x;
+          var dy = b.y - a.y;
+          var dist = Math.sqrt(dx * dx + dy * dy);
+          var minDist = 70;
+          if (dist < minDist && dist > 0) {
+            var push = (minDist - dist) / 2;
+            var nx = dx / dist;
+            var ny = dy / dist;
+            a.x -= nx * push;
+            a.y -= ny * push;
+            b.x += nx * push;
+            b.y += ny * push;
+          }
+        }
+      }
+    }
+
+    // Clamp positions to design bounds
+    nodeIds.forEach(function(id) {
+      var p = positionOf[id];
+      p.x = Math.max(60, Math.min(940, p.x));
+      p.y = Math.max(60, Math.min(620, p.y));
+    });
+
+    // --- Build cluster ellipses from actual node positions ---
+    var newClusters = categories.map(function(cat, i) {
+      var nodes = nodesByCategory[cat];
+      var palette = clusterPalettes[i % clusterPalettes.length];
+      var minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+      nodes.forEach(function(n) {
+        var p = positionOf[n.id];
+        if (p.x < minX) minX = p.x;
+        if (p.x > maxX) maxX = p.x;
+        if (p.y < minY) minY = p.y;
+        if (p.y > maxY) maxY = p.y;
+      });
+      return {
+        id: 'cat_' + i,
+        label: cat,
+        cx: (minX + maxX) / 2,
+        cy: (minY + maxY) / 2,
+        rx: Math.max(70, (maxX - minX) / 2 + 65),
+        ry: Math.max(60, (maxY - minY) / 2 + 55),
+        color: palette.color,
+        borderColor: palette.borderColor,
+      };
+    });
+
+    var categoryClusterMap = {};
+    categories.forEach(function(cat, i) { categoryClusterMap[cat] = 'cat_' + i; });
+
+    // --- Node size from difficulty ---
+    function sizeForDifficulty(diff, isHub) {
+      if (isHub) return 'large';
+      if (diff >= 5) return 'large';
+      if (diff >= 3) return 'medium';
+      return 'small';
+    }
+
+    // --- Build NODES ---
+    var newNodes = apiNodes.map(function(n, idx) {
+      var pos = positionOf[n.id] || { x: centerX, y: centerY };
+      var cat = n.category || 'General';
+      var diff = n.difficulty || 1;
+      var diffTier = tierForDifficulty(diff);
+      var isHub = (connectionCount[n.id] || 0) >= 5;
+
+      // Wrap long names into two lines
+      var rawName = n.name || ('Node ' + (idx + 1));
+      var label = rawName;
+      if (rawName.length > 14) {
+        var mid = Math.floor(rawName.length / 2);
+        var breakIdx = rawName.lastIndexOf(' ', mid);
+        if (breakIdx === -1) breakIdx = rawName.indexOf(' ', mid);
+        if (breakIdx !== -1) {
+          label = rawName.slice(0, breakIdx) + '\n' + rawName.slice(breakIdx + 1);
+        }
+      }
+
+      return {
+        id: n.id,
+        label: label,
+        level: 0,
+        difficulty: diff,
+        difficultyTier: diffTier,
+        description: n.description || '',
+        x: pos.x,
+        y: pos.y,
+        cluster: categoryClusterMap[cat] || 'cat_0',
+        size: sizeForDifficulty(diff, isHub),
+        primary: isHub || (roots.indexOf(n.id) !== -1),
+      };
+    });
+
+    // --- Build CONNECTIONS from prerequisites ---
+    var newConnections = [];
+    apiNodes.forEach(function(n) {
+      if (Array.isArray(n.prerequisites)) {
+        n.prerequisites.forEach(function(prereqId) {
+          newConnections.push([prereqId, n.id]);
+        });
+      }
+    });
+
+    // --- Swap data and rebuild ---
+    CLUSTERS = newClusters;
+    NODES = newNodes;
+    CONNECTIONS = newConnections;
+    hoveredNode = null;
+    rebuildNodeMap();
+
+    // Update header
+    var headerEl = document.querySelector('#skill-tree .section-header h2');
+    if (headerEl && treeData.skillName) {
+      headerEl.textContent = 'Skill Tree: ' + treeData.skillName;
+    }
+    var subHeaderEl = document.querySelector('#skill-tree .section-header p');
+    if (subHeaderEl) {
+      subHeaderEl.textContent =
+        treeData.totalNodes + ' nodes across ' + categories.length + ' categories -- generated from your article';
+    }
+
+    // Update legend to show difficulty tiers instead of levels
+    var legendEl = document.getElementById('skillTreeLegend');
+    if (legendEl) {
+      var diffTiers = [
+        { name: 'D1 Novice', color: TIER_COLORS.novice },
+        { name: 'D2 Apprentice', color: TIER_COLORS.apprentice },
+        { name: 'D3 Journeyman', color: TIER_COLORS.journeyman },
+        { name: 'D4 Adept', color: TIER_COLORS.adept },
+        { name: 'D5 Expert', color: TIER_COLORS.expert },
+      ];
+      legendEl.innerHTML = diffTiers.map(function(t) {
+        return '<div class="tree-legend-item">' +
+          '<span class="tree-legend-dot" style="background: ' + t.color + ';"></span>' +
+          '<span>' + t.name + '</span></div>';
+      }).join('');
+    }
+  };
+
+  // ============================================================
+  // --- API: Reset to hardcoded demo data ---
+  // ============================================================
+  window.resetSkillTree = function() {
+    CLUSTERS = DEFAULT_CLUSTERS.slice();
+    NODES = DEFAULT_NODES.slice();
+    CONNECTIONS = DEFAULT_CONNECTIONS.slice();
+    hoveredNode = null;
+    rebuildNodeMap();
+
+    var headerEl = document.querySelector('#skill-tree .section-header h2');
+    if (headerEl) headerEl.textContent = 'Skill Tree: AI Boom in Finance';
+    var subHeaderEl = document.querySelector('#skill-tree .section-header p');
+    if (subHeaderEl) subHeaderEl.textContent = 'Interconnected knowledge graph -- every node feeds into mastery';
+
+    // Restore full legend
+    drawLegend();
+  };
 
   // --- Initialize ---
   function init() {

@@ -84,6 +84,17 @@ const server = createServer(async (req, res) => {
         case 'assess.full':
           result = await fullAssessment(params);
           break;
+        case 'ingest.article':
+          result = await ingestArticle(params);
+          break;
+
+        // Skill tree standalone routes
+        case 'skilltree.extract':
+          result = await callAgent('validator', { action: 'extract_concepts', ...params });
+          break;
+        case 'skilltree.build':
+          result = await buildSkillTreeFromArticle(params);
+          break;
 
         default:
           res.writeHead(400);
@@ -170,6 +181,95 @@ async function ingestPanel(params) {
       totalClaims: extracted.total_claims,
       verified: verifiedCount,
       unverified: extracted.total_claims - verifiedCount,
+    },
+  };
+}
+
+// Article ingestion pipeline:
+// 1. Extract concepts from article text (validator)
+// 2. Build structured skill tree from concepts (validator)
+// 3. Validate concept descriptions as factual claims (validator)
+// 4. Award XP for content ingestion (xp-engine)
+async function ingestArticle(params) {
+  const { articleText, source, userId, skillName, currentXP, currentLevel } = params;
+
+  // Step 1: Extract concepts from article
+  const extracted = await callAgent('validator', {
+    action: 'extract_concepts',
+    articleText,
+    skillName,
+  });
+
+  // Step 2: Build the structured skill tree
+  const skillTree = await callAgent('validator', {
+    action: 'build_tree',
+    concepts: extracted.concepts,
+  });
+
+  // Step 3: Validate concept descriptions as factual claims
+  const claimsToValidate = extracted.concepts.map(c => ({
+    text: `${c.name}: ${c.description}`,
+  }));
+
+  const validated = await callAgent('validator', {
+    action: 'validate_batch',
+    claims: claimsToValidate,
+    context: source || skillName || 'skill tree concept',
+  });
+
+  // Step 4: Award XP — 5 XP per concept extracted, bonus 2 XP per verified description
+  const verifiedCount = validated.filter(v => v.verified).length;
+  const xpGained = (extracted.concepts.length * 5) + (verifiedCount * 2);
+
+  const xpResult = await callAgent('xpEngine', {
+    action: 'award_xp',
+    currentXP: currentXP || 0,
+    currentLevel: currentLevel || 1,
+    xpGained,
+  });
+
+  return {
+    skillTree: {
+      ...skillTree,
+      nodes: skillTree.nodes.map((node, i) => ({
+        ...node,
+        validation: validated[i] || null,
+      })),
+    },
+    meta: {
+      skillName: extracted.skillName,
+      source: source || null,
+      userId: userId || null,
+      totalConcepts: extracted.total,
+      verifiedConcepts: verifiedCount,
+      unverifiedConcepts: extracted.total - verifiedCount,
+    },
+    xp: xpResult,
+  };
+}
+
+// Lightweight skill tree build pipeline (no validation or XP):
+// 1. Extract concepts from article text (validator)
+// 2. Build structured skill tree from concepts (validator)
+async function buildSkillTreeFromArticle(params) {
+  const { articleText, skillName } = params;
+
+  const extracted = await callAgent('validator', {
+    action: 'extract_concepts',
+    articleText,
+    skillName,
+  });
+
+  const skillTree = await callAgent('validator', {
+    action: 'build_tree',
+    concepts: extracted.concepts,
+  });
+
+  return {
+    skillTree,
+    meta: {
+      skillName: extracted.skillName,
+      totalConcepts: extracted.total,
     },
   };
 }
