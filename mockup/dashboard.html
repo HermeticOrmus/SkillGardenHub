@@ -133,29 +133,6 @@
   <!-- Tree Stats (shown after generation) -->
   <div id="treeStats" class="tree-stats" style="display: none; margin-bottom: var(--space-lg);"></div>
 
-  <!-- XP Transparency (shown for demo tree) -->
-  <div id="xpTransparency" class="xp-transparency reveal" style="margin-bottom: var(--space-xl);">
-    <div class="xp-trans-row">
-      <div class="xp-trans-item">
-        <span class="xp-trans-label">Your level</span>
-        <span class="xp-trans-val" style="color: var(--tier-expert);">76</span>
-      </div>
-      <div class="xp-trans-item">
-        <span class="xp-trans-label">XP to next level</span>
-        <span class="xp-trans-val">139,138</span>
-      </div>
-      <div class="xp-trans-item">
-        <span class="xp-trans-label">XP for Lv 98 &#8594; 99</span>
-        <span class="xp-trans-val" style="color: var(--tier-grandmaster);">1,228,825</span>
-      </div>
-      <div class="xp-trans-item">
-        <span class="xp-trans-label">Your percentile</span>
-        <span class="xp-trans-val">Top 8%</span>
-      </div>
-    </div>
-    <div class="xp-trans-note">You've entered Mastery tier. From here, you teach, create frameworks, and face human expert review.</div>
-  </div>
-
   <!-- PoE-Style Interactive Skill Tree Canvas (hardcoded demo) -->
   <div id="staticTreeContainer" class="skill-tree-canvas-container reveal">
     <canvas id="skillTreeCanvas" aria-label="Interactive skill tree showing interconnected knowledge nodes across AI, Finance, Ethics, and Product Strategy clusters"></canvas>
@@ -168,168 +145,6 @@
     <div id="dynamicTreeLegend" class="tree-legend"></div>
   </div>
 
-  <!-- Progression Gates (compact version below canvas) -->
-  <div class="tree-gates-compact reveal" style="margin-top: var(--space-lg);">
-    <div class="gate-compact passed">
-      <span class="gate-compact-icon">&#10003;</span>
-      <div>
-        <div class="gate-compact-title">Foundations &#8594; Frameworks</div>
-        <div class="gate-compact-desc">Define 5 key terms, explain why AI matters to finance</div>
-      </div>
-    </div>
-    <div class="gate-compact passed">
-      <span class="gate-compact-icon">&#10003;</span>
-      <div>
-        <div class="gate-compact-title">Frameworks &#8594; Application</div>
-        <div class="gate-compact-desc">Analyze an AI company's financials</div>
-      </div>
-    </div>
-    <div class="gate-compact passed">
-      <span class="gate-compact-icon">&#10003;</span>
-      <div>
-        <div class="gate-compact-title">Application &#8594; Analysis</div>
-        <div class="gate-compact-desc">Build an investment thesis for an AI company</div>
-      </div>
-    </div>
-    <div class="gate-compact passed">
-      <span class="gate-compact-icon">&#10003;</span>
-      <div>
-        <div class="gate-compact-title">Analysis &#8594; Mastery</div>
-        <div class="gate-compact-desc">Steelman both sides of the AI valuation debate</div>
-      </div>
-    </div>
-    <div class="gate-compact locked">
-      <span class="gate-compact-icon">&#128274;</span>
-      <div>
-        <div class="gate-compact-title">Mastery &#8594; Grandmaster</div>
-        <div class="gate-compact-desc">Human Expert Review -- Requires Lv 92</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Skills Grid -->
-  <div class="skills-grid" style="margin-top: var(--space-xl);">
-    <div class="skill-card" data-tier="expert">
-      <div class="skill-card-header">
-        <span class="skill-name">AI Boom in Finance</span>
-        <span class="tier-badge expert">Expert</span>
-      </div>
-      <div class="skill-level-row">
-        <span class="level-number" style="color: var(--tier-expert);">76</span>
-        <span class="level-label">/ 99</span>
-        <span class="percentile">Top 8%</span>
-      </div>
-      <div class="xp-bar-container">
-        <div class="xp-bar expert" style="width: 76.8%;"></div>
-      </div>
-      <div class="xp-text">1,336,443 / 3,597,792 XP to Lv 86 (Master)</div>
-      <div class="skill-sub-nodes">
-        <div class="sub-node">
-          <span class="sub-node-name">AI Market Dynamics</span>
-          <span class="sub-node-level" style="color: var(--tier-master);">Lv 82</span>
-        </div>
-        <div class="sub-node">
-          <span class="sub-node-name">Valuation Models</span>
-          <span class="sub-node-level" style="color: var(--tier-expert);">Lv 73</span>
-        </div>
-        <div class="sub-node">
-          <span class="sub-node-name">Bubble vs Value Analysis</span>
-          <span class="sub-node-level" style="color: var(--tier-adept);">Lv 70</span>
-        </div>
-        <div class="sub-node">
-          <span class="sub-node-name">Regulatory Risk Analysis</span>
-          <span class="sub-node-level" style="color: var(--tier-adept);">Lv 68</span>
-        </div>
-      </div>
-    </div>
-    <div class="skill-card" data-tier="adept">
-      <div class="skill-card-header">
-        <span class="skill-name">Machine Learning Foundations</span>
-        <span class="tier-badge adept">Adept</span>
-      </div>
-      <div class="skill-level-row">
-        <span class="level-number" style="color: var(--tier-adept);">58</span>
-        <span class="level-label">/ 99</span>
-        <span class="percentile">Top 22%</span>
-      </div>
-      <div class="xp-bar-container">
-        <div class="xp-bar adept" style="width: 58.6%;"></div>
-      </div>
-      <div class="xp-text">224,466 / 814,445 XP to Lv 71 (Expert)</div>
-      <div class="skill-sub-nodes">
-        <div class="sub-node">
-          <span class="sub-node-name">Supervised Learning</span>
-          <span class="sub-node-level" style="color: var(--tier-adept);">Lv 65</span>
-        </div>
-        <div class="sub-node">
-          <span class="sub-node-name">Neural Networks</span>
-          <span class="sub-node-level" style="color: var(--tier-adept);">Lv 52</span>
-        </div>
-        <div class="sub-node">
-          <span class="sub-node-name">Feature Engineering</span>
-          <span class="sub-node-level" style="color: var(--tier-journeyman);">Lv 48</span>
-        </div>
-      </div>
-    </div>
-    <div class="skill-card" data-tier="journeyman">
-      <div class="skill-card-header">
-        <span class="skill-name">AI Ethics & Governance</span>
-        <span class="tier-badge journeyman">Journeyman</span>
-      </div>
-      <div class="skill-level-row">
-        <span class="level-number" style="color: var(--tier-journeyman);">41</span>
-        <span class="level-label">/ 99</span>
-        <span class="percentile">Top 45%</span>
-      </div>
-      <div class="xp-bar-container">
-        <div class="xp-bar journeyman" style="width: 41.4%;"></div>
-      </div>
-      <div class="xp-text">41,171 / 111,945 XP to Lv 51 (Adept)</div>
-      <div class="skill-sub-nodes">
-        <div class="sub-node">
-          <span class="sub-node-name">Bias & Fairness</span>
-          <span class="sub-node-level" style="color: var(--tier-journeyman);">Lv 47</span>
-        </div>
-        <div class="sub-node">
-          <span class="sub-node-name">Governance Frameworks</span>
-          <span class="sub-node-level" style="color: var(--tier-journeyman);">Lv 38</span>
-        </div>
-        <div class="sub-node">
-          <span class="sub-node-name">Responsible AI Practices</span>
-          <span class="sub-node-level" style="color: var(--tier-apprentice);">Lv 30</span>
-        </div>
-      </div>
-    </div>
-    <div class="skill-card" data-tier="journeyman">
-      <div class="skill-card-header">
-        <span class="skill-name">AI Product Strategy</span>
-        <span class="tier-badge journeyman">Journeyman</span>
-      </div>
-      <div class="skill-level-row">
-        <span class="level-number" style="color: var(--tier-journeyman);">33</span>
-        <span class="level-label">/ 99</span>
-        <span class="percentile">Top 52%</span>
-      </div>
-      <div class="xp-bar-container">
-        <div class="xp-bar journeyman" style="width: 33.3%;"></div>
-      </div>
-      <div class="xp-text">18,247 / 111,945 XP to Lv 51 (Adept)</div>
-      <div class="skill-sub-nodes">
-        <div class="sub-node">
-          <span class="sub-node-name">Market Sizing & TAM</span>
-          <span class="sub-node-level" style="color: var(--tier-journeyman);">Lv 40</span>
-        </div>
-        <div class="sub-node">
-          <span class="sub-node-name">Go-to-Market Strategy</span>
-          <span class="sub-node-level" style="color: var(--tier-apprentice);">Lv 28</span>
-        </div>
-        <div class="sub-node">
-          <span class="sub-node-name">Competitive Analysis</span>
-          <span class="sub-node-level" style="color: var(--tier-apprentice);">Lv 25</span>
-        </div>
-      </div>
-    </div>
-  </div>
 </section>
 
 <!-- Content Summary (extracted from submitted article) -->
@@ -805,11 +620,8 @@
   var treeTitle         = document.getElementById('treeTitle');
   var treeMeta          = document.getElementById('treeMeta');
   var treeStats         = document.getElementById('treeStats');
-  var xpTransparency    = document.getElementById('xpTransparency');
   var staticTreeContainer  = document.getElementById('staticTreeContainer');
   var dynamicTreeContainer = document.getElementById('dynamicTreeContainer');
-  var treeGates         = document.querySelector('#skill-tree .tree-gates-compact');
-  var treeSkillsGrid    = document.querySelector('#skill-tree .skills-grid');
 
   if (!sourceInput || !generateBtn) return;
 
@@ -895,12 +707,9 @@
       '<div class="stat-pill"><span class="stat-pill-val">' + result.metadata.cluster_count + '</span> Clusters</div>' +
       '<div class="stat-pill"><span class="stat-pill-val">' + result.metadata.connection_count + '</span> Connections</div>';
 
-    // Swap to dynamic tree canvas, hide user-progress
-    xpTransparency.style.display = 'none';
+    // Swap to dynamic tree canvas
     staticTreeContainer.style.display = 'none';
     dynamicTreeContainer.style.display = '';
-    if (treeGates) treeGates.style.display = 'none';
-    if (treeSkillsGrid) treeSkillsGrid.style.display = 'none';
 
     // Render with DynamicTree
     DynamicTree.init('dynamicTreeCanvas', 'dynamicTreeLegend', result.tree);
@@ -942,13 +751,10 @@
     treeTitle.textContent = 'Skill Tree: ' + treeData.skillName;
     treeMeta.textContent = 'Generated via local validator';
 
-    // Use the static tree canvas with loadSkillTreeFromAPI, hide user-progress
-    xpTransparency.style.display = 'none';
+    // Use the static tree canvas with loadSkillTreeFromAPI
     staticTreeContainer.style.display = '';
     dynamicTreeContainer.style.display = 'none';
     treeStats.style.display = 'none';
-    if (treeGates) treeGates.style.display = 'none';
-    if (treeSkillsGrid) treeSkillsGrid.style.display = 'none';
 
     if (typeof window.loadSkillTreeFromAPI === 'function') {
       window.loadSkillTreeFromAPI(treeData);
@@ -984,11 +790,6 @@
       // Show the tree canvas only
       staticTreeContainer.style.display = '';
       dynamicTreeContainer.style.display = 'none';
-
-      // Hide all user-progress elements (user hasn't been tested yet)
-      xpTransparency.style.display = 'none';
-      if (treeGates) treeGates.style.display = 'none';
-      if (treeSkillsGrid) treeSkillsGrid.style.display = 'none';
 
       scrollToTree();
     }, 2200);
@@ -1048,13 +849,8 @@
     treeStats.style.display = 'none';
 
     // Show static tree, hide dynamic
-    xpTransparency.style.display = '';
     staticTreeContainer.style.display = '';
     dynamicTreeContainer.style.display = 'none';
-
-    // Restore user-progress elements
-    if (treeGates) treeGates.style.display = '';
-    if (treeSkillsGrid) treeSkillsGrid.style.display = '';
 
     if (typeof window.resetSkillTree === 'function') {
       window.resetSkillTree();
