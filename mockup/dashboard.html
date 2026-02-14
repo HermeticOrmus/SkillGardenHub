@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="SkillGarden Dashboard: Track your mastery, assess your knowledge, earn verified credentials.">
+  <meta name="description" content="SkillGarden: Illuminate your learning path. Paste an article, see what you can learn, prove what you know.">
   <meta name="theme-color" content="#1B4332">
-  <title>SkillGarden -- Dashboard</title>
+  <title>SkillGarden -- Knowledge Constellation</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
@@ -13,757 +13,251 @@
 </head>
 <body>
 
-<!-- Skip to content (accessibility) -->
-<a href="#dashboard" class="skip-link">Skip to main content</a>
+<!-- Skip to content -->
+<a href="#tree-section" class="skip-link">Skip to main content</a>
 
 <!-- Navigation -->
 <nav class="nav" role="navigation" aria-label="Main navigation">
   <a href="index.html" class="nav-logo">Skill<span>Garden</span></a>
   <ul class="nav-links">
-    <li><a href="#dashboard" class="active">Dashboard</a></li>
-    <li><a href="#skill-tree">Skill Tree</a></li>
-    <li><a href="#credential">Credential</a></li>
-    <li><a href="#assess">Assessment</a></li>
-    <li><a href="#capture">Capture</a></li>
+    <li><a href="#tree-section" class="active">Tree</a></li>
+    <li><a href="#illuminated-section">Illuminate</a></li>
+    <li><a href="#assess-section">Assess</a></li>
+    <li><a href="#share-section">Share</a></li>
   </ul>
   <div class="nav-profile">
-    <div class="nav-avatar">YA</div>
+    <div class="nav-avatar">SG</div>
     <div>
-      <div class="nav-name">Yavuz</div>
-      <div class="nav-level">Lv 76 Expert</div>
+      <div class="nav-name">Explorer</div>
+      <div class="nav-level">Knowledge Seeker</div>
     </div>
   </div>
 </nav>
 
-<!-- Dashboard -->
-<section class="section" id="dashboard" style="padding-top: calc(var(--space-xl) + 60px);">
-  <div class="section-header">
-    <h2>Mastery Dashboard</h2>
-    <p>Yavuz -- Active Skills</p>
-  </div>
+<!-- ============================================
+     SECTION 1: MASTER TREE (Hero, always visible)
+     ============================================ -->
+<section class="section constellation-hero" id="tree-section" style="padding-top: calc(var(--space-xl) + 60px);">
 
-  <!-- Generate Hero (primary action) -->
-  <div class="generate-hero reveal" style="margin-bottom: var(--space-xl);">
-    <div class="create-input-inner" style="max-width: 720px; margin: 0 auto;">
-      <div class="create-header" style="margin-bottom: var(--space-lg);">
-        <h3 style="font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; color: var(--deep-forest); margin-bottom: var(--space-xs); letter-spacing: -0.02em;">Create a Skill Tree</h3>
-        <p style="color: var(--text-secondary); font-size: 0.9rem;">Turn any article, video, or topic into a mastery learning path</p>
-      </div>
+  <!-- Input overlay bar -->
+  <div class="illuminate-bar reveal">
+    <div class="illuminate-bar-inner">
+      <h2 class="illuminate-title">The Knowledge Constellation</h2>
+      <p class="illuminate-subtitle">Every industry. Every skill. One map. Paste an article to illuminate your learning path.</p>
 
-      <div class="source-types" style="grid-template-columns: repeat(3, 1fr); max-width: 420px; margin: 0 auto var(--space-lg);">
-        <button class="source-type-card active" data-type="article">
-          <div class="source-type-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
-            </svg>
-          </div>
-          <span class="source-type-label">Article</span>
-          <span class="source-type-desc">Paste a URL</span>
-        </button>
-        <button class="source-type-card" data-type="youtube">
-          <div class="source-type-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19.13C5.12 19.56 12 19.56 12 19.56s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/>
-            </svg>
-          </div>
-          <span class="source-type-label">YouTube</span>
-          <span class="source-type-desc">Video URL</span>
-        </button>
-        <button class="source-type-card" data-type="topic">
-          <div class="source-type-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
-            </svg>
-          </div>
-          <span class="source-type-label">Topic</span>
-          <span class="source-type-desc">Any subject</span>
-        </button>
-      </div>
-
-      <div class="create-input-area">
-        <div class="create-input-row">
-          <input type="text" id="sourceInput" class="create-url-input" placeholder="Paste an article URL or describe a topic..." autocomplete="off" spellcheck="false" />
+      <div class="illuminate-input-row">
+        <div class="illuminate-source-types">
+          <button class="source-chip active" data-type="article">Article</button>
+          <button class="source-chip" data-type="youtube">YouTube</button>
+          <button class="source-chip" data-type="pdf">PDF</button>
+          <button class="source-chip" data-type="topic">Topic</button>
         </div>
-        <div class="create-options-row">
-          <select id="depthSelect" class="create-depth-select">
-            <option value="shallow">Quick (15-20 nodes)</option>
-            <option value="medium" selected>Standard (20-25 nodes)</option>
-            <option value="deep">Deep (25-35 nodes)</option>
-          </select>
-          <button id="generateBtn" class="create-generate-btn" disabled>
-            <span class="btn-text">Generate Skill Tree</span>
-            <span class="btn-icon">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
-              </svg>
-            </span>
+        <div class="illuminate-input-group">
+          <input type="text" id="illuminateInput" class="illuminate-input" placeholder="Paste an article URL or describe a topic..." autocomplete="off" spellcheck="false" />
+          <button id="illuminateBtn" class="illuminate-btn" disabled>
+            <span class="illuminate-btn-text">Illuminate</span>
+            <svg class="illuminate-btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            </svg>
           </button>
         </div>
       </div>
 
-      <!-- Loading indicator -->
-      <div id="generateLoading" style="display: none; align-items: center; gap: var(--space-sm); margin-top: var(--space-md);">
+      <!-- Loading state -->
+      <div id="illuminateLoading" class="illuminate-loading" style="display: none;">
         <div class="spinner"></div>
-        <span id="generateStatus" style="font-size: 0.85rem; color: var(--text-muted); font-family: var(--font-mono);">Analyzing content...</span>
+        <span id="illuminateStatus" class="illuminate-status">Analyzing content against constellation...</span>
       </div>
 
-      <!-- Error -->
-      <div id="generateError" style="display: none; margin-top: var(--space-md); padding: var(--space-md); background: rgba(211, 47, 47, 0.07); border-left: 3px solid #D32F2F; border-radius: var(--radius-md); font-size: 0.85rem; color: #D32F2F;"></div>
+      <!-- Error state -->
+      <div id="illuminateError" class="illuminate-error" style="display: none;"></div>
 
       <!-- Example chips -->
-      <div class="create-examples" style="margin-top: var(--space-lg);">
+      <div class="illuminate-examples">
         <span class="examples-label">Try:</span>
-        <button class="example-chip" data-topic="Machine Learning for Healthcare">ML in Healthcare</button>
-        <button class="example-chip" data-topic="Blockchain and Decentralized Finance">DeFi</button>
-        <button class="example-chip" data-topic="Climate Science and Renewable Energy">Climate Tech</button>
-        <button class="example-chip" data-topic="Quantum Computing Fundamentals">Quantum Computing</button>
+        <button class="example-chip" data-topic="The AI Boom in Finance: How Machine Learning is Reshaping Wall Street">AI in Finance</button>
+        <button class="example-chip" data-topic="CRISPR Gene Editing and the Future of Personalized Medicine">CRISPR & Medicine</button>
+        <button class="example-chip" data-topic="The Global Energy Transition: Solar, Wind, and the Path to Net Zero">Energy Transition</button>
+        <button class="example-chip" data-topic="How Game Design Principles are Transforming Education and Learning">Gamified Learning</button>
       </div>
     </div>
   </div>
 
-  <!-- Stats Row -->
-  <div class="stats-row reveal">
-    <div class="stat-card">
-      <div class="stat-value">4</div>
-      <div class="stat-label">Active Skills</div>
+  <!-- Tree stats (hidden until loaded) -->
+  <div id="treeStatsBar" class="tree-stats-bar reveal" style="display: none;"></div>
+
+  <!-- Master Tree Canvas -->
+  <div id="masterTreeContainer" class="skill-tree-canvas-container constellation-canvas reveal">
+    <canvas id="masterTreeCanvas" aria-label="Interactive master knowledge constellation spanning all major industries"></canvas>
+    <div id="masterTreeLegend" class="tree-legend"></div>
+  </div>
+</section>
+
+<!-- ============================================
+     SECTION 2: ILLUMINATED VIEW (after article mapping)
+     ============================================ -->
+<section class="section" id="illuminated-section" style="display: none; background: var(--warm-white);">
+  <div class="illumination-results reveal">
+    <div class="illumination-header">
+      <div class="illumination-info">
+        <h2 id="illuminationTitle">Illuminated Path</h2>
+        <p id="illuminationSummary" class="illumination-summary"></p>
+      </div>
+      <div class="illumination-stats">
+        <div class="illumination-stat">
+          <span id="litCount" class="illumination-stat-val">0</span>
+          <span class="illumination-stat-label">Nodes Lit</span>
+        </div>
+        <div class="illumination-stat">
+          <span id="totalCount" class="illumination-stat-val">0</span>
+          <span class="illumination-stat-label">Total Nodes</span>
+        </div>
+        <div class="illumination-stat">
+          <span id="clusterCount" class="illumination-stat-val">0</span>
+          <span class="illumination-stat-label">Clusters</span>
+        </div>
+      </div>
     </div>
-    <div class="stat-card">
-      <div class="stat-value">1284</div>
-      <div class="stat-label">Claims Validated</div>
+
+    <!-- Illuminated clusters list -->
+    <div id="illuminatedClusters" class="illuminated-clusters"></div>
+
+    <!-- Actions -->
+    <div class="illumination-actions">
+      <button id="assessBtn" class="illumination-cta">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+        </svg>
+        Assess My Knowledge
+      </button>
+      <button id="resetBtn" class="illumination-reset">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
+        </svg>
+        Reset Constellation
+      </button>
     </div>
-    <div class="stat-card">
-      <div class="stat-value">37</div>
-      <div class="stat-label">Debates Completed</div>
+  </div>
+</section>
+
+<!-- ============================================
+     SECTION 3: ASSESSMENT
+     ============================================ -->
+<section class="section" id="assess-section" style="display: none;">
+  <div class="section-header">
+    <h2>Knowledge Assessment</h2>
+    <p id="assessSubtitle">Testing your understanding of the illuminated nodes</p>
+  </div>
+
+  <!-- Assessment loading -->
+  <div id="assessLoading" class="assess-loading" style="display: none;">
+    <div class="spinner"></div>
+    <span class="assess-loading-text">Generating assessment for illuminated areas...</span>
+  </div>
+
+  <!-- Assessment content (quiz questions injected here) -->
+  <div id="assessContent" style="display: none;">
+    <div class="assess-progress">
+      <div class="assess-progress-bar">
+        <div id="assessProgressFill" class="assess-progress-fill" style="width: 0%;"></div>
+      </div>
+      <span id="assessProgressText" class="assess-progress-text">Question 1 of 18</span>
     </div>
-    <div class="stat-card">
-      <div class="stat-value" style="font-size: 1.2rem;">2 days ago</div>
-      <div class="stat-label">Last Assessed</div>
+
+    <div id="assessQuestionCard" class="assessment-card">
+      <!-- Question injected dynamically -->
+    </div>
+
+    <div class="assess-nav">
+      <button id="assessPrev" class="assess-nav-btn" disabled>Previous</button>
+      <button id="assessNext" class="assess-nav-btn assess-nav-primary">Next</button>
+      <button id="assessSubmit" class="assess-nav-btn assess-nav-submit" style="display: none;">Submit Assessment</button>
     </div>
   </div>
 
-  <!-- Knowledge Gaps -->
-  <div class="knowledge-gaps reveal" style="margin-bottom: var(--space-xl);">
-    <div class="gap-card decay-active">
-      <div class="gap-info">
-        <h4>Concept Decay Detected</h4>
-        <div class="gap-details">
-          <div class="gap-item">
-            <span class="gap-concept">AI Boom in Finance</span>
-            <span class="gap-decay">Lv 76 <span class="decay-arrow">&#8594;</span> Lv 73</span>
-            <span class="gap-reason">14 days inactive -- natural forgetting</span>
-          </div>
-          <div class="gap-item">
-            <span class="gap-concept">Regulatory Risk Analysis</span>
-            <span class="gap-decay">Lv 68 <span class="decay-arrow">&#8594;</span> Lv 65</span>
-            <span class="gap-reason">21 days inactive</span>
-          </div>
+  <!-- Assessment results -->
+  <div id="assessResults" style="display: none;">
+    <div class="assess-results-card">
+      <div class="assess-results-header">
+        <h3>Assessment Complete</h3>
+        <div class="assess-results-level">
+          <span id="resultLevel" class="result-level-num">0</span>
+          <span id="resultTier" class="result-level-tier">Novice</span>
         </div>
       </div>
-      <div class="gap-actions">
-        <button class="decay-action">Reinforce (5-10 min)</button>
-        <div class="gap-context">2 concepts ready for reinforcement</div>
-      </div>
-    </div>
-    <div class="gap-card gap-debate">
-      <div class="gap-info">
-        <h4>Debate Gap</h4>
-        <div class="gap-details">
-          <div class="gap-item">
-            <span class="gap-concept">You've only argued one side of "Is AI overvalued or undervalued?"</span>
-            <span class="gap-reason">Steelman the overvalued position to unlock full mastery</span>
-          </div>
-        </div>
-      </div>
-      <div class="gap-actions">
-        <button class="decay-action" style="background: var(--tier-expert);">Take Steelman Challenge</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Skills Grid -->
-  <div class="skills-grid">
-
-    <!-- AI Boom in Finance (PRIMARY) -->
-    <div class="skill-card" data-tier="expert">
-      <div class="skill-card-header">
-        <span class="skill-name">AI Boom in Finance</span>
-        <span class="tier-badge expert">Expert</span>
-      </div>
-      <div class="skill-level-row">
-        <span class="level-number" style="color: var(--tier-expert);">76</span>
-        <span class="level-label">/ 99</span>
-        <span class="percentile">Top 8%</span>
-      </div>
-      <div class="xp-bar-container">
-        <div class="xp-bar expert" style="width: 76.8%;"></div>
-      </div>
-      <div class="xp-text">1,336,443 / 3,597,792 XP to Lv 86 (Master)</div>
-      <div class="skill-sub-nodes">
-        <div class="sub-node">
-          <span class="sub-node-name">AI Market Dynamics</span>
-          <span class="sub-node-level" style="color: var(--tier-master);">Lv 82</span>
-        </div>
-        <div class="sub-node">
-          <span class="sub-node-name">Valuation Models</span>
-          <span class="sub-node-level" style="color: var(--tier-expert);">Lv 73</span>
-        </div>
-        <div class="sub-node">
-          <span class="sub-node-name">Bubble vs Value Analysis</span>
-          <span class="sub-node-level" style="color: var(--tier-adept);">Lv 70</span>
-        </div>
-        <div class="sub-node">
-          <span class="sub-node-name">Regulatory Risk Analysis</span>
-          <span class="sub-node-level" style="color: var(--tier-adept);">Lv 68</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Machine Learning Foundations -->
-    <div class="skill-card" data-tier="adept">
-      <div class="skill-card-header">
-        <span class="skill-name">Machine Learning Foundations</span>
-        <span class="tier-badge adept">Adept</span>
-      </div>
-      <div class="skill-level-row">
-        <span class="level-number" style="color: var(--tier-adept);">58</span>
-        <span class="level-label">/ 99</span>
-        <span class="percentile">Top 22%</span>
-      </div>
-      <div class="xp-bar-container">
-        <div class="xp-bar adept" style="width: 58.6%;"></div>
-      </div>
-      <div class="xp-text">224,466 / 814,445 XP to Lv 71 (Expert)</div>
-      <div class="skill-sub-nodes">
-        <div class="sub-node">
-          <span class="sub-node-name">Supervised Learning</span>
-          <span class="sub-node-level" style="color: var(--tier-adept);">Lv 65</span>
-        </div>
-        <div class="sub-node">
-          <span class="sub-node-name">Neural Networks</span>
-          <span class="sub-node-level" style="color: var(--tier-adept);">Lv 52</span>
-        </div>
-        <div class="sub-node">
-          <span class="sub-node-name">Feature Engineering</span>
-          <span class="sub-node-level" style="color: var(--tier-journeyman);">Lv 48</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- AI Ethics & Governance -->
-    <div class="skill-card" data-tier="journeyman">
-      <div class="skill-card-header">
-        <span class="skill-name">AI Ethics & Governance</span>
-        <span class="tier-badge journeyman">Journeyman</span>
-      </div>
-      <div class="skill-level-row">
-        <span class="level-number" style="color: var(--tier-journeyman);">41</span>
-        <span class="level-label">/ 99</span>
-        <span class="percentile">Top 45%</span>
-      </div>
-      <div class="xp-bar-container">
-        <div class="xp-bar journeyman" style="width: 41.4%;"></div>
-      </div>
-      <div class="xp-text">41,171 / 111,945 XP to Lv 51 (Adept)</div>
-      <div class="skill-sub-nodes">
-        <div class="sub-node">
-          <span class="sub-node-name">Bias & Fairness</span>
-          <span class="sub-node-level" style="color: var(--tier-journeyman);">Lv 47</span>
-        </div>
-        <div class="sub-node">
-          <span class="sub-node-name">Governance Frameworks</span>
-          <span class="sub-node-level" style="color: var(--tier-journeyman);">Lv 38</span>
-        </div>
-        <div class="sub-node">
-          <span class="sub-node-name">Responsible AI Practices</span>
-          <span class="sub-node-level" style="color: var(--tier-apprentice);">Lv 30</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- AI Product Strategy -->
-    <div class="skill-card" data-tier="journeyman">
-      <div class="skill-card-header">
-        <span class="skill-name">AI Product Strategy</span>
-        <span class="tier-badge journeyman">Journeyman</span>
-      </div>
-      <div class="skill-level-row">
-        <span class="level-number" style="color: var(--tier-journeyman);">33</span>
-        <span class="level-label">/ 99</span>
-        <span class="percentile">Top 52%</span>
-      </div>
-      <div class="xp-bar-container">
-        <div class="xp-bar journeyman" style="width: 33.3%;"></div>
-      </div>
-      <div class="xp-text">18,247 / 111,945 XP to Lv 51 (Adept)</div>
-      <div class="skill-sub-nodes">
-        <div class="sub-node">
-          <span class="sub-node-name">Market Sizing & TAM</span>
-          <span class="sub-node-level" style="color: var(--tier-journeyman);">Lv 40</span>
-        </div>
-        <div class="sub-node">
-          <span class="sub-node-name">Go-to-Market Strategy</span>
-          <span class="sub-node-level" style="color: var(--tier-apprentice);">Lv 28</span>
-        </div>
-        <div class="sub-node">
-          <span class="sub-node-name">Competitive Analysis</span>
-          <span class="sub-node-level" style="color: var(--tier-apprentice);">Lv 25</span>
-        </div>
+      <div id="resultBreakdown" class="result-breakdown"></div>
+      <div class="result-actions">
+        <button id="shareResultBtn" class="illumination-cta">Share Credential</button>
+        <button id="retakeBtn" class="illumination-reset">Retake Assessment</button>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Skill Tree -->
-<section class="section" id="skill-tree" style="background: var(--warm-white);">
-  <div class="section-header">
-    <h2 id="treeTitle">Skill Tree: AI Boom in Finance</h2>
-    <p id="treeMeta">Interconnected knowledge graph -- every node feeds into mastery</p>
-  </div>
-
-  <!-- Tree Stats (shown after generation) -->
-  <div id="treeStats" class="tree-stats" style="display: none; margin-bottom: var(--space-lg);"></div>
-
-  <!-- XP Transparency (shown for demo tree) -->
-  <div id="xpTransparency" class="xp-transparency reveal" style="margin-bottom: var(--space-xl);">
-    <div class="xp-trans-row">
-      <div class="xp-trans-item">
-        <span class="xp-trans-label">Your level</span>
-        <span class="xp-trans-val" style="color: var(--tier-expert);">76</span>
-      </div>
-      <div class="xp-trans-item">
-        <span class="xp-trans-label">XP to next level</span>
-        <span class="xp-trans-val">139,138</span>
-      </div>
-      <div class="xp-trans-item">
-        <span class="xp-trans-label">XP for Lv 98 &#8594; 99</span>
-        <span class="xp-trans-val" style="color: var(--tier-grandmaster);">1,228,825</span>
-      </div>
-      <div class="xp-trans-item">
-        <span class="xp-trans-label">Your percentile</span>
-        <span class="xp-trans-val">Top 8%</span>
-      </div>
-    </div>
-    <div class="xp-trans-note">You've entered Mastery tier. From here, you teach, create frameworks, and face human expert review.</div>
-  </div>
-
-  <!-- PoE-Style Interactive Skill Tree Canvas (hardcoded demo) -->
-  <div id="staticTreeContainer" class="skill-tree-canvas-container reveal">
-    <canvas id="skillTreeCanvas" aria-label="Interactive skill tree showing interconnected knowledge nodes across AI, Finance, Ethics, and Product Strategy clusters"></canvas>
-    <div id="skillTreeLegend" class="tree-legend"></div>
-  </div>
-
-  <!-- Dynamic Skill Tree Canvas (generated via Blaxel agent) -->
-  <div id="dynamicTreeContainer" class="skill-tree-canvas-container" style="display: none;">
-    <canvas id="dynamicTreeCanvas" aria-label="AI-generated interactive skill tree"></canvas>
-    <div id="dynamicTreeLegend" class="tree-legend"></div>
-  </div>
-
-  <!-- Progression Gates (compact version below canvas) -->
-  <div class="tree-gates-compact reveal" style="margin-top: var(--space-lg);">
-    <div class="gate-compact passed">
-      <span class="gate-compact-icon">&#10003;</span>
-      <div>
-        <div class="gate-compact-title">Foundations &#8594; Frameworks</div>
-        <div class="gate-compact-desc">Define 5 key terms, explain why AI matters to finance</div>
-      </div>
-    </div>
-    <div class="gate-compact passed">
-      <span class="gate-compact-icon">&#10003;</span>
-      <div>
-        <div class="gate-compact-title">Frameworks &#8594; Application</div>
-        <div class="gate-compact-desc">Analyze an AI company's financials</div>
-      </div>
-    </div>
-    <div class="gate-compact passed">
-      <span class="gate-compact-icon">&#10003;</span>
-      <div>
-        <div class="gate-compact-title">Application &#8594; Analysis</div>
-        <div class="gate-compact-desc">Build an investment thesis for an AI company</div>
-      </div>
-    </div>
-    <div class="gate-compact passed">
-      <span class="gate-compact-icon">&#10003;</span>
-      <div>
-        <div class="gate-compact-title">Analysis &#8594; Mastery</div>
-        <div class="gate-compact-desc">Steelman both sides of the AI valuation debate</div>
-      </div>
-    </div>
-    <div class="gate-compact locked">
-      <span class="gate-compact-icon">&#128274;</span>
-      <div>
-        <div class="gate-compact-title">Mastery &#8594; Grandmaster</div>
-        <div class="gate-compact-desc">Human Expert Review -- Requires Lv 92</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Credential -->
-<section class="section" id="credential">
-  <div class="section-header">
-    <h2>Verified Skill Credential</h2>
-    <p>Current mastery, not peak. Radical honesty builds trust.</p>
+<!-- ============================================
+     SECTION 4: SHARE / CREDENTIAL
+     ============================================ -->
+<section class="section" id="share-section" style="display: none; background: var(--warm-white);">
+  <div class="section-header" style="text-align: center;">
+    <h2>Your Knowledge Credential</h2>
+    <p>Verified through structured assessment, not self-reporting</p>
   </div>
 
   <div class="credential-section">
-    <div class="credential-card">
+    <div class="credential-card" id="credentialCard">
       <div class="credential-top">
         <div class="credential-top-label">SkillGarden Verified Skill Credential</div>
-        <div class="credential-top-name">Yavuz</div>
+        <div class="credential-top-name" id="credentialName">Explorer</div>
       </div>
       <div class="credential-body">
         <div class="credential-skill-main">
           <div>
-            <div class="credential-skill-name">AI Boom in Finance</div>
-            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">Verified through 37 Socratic debates</div>
+            <div class="credential-skill-name" id="credentialTopic">--</div>
+            <div id="credentialMeta" style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;"></div>
           </div>
           <div class="credential-level">
-            <div class="credential-level-num" style="color: var(--tier-expert);">76</div>
-            <div class="credential-level-tier" style="color: var(--tier-expert);">Expert</div>
+            <div class="credential-level-num" id="credentialLevel">--</div>
+            <div class="credential-level-tier" id="credentialTier">--</div>
           </div>
         </div>
 
-        <div class="credential-sub-skills">
-          <div class="credential-sub-skill">
-            <span class="credential-sub-name">
-              <span style="color: var(--text-muted); margin-right: 4px;">&#9500;&#9472;</span>
-              AI Market Dynamics
-              <span style="font-size: 0.7rem; color: var(--text-muted); margin-left: 6px;">voice-verified depth</span>
-            </span>
-            <span class="credential-sub-level" style="color: var(--tier-master);">Lv 82</span>
-          </div>
-          <div class="credential-sub-skill">
-            <span class="credential-sub-name">
-              <span style="color: var(--text-muted); margin-right: 4px;">&#9500;&#9472;</span>
-              Valuation Models
-              <span style="font-size: 0.7rem; color: var(--text-muted); margin-left: 6px;">3 frameworks mastered</span>
-            </span>
-            <span class="credential-sub-level" style="color: var(--tier-expert);">Lv 73</span>
-          </div>
-          <div class="credential-sub-skill">
-            <span class="credential-sub-name">
-              <span style="color: var(--text-muted); margin-right: 4px;">&#9500;&#9472;</span>
-              Bubble vs Value Analysis
-            </span>
-            <span class="credential-sub-level" style="color: var(--tier-adept);">Lv 70</span>
-          </div>
-          <div class="credential-sub-skill">
-            <span class="credential-sub-name">
-              <span style="color: var(--text-muted); margin-right: 4px;">&#9492;&#9472;</span>
-              Regulatory Risk Analysis
-            </span>
-            <span class="credential-sub-level" style="color: var(--tier-adept);">Lv 68</span>
-          </div>
-        </div>
+        <div id="credentialNodes" class="credential-sub-skills"></div>
 
         <div class="credential-verification">
-          <h4>Credential Earned Via</h4>
+          <h4>How This Was Earned</h4>
           <div class="verification-item">
-            <span class="verification-check">&#10003;</span> White Circle validation (no self-reporting)
+            <span class="verification-check">&#10003;</span> AI-generated assessment (not self-reported)
           </div>
           <div class="verification-item">
-            <span class="verification-check">&#10003;</span> Voice assessment (not multiple choice alone)
+            <span class="verification-check">&#10003;</span> Bloom's taxonomy progression (recall to synthesis)
           </div>
           <div class="verification-item">
             <span class="verification-check">&#10003;</span> Exponential XP curve (Level 92 = halfway to 99)
           </div>
-          <div class="verification-item">
-            <span class="verification-check">&#10003;</span> 1,284 claims validated | 96% accuracy rate
-          </div>
         </div>
 
         <div class="credential-footer">
-          <span class="credential-id">SG-2026-Y8K2M</span>
-          <span class="credential-verify-link">skillgarden.io/verify/SG-2026-Y8K2M</span>
-        </div>
-
-        <div class="credential-validators">
-          <span class="validator-tag">White Circle AI -- assessment integrity</span>
-          <span class="validator-tag">Human expert review at L86+</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Assessment -->
-<section class="section" id="assess" style="background: var(--warm-white);">
-  <div class="section-header">
-    <h2>Assessment Engine</h2>
-    <p>Bloom's taxonomy from recall to synthesis -- voice debates at Expert+</p>
-  </div>
-
-  <div class="tabs" role="tablist" aria-label="Assessment modes">
-    <button class="tab active" data-tab="quiz" role="tab" aria-selected="true" aria-controls="tab-quiz" id="tab-btn-quiz">Quiz Mode</button>
-    <button class="tab" data-tab="voice" role="tab" aria-selected="false" aria-controls="tab-voice" id="tab-btn-voice">Voice Debate</button>
-    <button class="tab" data-tab="debate" role="tab" aria-selected="false" aria-controls="tab-debate" id="tab-btn-debate">Debate Cluster</button>
-  </div>
-
-  <!-- Quiz Tab -->
-  <div class="tab-content active" id="tab-quiz" role="tabpanel" aria-labelledby="tab-btn-quiz">
-    <div class="assessments-grid">
-      <div class="assessment-card">
-        <div class="assessment-header">
-          <span class="assessment-type">AI in Finance</span>
-          <span class="assessment-bloom">Bloom L1: Remember</span>
-        </div>
-        <div class="assessment-body">
-          <div class="assessment-question">What distinguishes a high-risk AI system under the EU AI Act's classification?</div>
-          <div class="assessment-options">
-            <div class="assessment-option">It uses more than 1B parameters</div>
-            <div class="assessment-option correct">It poses significant risk to health, safety, or fundamental rights</div>
-            <div class="assessment-option">It processes financial data</div>
-            <div class="assessment-option">It operates without human oversight</div>
-          </div>
-          <div class="quiz-feedback correct-feedback" style="margin-top: var(--space-md); display: none;">
-            <div class="feedback-text">Correct. The EU AI Act classifies risk by impact on people, not by model size. This directly affects AI trading systems and credit scoring models.</div>
-            <div class="feedback-xp">+25 XP</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="assessment-card">
-        <div class="assessment-header">
-          <span class="assessment-type">AI in Finance</span>
-          <span class="assessment-bloom">Bloom L5: Evaluate</span>
-        </div>
-        <div class="assessment-body">
-          <div class="assessment-question">Compare the current AI investment boom to the dot-com bubble of 1999-2000. What structural similarities and differences determine whether AI valuations are justified?</div>
-          <div style="background: var(--canvas); border-radius: var(--radius-md); padding: var(--space-lg); min-height: 120px; border: 2px dashed var(--border); display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.85rem;">
-            Open response -- evaluated by Anthropic + White Circle AI
-          </div>
-          <div class="quiz-context" style="margin-top: var(--space-md);">
-            Why this matters: This tests your ability to evaluate competing frameworks. Your response will be scored on revenue fundamentals, market concentration, adoption curves, and historical pattern analysis.
-          </div>
+          <span class="credential-id" id="credentialId">SG-2026-XXXX</span>
+          <span class="credential-verify-link">skillgarden.vercel.app</span>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Voice Tab -->
-  <div class="tab-content" id="tab-voice" role="tabpanel" aria-labelledby="tab-btn-voice">
-    <div class="voice-assessment">
-      <div style="display: flex; align-items: center; gap: var(--space-md); margin-bottom: var(--space-lg);">
-        <div style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em;">Feynman Voice Test</div>
-        <span class="tier-badge expert" style="font-size: 0.6rem;">Expert+ Required</span>
-      </div>
-      <div class="voice-prompt">
-        Explain to me why NVIDIA's market cap is justified or unjustified, like I'm a retail investor who only knows the stock went up.
-      </div>
-
-      <div class="capture-audio-bar">
-        <div class="play-btn">&#9654;</div>
-        <div class="audio-wave">
-          <span style="height: 8px;"></span>
-          <span style="height: 14px;"></span>
-          <span style="height: 20px;"></span>
-          <span style="height: 12px;"></span>
-          <span style="height: 18px;"></span>
-          <span style="height: 10px;"></span>
-          <span style="height: 16px;"></span>
-          <span style="height: 6px;"></span>
-        </div>
-        <span class="audio-duration">2:31</span>
-      </div>
-
-      <div class="voice-scores">
-        <div class="voice-score">
-          <div class="voice-score-value">91%</div>
-          <div class="voice-score-label">Accuracy</div>
-        </div>
-        <div class="voice-score">
-          <div class="voice-score-value">78%</div>
-          <div class="voice-score-label">Completeness</div>
-        </div>
-        <div class="voice-score">
-          <div class="voice-score-value">94%</div>
-          <div class="voice-score-label">Clarity</div>
-        </div>
-      </div>
-
-      <div class="voice-feedback" style="margin-top: var(--space-lg);">
-        <div class="voice-feedback-section">
-          <div class="voice-fb-label correct-label">Covered correctly</div>
-          <div class="voice-fb-items">
-            <span>GPU monopoly thesis</span>
-            <span>Revenue growth vs P/E ratio</span>
-            <span>CUDA ecosystem moat</span>
-          </div>
-        </div>
-        <div class="voice-feedback-section">
-          <div class="voice-fb-label gap-label">Gap identified</div>
-          <div class="voice-fb-items">
-            <span>Custom silicon competition (Google TPU, Amazon Trainium) not addressed</span>
-          </div>
-          <div class="voice-fb-action">
-            Review: Skill Tree > Analysis > Competitive Landscape (Lv 63 node)
-          </div>
-        </div>
-        <div class="voice-feedback-section">
-          <div class="voice-fb-label context-label">Assessment context</div>
-          <div class="voice-fb-items">
-            <span>This was a Feynman test -- if you can teach it simply, you own it. Your moat analysis was strong but incomplete without addressing the emerging custom silicon threat.</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Debate Cluster Tab -->
-  <div class="tab-content" id="tab-debate" role="tabpanel" aria-labelledby="tab-btn-debate">
-    <div class="debate-card">
-      <div class="debate-cluster-title">Debate Cluster: Is AI Overvalued or Undervalued?</div>
-
-      <div class="perspectives-grid">
-        <div class="perspective-card" style="border-color: var(--verified);">
-          <div class="perspective-name">Undervalued <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--tier-expert);">Lv 72</span></div>
-          <div class="perspective-arg">Revenue growth outpaces valuation. Enterprise adoption is early innings. AI is infrastructure, not a feature.</div>
-          <div class="perspective-proof">
-            <div class="proof-item done"><span>&#10003;</span> Can explain (voice-verified)</div>
-            <div class="proof-item done"><span>&#10003;</span> Can defend (3/3 challenges)</div>
-            <div class="proof-item done"><span>&#10003;</span> Can steelman (argued against own view)</div>
-          </div>
-        </div>
-        <div class="perspective-card">
-          <div class="perspective-name">Overvalued <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--tier-adept);">Lv 58</span></div>
-          <div class="perspective-arg">Dot-com parallels: concentration in few winners, hype-driven multiples, commodity risk for models.</div>
-          <div class="perspective-proof">
-            <div class="proof-item done"><span>&#10003;</span> Can explain (voice-verified)</div>
-            <div class="proof-item done"><span>&#10003;</span> Can defend (2/3 challenges)</div>
-            <div class="proof-item pending"><span>&#9201;</span> Can steelman -- assessment available</div>
-          </div>
-        </div>
-        <div class="perspective-card">
-          <div class="perspective-name">Paradigm Shift <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--tier-journeyman);">Lv 35</span></div>
-          <div class="perspective-arg">Traditional valuation frameworks don't apply. AI rewrites the rules of productivity itself.</div>
-          <div class="perspective-proof">
-            <div class="proof-item done"><span>&#10003;</span> Can explain (voice-verified)</div>
-            <div class="proof-item pending"><span>&#9201;</span> Can defend -- 1/3 challenges</div>
-            <div class="proof-item locked"><span>&#128274;</span> Can steelman -- locked</div>
-          </div>
-        </div>
-      </div>
-
-      <div style="background: var(--canvas); border-radius: var(--radius-md); padding: var(--space-lg);">
-        <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-sm);">
-          <span style="font-size: 0.8rem; color: var(--text-muted);">Synthesis Ability</span>
-          <span style="font-family: var(--font-mono); font-size: 0.8rem; font-weight: 600;">68%</span>
-        </div>
-        <div class="xp-bar-container">
-          <div class="xp-bar expert" style="width: 68%;"></div>
-        </div>
-        <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: var(--space-sm);">
-          Next challenge: "You lean undervalued. Make the strongest case that AI is a speculative bubble."
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Capture -->
-<section class="section" id="capture">
-  <div class="section-header">
-    <h2>Panel Capture</h2>
-    <p>Be present. Learn everything. White Circle validates before it enters your graph.</p>
-  </div>
-
-  <div class="capture-card">
-    <div class="capture-card-top">
-      <h3>AI Investment Thesis Panel</h3>
-      <div class="capture-meta">Feb 14, 2026 -- Columbia Business School -- 3 speakers</div>
-    </div>
-    <div class="capture-body">
-      <div class="capture-audio-bar">
-        <div class="play-btn">&#9654;</div>
-        <div class="audio-wave">
-          <span style="height: 10px;"></span>
-          <span style="height: 16px;"></span>
-          <span style="height: 12px;"></span>
-          <span style="height: 20px;"></span>
-          <span style="height: 8px;"></span>
-          <span style="height: 14px;"></span>
-          <span style="height: 18px;"></span>
-          <span style="height: 6px;"></span>
-        </div>
-        <span class="audio-duration">2:14 recap</span>
-      </div>
-
-      <h4 style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: var(--space-md);">Key Claims</h4>
-
-      <div class="claim-list">
-        <div class="claim-item">
-          <div class="claim-status verified">&#10003;</div>
-          <div>
-            <div class="claim-text">"NVIDIA controls 80%+ of the AI training GPU market"</div>
-            <div class="claim-detail">Verified -- 4 sources confirmed by White Circle AI</div>
-          </div>
-        </div>
-        <div class="claim-item">
-          <div class="claim-status unverified">!</div>
-          <div>
-            <div class="claim-text">"AI will add $15.7 trillion to global GDP by 2030"</div>
-            <div class="claim-detail">Unverified -- PwC estimate, methodology needs expert review</div>
-          </div>
-        </div>
-        <div class="claim-item">
-          <div class="claim-status verified">&#10003;</div>
-          <div>
-            <div class="claim-text">"Enterprise AI adoption doubled year-over-year since 2024"</div>
-            <div class="claim-detail">Verified with nuance -- varies by sector and company size</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="capture-deeper">
-        <h4>Go Deeper</h4>
-        <a class="deeper-link" href="#">&#8594; McKinsey: "The State of AI in 2026"</a>
-        <a class="deeper-link" href="#">&#8594; Speaker's paper: AI Valuation Frameworks</a>
-        <a class="deeper-link" href="#">&#8594; Related: a16z AI Investment Thesis</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- XP Curve Visualization -->
-<section class="section xp-curve-section" id="xp-curve" style="background: var(--warm-white);">
-  <div class="section-header">
-    <h2>The Exponential Mastery Curve</h2>
-    <p>Inspired by RuneScape. Level 1-92 requires the same XP as 92-99.</p>
-  </div>
-  <div class="xp-curve-container reveal">
-    <canvas id="xpCurveCanvas" width="700" height="320"></canvas>
-    <div class="xp-curve-legend">
-      <div class="xp-legend-item">
-        <span class="xp-legend-dot" style="background: var(--tier-novice);"></span> Novice 1-15
-      </div>
-      <div class="xp-legend-item">
-        <span class="xp-legend-dot" style="background: var(--tier-apprentice);"></span> Apprentice 16-30
-      </div>
-      <div class="xp-legend-item">
-        <span class="xp-legend-dot" style="background: var(--tier-journeyman);"></span> Journeyman 31-50
-      </div>
-      <div class="xp-legend-item">
-        <span class="xp-legend-dot" style="background: var(--tier-adept);"></span> Adept 51-70
-      </div>
-      <div class="xp-legend-item">
-        <span class="xp-legend-dot" style="background: var(--tier-expert);"></span> Expert 71-85
-      </div>
-      <div class="xp-legend-item">
-        <span class="xp-legend-dot" style="background: var(--tier-master);"></span> Master 86-92
-      </div>
-      <div class="xp-legend-item">
-        <span class="xp-legend-dot" style="background: var(--tier-grandmaster);"></span> Grandmaster 93-99
-      </div>
-    </div>
+  <div style="text-align: center; margin-top: var(--space-xl);">
+    <button id="shareBtn" class="illumination-cta">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+      </svg>
+      Copy Share Link
+    </button>
   </div>
 </section>
 
 <!-- Footer -->
 <footer class="site-footer">
   <div class="footer-inner">
-    <div class="footer-logo">
-      Skill<span>Garden</span>
-    </div>
+    <div class="footer-logo">Skill<span>Garden</span></div>
     <div class="footer-team">
       <span>Diego</span>
       <span>Yavuz</span>
@@ -771,311 +265,1068 @@
       <span>Josue</span>
       <span>Ethan</span>
     </div>
-    <p class="footer-event">
-      Iterate x CBS AI Club Valentine Hackathon 2026
-    </p>
+    <p class="footer-event">Iterate x CBS AI Club Valentine Hackathon 2026</p>
   </div>
 </footer>
 
 <!-- Supabase CDN -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<!-- App Config & XP System -->
+<!-- Config & XP System -->
 <script src="config.js"></script>
 
-<!-- Service Modules (order matters: config first, then services, then controller) -->
+<!-- Services -->
 <script src="services/supabase-client.js"></script>
-<script src="services/claude-assessment.js"></script>
-<script src="services/elevenlabs-voice.js"></script>
-<script src="services/whitecircle-validate.js"></script>
-
-<!-- Dashboard Controller (wires everything together) -->
-<script src="services/dashboard-controller.js"></script>
-
-<!-- Blaxel Agent Client -->
 <script src="services/blaxel-client.js"></script>
 
-<!-- PoE-Style Skill Tree (canvas-based interactive graph) -->
-<script src="skill-tree.js"></script>
-
-<!-- Dynamic Skill Tree Renderer (for generated trees) -->
+<!-- Dynamic Skill Tree Renderer -->
 <script src="dynamic-tree.js"></script>
 
-<!-- Original app.js (scroll reveals, tabs, XP curve, audio bars) -->
-<script src="app.js"></script>
+<!-- Scroll reveal (minimal from app.js) -->
+<script>
+(function() {
+  'use strict';
+  // Scroll reveal
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
 
+  // Smooth scroll nav
+  document.querySelectorAll('.nav-links a').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      var href = link.getAttribute('href');
+      if (href && href.startsWith('#')) {
+        e.preventDefault();
+        var target = document.querySelector(href);
+        if (target) {
+          var nav = document.querySelector('.nav');
+          var offset = nav ? nav.offsetHeight : 60;
+          window.scrollTo({ top: target.offsetTop - offset - 16, behavior: 'smooth' });
+        }
+        document.querySelectorAll('.nav-links a').forEach(function(l) { l.classList.remove('active'); });
+        link.classList.add('active');
+      }
+    });
+  });
+
+  // Nav background on scroll
+  window.addEventListener('scroll', function() {
+    var nav = document.querySelector('.nav');
+    if (nav) {
+      nav.style.backdropFilter = window.scrollY > 40 ? 'blur(12px)' : 'none';
+    }
+  });
+})();
+</script>
+
+<!-- Inline styles for new components -->
 <style>
-  /* Spinner for loading states */
   .spinner {
     width: 24px; height: 24px;
     border: 3px solid var(--border);
     border-top-color: var(--deep-forest);
     border-radius: 50%;
     animation: spin 0.6s linear infinite;
-    margin: 0 auto;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
-  @keyframes slideUp {
-    from { transform: translateY(20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+
+  /* Constellation hero */
+  .constellation-hero {
+    padding-bottom: var(--space-lg);
   }
-  @keyframes scaleIn {
-    from { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
-    to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  .constellation-canvas {
+    min-height: 500px;
+  }
+  .constellation-canvas canvas {
+    min-height: 500px;
   }
 
-  /* Open response textarea focus */
-  .open-response-input:focus,
-  .claim-input:focus,
-  .debate-response:focus {
+  /* Illuminate bar */
+  .illuminate-bar {
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding: var(--space-2xl) var(--space-xl);
+    text-align: center;
+    margin-bottom: var(--space-lg);
+    position: relative;
+    overflow: hidden;
+  }
+  .illuminate-bar::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--deep-forest), var(--tier-adept), var(--tier-expert), var(--sage-green));
+  }
+  .illuminate-bar-inner {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .illuminate-title {
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--deep-forest);
+    margin-bottom: var(--space-xs);
+    letter-spacing: -0.02em;
+  }
+  .illuminate-subtitle {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: var(--space-lg);
+  }
+
+  /* Source chips */
+  .illuminate-source-types {
+    display: flex;
+    gap: var(--space-xs);
+    justify-content: center;
+    margin-bottom: var(--space-md);
+  }
+  .source-chip {
+    padding: var(--space-xs) var(--space-md);
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    background: var(--card-bg);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .source-chip:hover { border-color: var(--sage-green); color: var(--text-primary); }
+  .source-chip.active {
+    border-color: var(--deep-forest);
+    background: rgba(27, 67, 50, 0.06);
+    color: var(--deep-forest);
+    font-weight: 600;
+  }
+
+  /* Input group */
+  .illuminate-input-group {
+    display: flex;
+    gap: var(--space-sm);
+  }
+  .illuminate-input {
+    flex: 1;
+    padding: var(--space-md) var(--space-lg);
+    border: 2px solid var(--border);
+    border-radius: var(--radius-lg);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    background: var(--card-bg);
     outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .illuminate-input:focus {
+    border-color: var(--deep-forest);
+    box-shadow: 0 0 0 3px rgba(27, 67, 50, 0.1);
+  }
+  .illuminate-input::placeholder { color: var(--text-muted); }
+  .illuminate-btn {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-md) var(--space-xl);
+    background: var(--deep-forest);
+    color: var(--warm-white);
+    border: none;
+    border-radius: var(--radius-lg);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .illuminate-btn:hover:not(:disabled) {
+    background: var(--sage-green);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(27, 67, 50, 0.2);
+  }
+  .illuminate-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .illuminate-btn-icon { display: flex; }
+
+  /* Loading / Error */
+  .illuminate-loading {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    justify-content: center;
+    margin-top: var(--space-md);
+  }
+  .illuminate-status {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+  }
+  .illuminate-error {
+    margin-top: var(--space-md);
+    padding: var(--space-md);
+    background: rgba(211, 47, 47, 0.07);
+    border-left: 3px solid #D32F2F;
+    border-radius: var(--radius-md);
+    font-size: 0.85rem;
+    color: #D32F2F;
+    text-align: left;
+  }
+  .illuminate-examples {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: var(--space-lg);
+  }
+
+  /* Tree stats bar */
+  .tree-stats-bar {
+    display: flex;
+    gap: var(--space-md);
+    justify-content: center;
+    margin-bottom: var(--space-md);
+    flex-wrap: wrap;
+  }
+
+  /* Illumination results */
+  .illumination-results {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .illumination-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-xl);
+    margin-bottom: var(--space-xl);
+  }
+  .illumination-info h2 {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    color: var(--deep-forest);
+    margin-bottom: var(--space-xs);
+  }
+  .illumination-summary {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+  .illumination-stats {
+    display: flex;
+    gap: var(--space-lg);
+    flex-shrink: 0;
+  }
+  .illumination-stat {
+    text-align: center;
+  }
+  .illumination-stat-val {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--deep-forest);
+  }
+  .illumination-stat-label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* Illuminated clusters */
+  .illuminated-clusters {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--space-md);
+    margin-bottom: var(--space-xl);
+  }
+  .lit-cluster-card {
+    background: var(--card-bg);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+  }
+  .lit-cluster-name {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin-bottom: var(--space-xs);
+  }
+  .lit-cluster-nodes {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+  }
+  .lit-node-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    margin: 2px;
+    border-radius: 10px;
+    font-size: 0.68rem;
+    color: white;
+    font-family: var(--font-mono);
+  }
+
+  /* Actions */
+  .illumination-actions {
+    display: flex;
+    gap: var(--space-md);
+    align-items: center;
+  }
+  .illumination-cta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-md) var(--space-xl);
+    background: var(--deep-forest);
+    color: var(--warm-white);
+    border: none;
+    border-radius: var(--radius-md);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .illumination-cta:hover {
+    background: var(--sage-green);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(27, 67, 50, 0.2);
+  }
+  .illumination-reset {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    padding: var(--space-sm) var(--space-lg);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--card-bg);
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .illumination-reset:hover {
+    border-color: var(--deep-forest);
+    color: var(--deep-forest);
+  }
+
+  /* Assessment */
+  .assess-loading {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    justify-content: center;
+    padding: var(--space-3xl) 0;
+  }
+  .assess-loading-text {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+  .assess-progress {
+    margin-bottom: var(--space-xl);
+  }
+  .assess-progress-bar {
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: var(--space-xs);
+  }
+  .assess-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--deep-forest), var(--sage-green));
+    border-radius: 3px;
+    transition: width 0.3s;
+  }
+  .assess-progress-text {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+  .assess-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: var(--space-lg);
+  }
+  .assess-nav-btn {
+    padding: var(--space-sm) var(--space-xl);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--card-bg);
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .assess-nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .assess-nav-btn:hover:not(:disabled) { border-color: var(--deep-forest); color: var(--deep-forest); }
+  .assess-nav-primary {
+    background: var(--deep-forest);
+    color: var(--warm-white);
     border-color: var(--deep-forest);
   }
-
-  /* Incorrect feedback */
-  .incorrect-feedback {
-    background: rgba(211, 47, 47, 0.08);
-    border-left: 3px solid #D32F2F;
-    padding: var(--space-md);
-    border-radius: var(--radius-md);
+  .assess-nav-primary:hover:not(:disabled) { background: var(--sage-green); color: var(--warm-white); border-color: var(--sage-green); }
+  .assess-nav-submit {
+    background: var(--tier-expert);
+    color: white;
+    border-color: var(--tier-expert);
   }
-  .incorrect-feedback .feedback-xp { color: #D32F2F; }
+  .assess-nav-submit:hover:not(:disabled) { background: var(--tier-master); border-color: var(--tier-master); color: white; }
+
+  /* Results */
+  .assess-results-card {
+    background: var(--card-bg);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .assess-results-header {
+    background: var(--deep-forest);
+    color: var(--warm-white);
+    padding: var(--space-xl);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .assess-results-header h3 {
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+  }
+  .result-level-num {
+    font-family: var(--font-mono);
+    font-size: 2.2rem;
+    font-weight: 700;
+  }
+  .result-level-tier {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.7;
+  }
+  .result-breakdown {
+    padding: var(--space-xl);
+  }
+  .result-cluster-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+  }
+  .result-cluster-row:last-child { border-bottom: none; }
+  .result-cluster-name {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+  }
+  .result-cluster-score {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+  .result-actions {
+    padding: 0 var(--space-xl) var(--space-xl);
+    display: flex;
+    gap: var(--space-md);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .illuminate-input-group { flex-direction: column; }
+    .illuminate-btn { width: 100%; justify-content: center; }
+    .illumination-header { flex-direction: column; }
+    .illumination-stats { justify-content: flex-start; }
+    .illumination-actions { flex-direction: column; }
+    .illumination-cta, .illumination-reset { width: 100%; justify-content: center; }
+    .assess-results-header { flex-direction: column; gap: var(--space-md); }
+    .result-actions { flex-direction: column; }
+  }
 </style>
 
+<!-- ============================================
+     MAIN APPLICATION LOGIC
+     ============================================ -->
 <script>
-// --- Hybrid Skill Tree Generator ---
-// Primary: Blaxel agent (sg-skill-tree-maker) via BlaxelClient
-// Fallback: Localhost validator (port 3002) via collaborator's pipeline
-// Renders: DynamicTree for Blaxel, loadSkillTreeFromAPI for validator
-
-(function () {
+(function() {
   'use strict';
 
-  var VALIDATOR_URL = 'http://localhost:3002';
+  // --- State ---
+  var masterTree = null;
+  var illuminatedNodeIds = [];
+  var assessmentData = null;
+  var currentQuestion = 0;
+  var userAnswers = {};
 
-  // --- DOM refs (new hero generate UI) ---
-  var sourceInput  = document.getElementById('sourceInput');
-  var generateBtn  = document.getElementById('generateBtn');
-  var depthSelect  = document.getElementById('depthSelect');
-  var loadingEl    = document.getElementById('generateLoading');
-  var statusEl     = document.getElementById('generateStatus');
-  var errorEl      = document.getElementById('generateError');
+  // --- DOM refs ---
+  var illuminateInput = document.getElementById('illuminateInput');
+  var illuminateBtn = document.getElementById('illuminateBtn');
+  var loadingEl = document.getElementById('illuminateLoading');
+  var statusEl = document.getElementById('illuminateStatus');
+  var errorEl = document.getElementById('illuminateError');
 
-  // Tree section refs
-  var treeTitle         = document.getElementById('treeTitle');
-  var treeMeta          = document.getElementById('treeMeta');
-  var treeStats         = document.getElementById('treeStats');
-  var xpTransparency    = document.getElementById('xpTransparency');
-  var staticTreeContainer  = document.getElementById('staticTreeContainer');
-  var dynamicTreeContainer = document.getElementById('dynamicTreeContainer');
+  var illuminatedSection = document.getElementById('illuminated-section');
+  var assessSection = document.getElementById('assess-section');
+  var shareSection = document.getElementById('share-section');
+  var treeStatsBar = document.getElementById('treeStatsBar');
 
-  if (!sourceInput || !generateBtn) return;
+  // --- Load master tree on page load ---
+  fetch('data/master-tree.json')
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      masterTree = data;
+      // Show stats
+      treeStatsBar.style.display = '';
+      treeStatsBar.innerHTML =
+        '<div class="stat-pill"><span class="stat-pill-val">' + data.nodes.length + '</span> Nodes</div>' +
+        '<div class="stat-pill"><span class="stat-pill-val">' + data.clusters.length + '</span> Industries</div>' +
+        '<div class="stat-pill"><span class="stat-pill-val">' + data.connections.length + '</span> Connections</div>';
+
+      // Render the full constellation
+      DynamicTree.init('masterTreeCanvas', 'masterTreeLegend', data);
+    })
+    .catch(function(err) {
+      console.error('Failed to load master tree:', err);
+      showError('Failed to load master constellation. Check that data/master-tree.json exists.');
+    });
 
   // --- Source type selector ---
-  document.querySelectorAll('.source-type-card').forEach(function (card) {
-    card.addEventListener('click', function () {
-      document.querySelectorAll('.source-type-card').forEach(function (c) { c.classList.remove('active'); });
-      card.classList.add('active');
-      var type = card.dataset.type;
+  document.querySelectorAll('.source-chip').forEach(function(chip) {
+    chip.addEventListener('click', function() {
+      document.querySelectorAll('.source-chip').forEach(function(c) { c.classList.remove('active'); });
+      chip.classList.add('active');
       var placeholders = {
         article: 'Paste an article URL...',
         youtube: 'Paste a YouTube video URL...',
-        topic: 'Describe any topic you want to master...',
+        pdf: 'Paste a PDF URL...',
+        topic: 'Describe any topic you want to explore...',
       };
-      sourceInput.placeholder = placeholders[type] || placeholders.article;
-      sourceInput.focus();
+      illuminateInput.placeholder = placeholders[chip.dataset.type] || placeholders.article;
+      illuminateInput.focus();
     });
   });
 
-  // --- Enable/disable generate button ---
-  sourceInput.addEventListener('input', function () {
-    generateBtn.disabled = sourceInput.value.trim().length < 3;
+  // --- Enable/disable button ---
+  illuminateInput.addEventListener('input', function() {
+    illuminateBtn.disabled = illuminateInput.value.trim().length < 3;
   });
 
   // --- Example chips ---
-  document.querySelectorAll('.example-chip').forEach(function (chip) {
-    chip.addEventListener('click', function () {
-      sourceInput.value = chip.dataset.topic;
-      sourceInput.dispatchEvent(new Event('input'));
-      // Switch to Topic source type
-      document.querySelectorAll('.source-type-card').forEach(function (c) { c.classList.remove('active'); });
-      var topicCard = document.querySelector('[data-type="topic"]');
-      if (topicCard) topicCard.classList.add('active');
+  document.querySelectorAll('.example-chip').forEach(function(chip) {
+    chip.addEventListener('click', function() {
+      illuminateInput.value = chip.dataset.topic;
+      illuminateInput.dispatchEvent(new Event('input'));
+      document.querySelectorAll('.source-chip').forEach(function(c) { c.classList.remove('active'); });
+      var topicChip = document.querySelector('.source-chip[data-type="topic"]');
+      if (topicChip) topicChip.classList.add('active');
     });
   });
 
-  // --- UI state helpers ---
-  function setLoading(isLoading) {
-    generateBtn.disabled = isLoading;
-    loadingEl.style.display = isLoading ? 'flex' : 'none';
-    generateBtn.style.opacity = isLoading ? '0.6' : '1';
+  // --- UI helpers ---
+  function setLoading(on) {
+    illuminateBtn.disabled = on;
+    loadingEl.style.display = on ? 'flex' : 'none';
+    illuminateBtn.style.opacity = on ? '0.6' : '1';
   }
-
-  function setStatus(msg) {
-    if (statusEl) statusEl.textContent = msg;
-  }
-
+  function setStatus(msg) { if (statusEl) statusEl.textContent = msg; }
   function showError(msg) {
     errorEl.textContent = msg;
     errorEl.style.display = msg ? 'block' : 'none';
   }
-
   function clearError() { showError(''); }
 
-  function scrollToTree() {
-    var treeSection = document.getElementById('skill-tree');
-    if (treeSection) {
-      var navHeight = document.querySelector('.nav') ? document.querySelector('.nav').offsetHeight : 60;
-      var targetY = treeSection.getBoundingClientRect().top + window.pageYOffset - navHeight - 16;
-      window.scrollTo({ top: targetY, behavior: 'smooth' });
-    }
+  function scrollTo(el) {
+    if (!el) return;
+    var nav = document.querySelector('.nav');
+    var offset = nav ? nav.offsetHeight : 60;
+    window.scrollTo({ top: el.offsetTop - offset - 16, behavior: 'smooth' });
   }
 
-  // --- Blaxel agent (primary) ---
-  function generateViaBlaxel(topic, depth) {
-    setStatus('Calling AI agent...');
-    return BlaxelClient.generateSkillTree(topic, { depth: depth });
-  }
-
-  function renderBlaxelTree(result) {
-    if (!result.success || !result.tree) {
-      throw new Error('Agent returned invalid response');
-    }
-
-    // Update section header
-    treeTitle.textContent = 'Skill Tree: ' + (result.tree.topic || 'Generated');
-    treeMeta.textContent = result.metadata.node_count + ' nodes across ' + result.metadata.cluster_count + ' clusters';
-
-    // Show stats bar
-    treeStats.style.display = '';
-    treeStats.innerHTML =
-      '<div class="stat-pill"><span class="stat-pill-val">' + result.metadata.node_count + '</span> Nodes</div>' +
-      '<div class="stat-pill"><span class="stat-pill-val">' + result.metadata.cluster_count + '</span> Clusters</div>' +
-      '<div class="stat-pill"><span class="stat-pill-val">' + result.metadata.connection_count + '</span> Connections</div>';
-
-    // Swap to dynamic tree canvas
-    xpTransparency.style.display = 'none';
-    staticTreeContainer.style.display = 'none';
-    dynamicTreeContainer.style.display = '';
-
-    // Render with DynamicTree
-    DynamicTree.init('dynamicTreeCanvas', 'dynamicTreeLegend', result.tree);
-  }
-
-  // --- Validator fallback ---
-  function postToValidator(body) {
-    return fetch(VALIDATOR_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    }).then(function (res) {
-      if (!res.ok) {
-        return res.text().then(function (text) {
-          throw new Error('Validator returned ' + res.status + ': ' + text);
-        });
-      }
-      return res.json();
-    });
-  }
-
-  function generateViaValidator(topic) {
-    setStatus('Falling back to validator...');
-    return postToValidator({ action: 'extract_concepts', articleText: topic, skillName: topic.substring(0, 40) })
-      .then(function (conceptsResponse) {
-        var concepts = conceptsResponse.concepts
-          || (conceptsResponse.data && conceptsResponse.data.concepts)
-          || (Array.isArray(conceptsResponse) ? conceptsResponse : null);
-        if (!concepts || !concepts.length) {
-          throw new Error('No concepts returned from validator.');
-        }
-        setStatus('Building tree via validator...');
-        return postToValidator({ action: 'build_tree', concepts: concepts });
-      });
-  }
-
-  function renderValidatorTree(treeData, topic) {
-    treeData.skillName = topic.substring(0, 40);
-    treeTitle.textContent = 'Skill Tree: ' + treeData.skillName;
-    treeMeta.textContent = 'Generated via local validator';
-
-    // Use the static tree canvas with loadSkillTreeFromAPI
-    xpTransparency.style.display = 'none';
-    staticTreeContainer.style.display = '';
-    dynamicTreeContainer.style.display = 'none';
-    treeStats.style.display = 'none';
-
-    if (typeof window.loadSkillTreeFromAPI === 'function') {
-      window.loadSkillTreeFromAPI(treeData);
-    } else {
-      throw new Error('Skill tree renderer not ready.');
-    }
-  }
-
-  // --- Main generate handler (hybrid) ---
-  function handleGenerate() {
-    var topic = sourceInput.value.trim();
-    if (!topic) return;
+  // --- Illuminate handler ---
+  function handleIlluminate() {
+    var topic = illuminateInput.value.trim();
+    if (!topic || !masterTree) return;
 
     clearError();
     setLoading(true);
+    setStatus('Analyzing content against constellation...');
 
-    // Try Blaxel agent first
-    generateViaBlaxel(topic, depthSelect.value)
-      .then(function (result) {
-        setStatus('Rendering tree...');
-        renderBlaxelTree(result);
+    // Try Blaxel agent for article mapping
+    BlaxelClient.mapArticleToTree(topic, masterTree.nodes)
+      .then(function(result) {
+        if (!result.success || !result.illuminated || result.illuminated.length === 0) {
+          throw new Error('No nodes matched this article. Try a broader topic.');
+        }
+        setStatus('Illuminating nodes...');
+        applyIllumination(result.illuminated, result.summary || '', result.clusters_touched || [], topic);
         setLoading(false);
-        scrollToTree();
       })
-      .catch(function (blaxelErr) {
-        console.warn('[SkillGarden] Blaxel agent failed, trying validator fallback:', blaxelErr.message);
-        setStatus('Agent unavailable, trying fallback...');
-
-        // Fallback to localhost validator
-        generateViaValidator(topic)
-          .then(function (treeData) {
-            renderValidatorTree(treeData, topic);
-            setLoading(false);
-            scrollToTree();
-          })
-          .catch(function (validatorErr) {
-            setLoading(false);
-            showError('Both generators failed. Blaxel: ' + blaxelErr.message + ' | Validator: ' + validatorErr.message);
-            console.error('[SkillGarden] Both pipelines failed:', { blaxel: blaxelErr, validator: validatorErr });
-          });
+      .catch(function(err) {
+        console.warn('[SkillGarden] Blaxel mapping failed, using client-side fallback:', err.message);
+        setStatus('Using local mapping...');
+        // Client-side keyword fallback
+        var fallback = localMapArticle(topic);
+        if (fallback.illuminated.length > 0) {
+          applyIllumination(fallback.illuminated, fallback.summary, fallback.clusters_touched, topic);
+          setLoading(false);
+        } else {
+          setLoading(false);
+          showError('Could not map this article to the constellation. ' + err.message);
+        }
       });
   }
 
-  // --- Reset to demo tree ---
-  function handleReset() {
-    clearError();
+  // --- Client-side keyword mapping (fallback) ---
+  function localMapArticle(topic) {
+    var lowerTopic = topic.toLowerCase();
+    var illuminated = [];
+    var clustersTouched = new Set();
 
-    // Restore original header
-    treeTitle.textContent = 'Skill Tree: AI Boom in Finance';
-    treeMeta.textContent = 'Interconnected knowledge graph -- every node feeds into mastery';
-    treeStats.style.display = 'none';
+    masterTree.nodes.forEach(function(node) {
+      var label = (node.label || '').toLowerCase();
+      var desc = (node.description || '').toLowerCase();
+      var cluster = (node.cluster || '').toLowerCase();
 
-    // Show static tree, hide dynamic
-    xpTransparency.style.display = '';
-    staticTreeContainer.style.display = '';
-    dynamicTreeContainer.style.display = 'none';
+      // Simple keyword match: check if any word in the topic appears in node label/desc
+      var topicWords = lowerTopic.split(/\s+/).filter(function(w) { return w.length > 3; });
+      var matches = topicWords.filter(function(w) {
+        return label.indexOf(w) >= 0 || desc.indexOf(w) >= 0;
+      });
 
-    if (typeof window.resetSkillTree === 'function') {
-      window.resetSkillTree();
+      if (matches.length >= 1) {
+        illuminated.push(node.id);
+        clustersTouched.add(node.cluster);
+      }
+    });
+
+    // If too few matches, add related nodes via connections
+    if (illuminated.length < 5 && illuminated.length > 0) {
+      var idSet = new Set(illuminated);
+      masterTree.connections.forEach(function(conn) {
+        if (idSet.has(conn[0]) && !idSet.has(conn[1])) {
+          illuminated.push(conn[1]);
+          var n = masterTree.nodes.find(function(x) { return x.id === conn[1]; });
+          if (n) clustersTouched.add(n.cluster);
+        }
+        if (idSet.has(conn[1]) && !idSet.has(conn[0])) {
+          illuminated.push(conn[0]);
+          var n2 = masterTree.nodes.find(function(x) { return x.id === conn[0]; });
+          if (n2) clustersTouched.add(n2.cluster);
+        }
+      });
     }
-    scrollToTree();
+
+    return {
+      illuminated: illuminated,
+      summary: 'Local keyword mapping for: ' + topic.substring(0, 60),
+      clusters_touched: Array.from(clustersTouched)
+    };
   }
 
-  // Expose reset for external use
-  window.resetToDemo = handleReset;
+  // --- Apply illumination to tree and UI ---
+  function applyIllumination(nodeIds, summary, clustersTouched, topic) {
+    illuminatedNodeIds = nodeIds;
 
-  // --- Event listeners ---
-  generateBtn.addEventListener('click', handleGenerate);
-  sourceInput.addEventListener('keydown', function (e) {
-    if (e.key === 'Enter' && !generateBtn.disabled) handleGenerate();
+    // Illuminate tree
+    DynamicTree.illuminate(nodeIds);
+
+    // Update illumination section
+    document.getElementById('illuminationTitle').textContent = topic.substring(0, 80);
+    document.getElementById('illuminationSummary').textContent = summary;
+    document.getElementById('litCount').textContent = nodeIds.length;
+    document.getElementById('totalCount').textContent = masterTree.nodes.length;
+    document.getElementById('clusterCount').textContent = clustersTouched.length || countClusters(nodeIds);
+
+    // Build cluster breakdown
+    var clusterGroups = {};
+    nodeIds.forEach(function(nid) {
+      var node = masterTree.nodes.find(function(n) { return n.id === nid; });
+      if (!node) return;
+      if (!clusterGroups[node.cluster]) clusterGroups[node.cluster] = [];
+      clusterGroups[node.cluster].push(node);
+    });
+
+    var TIER_COLORS = {
+      novice: '#8D6E63', apprentice: '#78909C', journeyman: '#43A047',
+      adept: '#1E88E5', expert: '#AB47BC', master: '#FF8F00', grandmaster: '#D32F2F'
+    };
+
+    var clustersHTML = '';
+    Object.keys(clusterGroups).forEach(function(cid) {
+      var cluster = masterTree.clusters.find(function(c) { return c.id === cid; });
+      var nodes = clusterGroups[cid];
+      var nodesHTML = nodes.map(function(n) {
+        return '<span class="lit-node-tag" style="background:' + (TIER_COLORS[n.tier] || '#666') + ';">' + n.label + '</span>';
+      }).join('');
+      clustersHTML += '<div class="lit-cluster-card">' +
+        '<div class="lit-cluster-name">' + (cluster ? cluster.label : cid) + '</div>' +
+        '<div class="lit-cluster-nodes">' + nodesHTML + '</div>' +
+        '</div>';
+    });
+    document.getElementById('illuminatedClusters').innerHTML = clustersHTML;
+
+    // Show illuminated section
+    illuminatedSection.style.display = '';
+    scrollTo(illuminatedSection);
+  }
+
+  function countClusters(nodeIds) {
+    var clusters = new Set();
+    nodeIds.forEach(function(nid) {
+      var node = masterTree.nodes.find(function(n) { return n.id === nid; });
+      if (node) clusters.add(node.cluster);
+    });
+    return clusters.size;
+  }
+
+  // --- Reset ---
+  function handleReset() {
+    DynamicTree.resetIllumination();
+    illuminatedNodeIds = [];
+    illuminatedSection.style.display = 'none';
+    assessSection.style.display = 'none';
+    shareSection.style.display = 'none';
+    scrollTo(document.getElementById('tree-section'));
+  }
+
+  // --- Assessment flow ---
+  function handleAssess() {
+    assessSection.style.display = '';
+    scrollTo(assessSection);
+
+    var assessLoading = document.getElementById('assessLoading');
+    var assessContent = document.getElementById('assessContent');
+    var assessResults = document.getElementById('assessResults');
+
+    assessLoading.style.display = 'flex';
+    assessContent.style.display = 'none';
+    assessResults.style.display = 'none';
+
+    // Get illuminated node names for context
+    var illuminatedNodes = illuminatedNodeIds.map(function(nid) {
+      return masterTree.nodes.find(function(n) { return n.id === nid; });
+    }).filter(Boolean);
+
+    var focusClusters = [];
+    var seen = {};
+    illuminatedNodes.forEach(function(n) {
+      if (!seen[n.cluster]) {
+        focusClusters.push(n.cluster);
+        seen[n.cluster] = true;
+      }
+    });
+
+    var topic = document.getElementById('illuminationTitle').textContent;
+
+    // Try Blaxel pre-test agent
+    var preTestUrl = CONFIG.blaxel.skillTreeUrl.replace('sg-skill-tree-maker', 'sg-pre-test-creator').replace(/\/$/, '');
+
+    fetch(preTestUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Blaxel-Workspace': CONFIG.blaxel.workspace,
+        'X-Blaxel-Authorization': 'Bearer ' + CONFIG.blaxel.apiKey,
+      },
+      body: JSON.stringify({
+        topic: topic,
+        skill_tree: {
+          clusters: masterTree.clusters.filter(function(c) { return focusClusters.indexOf(c.id) >= 0; }),
+          nodes: illuminatedNodes
+        },
+        focus_clusters: focusClusters
+      })
+    })
+      .then(function(res) {
+        if (!res.ok) throw new Error('Pre-test agent returned ' + res.status);
+        return res.json();
+      })
+      .then(function(data) {
+        if (data.success && data.pre_test && data.pre_test.questions) {
+          assessmentData = data.pre_test;
+          renderAssessment();
+        } else {
+          throw new Error('Invalid pre-test response');
+        }
+      })
+      .catch(function(err) {
+        console.warn('[SkillGarden] Pre-test agent failed, generating mock assessment:', err.message);
+        // Generate a mock assessment for demo
+        assessmentData = generateMockAssessment(topic, illuminatedNodes, focusClusters);
+        renderAssessment();
+      });
+  }
+
+  // --- Mock assessment generator (client-side fallback) ---
+  function generateMockAssessment(topic, illuminatedNodes, focusClusters) {
+    var tiers = ['novice', 'novice', 'novice', 'apprentice', 'apprentice', 'apprentice',
+                 'journeyman', 'journeyman', 'journeyman', 'adept', 'adept', 'adept',
+                 'expert', 'expert', 'expert', 'master', 'master', 'grandmaster'];
+    var blooms = [1,1,1, 2,2,2, 3,3,3, 4,4,4, 5,5,5, 6,6, 6];
+    var bloomVerbs = ['Define', 'Explain', 'Describe', 'Compare', 'Contrast', 'Apply',
+                      'Use', 'Demonstrate', 'Analyze', 'Examine', 'Evaluate', 'Critique',
+                      'Design', 'Create', 'Synthesize', 'Propose', 'Construct', 'Theorize'];
+
+    var questions = tiers.map(function(tier, i) {
+      var node = illuminatedNodes[i % illuminatedNodes.length];
+      var verb = bloomVerbs[i];
+      return {
+        id: 'q' + (i + 1),
+        text: verb + ': What is the significance of ' + node.label + ' in the context of ' + topic + '?',
+        tier: tier,
+        bloom_level: blooms[i],
+        cluster: node.cluster,
+        type: 'multiple_choice',
+        options: [
+          'A) It is a foundational concept that enables deeper understanding',
+          'B) It is only relevant in theoretical contexts',
+          'C) It has been superseded by newer approaches',
+          'D) It is primarily a historical artifact'
+        ],
+        correct: 'A',
+        explanation: node.label + ' is a key building block in the ' + node.cluster + ' domain.'
+      };
+    });
+
+    return {
+      topic: topic,
+      questions: questions,
+      scoring: {
+        novice: { min_correct: 0, max_correct: 2, level_range: [1, 15] },
+        apprentice: { min_correct: 3, max_correct: 5, level_range: [16, 30] },
+        journeyman: { min_correct: 6, max_correct: 8, level_range: [31, 50] },
+        adept: { min_correct: 9, max_correct: 11, level_range: [51, 70] },
+        expert: { min_correct: 12, max_correct: 14, level_range: [71, 85] },
+        master: { min_correct: 15, max_correct: 16, level_range: [86, 92] },
+        grandmaster: { min_correct: 17, max_correct: 18, level_range: [93, 99] }
+      },
+      clusters_tested: focusClusters
+    };
+  }
+
+  // --- Render assessment questions ---
+  function renderAssessment() {
+    document.getElementById('assessLoading').style.display = 'none';
+    document.getElementById('assessContent').style.display = '';
+    document.getElementById('assessResults').style.display = 'none';
+
+    currentQuestion = 0;
+    userAnswers = {};
+    showQuestion(0);
+  }
+
+  function showQuestion(index) {
+    var q = assessmentData.questions[index];
+    if (!q) return;
+
+    currentQuestion = index;
+    var total = assessmentData.questions.length;
+
+    // Update progress
+    document.getElementById('assessProgressFill').style.width = ((index + 1) / total * 100) + '%';
+    document.getElementById('assessProgressText').textContent = 'Question ' + (index + 1) + ' of ' + total;
+
+    // Build question card
+    var bloomLabels = ['', 'Remember', 'Understand', 'Apply', 'Analyze', 'Evaluate', 'Create'];
+    var tierName = q.tier.charAt(0).toUpperCase() + q.tier.slice(1);
+
+    var optionsHTML = '';
+    if (q.options) {
+      optionsHTML = q.options.map(function(opt, i) {
+        var letter = String.fromCharCode(65 + i);
+        var selected = userAnswers[q.id] === letter ? ' selected' : '';
+        return '<div class="assessment-option' + selected + '" data-answer="' + letter + '" role="button" tabindex="0">' + opt + '</div>';
+      }).join('');
+    }
+
+    document.getElementById('assessQuestionCard').innerHTML =
+      '<div class="assessment-header">' +
+        '<span class="assessment-type">' + tierName + '</span>' +
+        '<span class="assessment-bloom">Bloom L' + q.bloom_level + ': ' + (bloomLabels[q.bloom_level] || '') + '</span>' +
+      '</div>' +
+      '<div class="assessment-body">' +
+        '<div class="assessment-question">' + q.text + '</div>' +
+        '<div class="assessment-options">' + optionsHTML + '</div>' +
+      '</div>';
+
+    // Wire up option click handlers
+    document.querySelectorAll('#assessQuestionCard .assessment-option').forEach(function(opt) {
+      opt.addEventListener('click', function() {
+        document.querySelectorAll('#assessQuestionCard .assessment-option').forEach(function(o) { o.classList.remove('selected'); });
+        opt.classList.add('selected');
+        userAnswers[q.id] = opt.dataset.answer;
+      });
+    });
+
+    // Nav buttons
+    document.getElementById('assessPrev').disabled = index === 0;
+    document.getElementById('assessNext').style.display = index < total - 1 ? '' : 'none';
+    document.getElementById('assessSubmit').style.display = index === total - 1 ? '' : 'none';
+  }
+
+  // --- Assessment navigation ---
+  document.getElementById('assessPrev').addEventListener('click', function() {
+    if (currentQuestion > 0) showQuestion(currentQuestion - 1);
   });
+  document.getElementById('assessNext').addEventListener('click', function() {
+    if (currentQuestion < assessmentData.questions.length - 1) showQuestion(currentQuestion + 1);
+  });
+  document.getElementById('assessSubmit').addEventListener('click', function() {
+    submitAssessment();
+  });
+
+  // --- Submit and score ---
+  function submitAssessment() {
+    var correct = 0;
+    var clusterScores = {};
+
+    assessmentData.questions.forEach(function(q) {
+      var isCorrect = userAnswers[q.id] === q.correct;
+      if (isCorrect) correct++;
+
+      if (!clusterScores[q.cluster]) clusterScores[q.cluster] = { correct: 0, total: 0 };
+      clusterScores[q.cluster].total++;
+      if (isCorrect) clusterScores[q.cluster].correct++;
+    });
+
+    // Determine tier and level
+    var scoring = assessmentData.scoring;
+    var resultTier = 'novice';
+    var resultLevel = 5;
+    Object.keys(scoring).forEach(function(tier) {
+      var s = scoring[tier];
+      if (correct >= s.min_correct && correct <= s.max_correct) {
+        resultTier = tier;
+        var range = s.level_range;
+        var pct = (correct - s.min_correct) / Math.max(1, s.max_correct - s.min_correct);
+        resultLevel = Math.round(range[0] + pct * (range[1] - range[0]));
+      } else if (correct > s.max_correct) {
+        resultTier = tier;
+        resultLevel = s.level_range[1];
+      }
+    });
+
+    // Show results
+    document.getElementById('assessContent').style.display = 'none';
+    document.getElementById('assessResults').style.display = '';
+
+    var tierInfo = getTierForLevel(resultLevel);
+    document.getElementById('resultLevel').textContent = resultLevel;
+    document.getElementById('resultLevel').style.color = tierInfo.color;
+    document.getElementById('resultTier').textContent = tierInfo.name;
+    document.getElementById('resultTier').style.color = tierInfo.color;
+
+    // Cluster breakdown
+    var breakdownHTML = '';
+    Object.keys(clusterScores).forEach(function(cid) {
+      var cs = clusterScores[cid];
+      var pct = Math.round(cs.correct / cs.total * 100);
+      var cluster = masterTree.clusters.find(function(c) { return c.id === cid; });
+      breakdownHTML += '<div class="result-cluster-row">' +
+        '<span class="result-cluster-name">' + (cluster ? cluster.label : cid) + '</span>' +
+        '<span class="result-cluster-score">' + cs.correct + '/' + cs.total + ' (' + pct + '%)</span>' +
+        '</div>';
+    });
+    document.getElementById('resultBreakdown').innerHTML = breakdownHTML;
+
+    // Store for credential
+    window._assessResult = {
+      level: resultLevel,
+      tier: resultTier,
+      tierInfo: tierInfo,
+      correct: correct,
+      total: assessmentData.questions.length,
+      clusterScores: clusterScores,
+      topic: assessmentData.topic || document.getElementById('illuminationTitle').textContent
+    };
+
+    // Show share section
+    shareSection.style.display = '';
+    populateCredential(window._assessResult);
+  }
+
+  // --- Populate credential card ---
+  function populateCredential(result) {
+    document.getElementById('credentialTopic').textContent = result.topic;
+    document.getElementById('credentialLevel').textContent = result.level;
+    document.getElementById('credentialLevel').style.color = result.tierInfo.color;
+    document.getElementById('credentialTier').textContent = result.tierInfo.name;
+    document.getElementById('credentialTier').style.color = result.tierInfo.color;
+    document.getElementById('credentialMeta').textContent =
+      result.correct + '/' + result.total + ' correct -- ' + illuminatedNodeIds.length + ' nodes assessed';
+
+    // Generate credential ID
+    var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    var id = 'SG-2026-';
+    for (var i = 0; i < 5; i++) id += chars.charAt(Math.floor(Math.random() * chars.length));
+    document.getElementById('credentialId').textContent = id;
+
+    // Illuminated node list
+    var nodesHTML = '';
+    illuminatedNodeIds.slice(0, 8).forEach(function(nid, i) {
+      var node = masterTree.nodes.find(function(n) { return n.id === nid; });
+      if (!node) return;
+      var prefix = i < illuminatedNodeIds.length - 1 ? '&#9500;&#9472;' : '&#9492;&#9472;';
+      var tierInfo = getTierForLevel(node.level_range ? node.level_range[0] : 1);
+      nodesHTML += '<div class="credential-sub-skill">' +
+        '<span class="credential-sub-name"><span style="color: var(--text-muted); margin-right: 4px;">' + prefix + '</span>' + node.label + '</span>' +
+        '<span class="credential-sub-level" style="color:' + tierInfo.color + ';">' + node.tier + '</span>' +
+        '</div>';
+    });
+    if (illuminatedNodeIds.length > 8) {
+      nodesHTML += '<div class="credential-sub-skill"><span class="credential-sub-name" style="color: var(--text-muted);">... and ' + (illuminatedNodeIds.length - 8) + ' more nodes</span></div>';
+    }
+    document.getElementById('credentialNodes').innerHTML = nodesHTML;
+  }
+
+  // --- Share button ---
+  document.getElementById('shareResultBtn').addEventListener('click', function() {
+    scrollTo(shareSection);
+  });
+  document.getElementById('retakeBtn').addEventListener('click', function() {
+    handleAssess();
+  });
+  document.getElementById('shareBtn').addEventListener('click', function() {
+    var text = 'I scored Level ' + (window._assessResult ? window._assessResult.level : '?') +
+      ' on SkillGarden! ' + window.location.href;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text).then(function() {
+        document.getElementById('shareBtn').textContent = 'Copied!';
+        setTimeout(function() {
+          document.getElementById('shareBtn').innerHTML =
+            '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Copy Share Link';
+        }, 2000);
+      });
+    }
+  });
+
+  // --- Event wiring ---
+  illuminateBtn.addEventListener('click', handleIlluminate);
+  illuminateInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !illuminateBtn.disabled) handleIlluminate();
+  });
+  document.getElementById('resetBtn').addEventListener('click', handleReset);
+  document.getElementById('assessBtn').addEventListener('click', handleAssess);
 
 })();
 </script>
+
 </body>
 </html>

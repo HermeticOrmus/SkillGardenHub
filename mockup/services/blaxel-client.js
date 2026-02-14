@@ -31,4 +31,39 @@ const BlaxelClient = {
 
     return response.json();
   },
+
+  /**
+   * Map an article/topic to illuminated nodes on the master tree.
+   * @param {string} topic - The article URL or topic description
+   * @param {Array<{id: string, label: string, cluster: string, description?: string}>} masterNodes - Master tree nodes
+   * @returns {Promise<{success: boolean, illuminated: string[], summary: string, clusters_touched: string[], metadata: object}>}
+   */
+  async mapArticleToTree(topic, masterNodes) {
+    const url = CONFIG.blaxel.skillTreeUrl.replace(/\/$/, '') + '/map-article';
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Blaxel-Workspace': CONFIG.blaxel.workspace,
+        'X-Blaxel-Authorization': `Bearer ${CONFIG.blaxel.apiKey}`,
+      },
+      body: JSON.stringify({
+        topic,
+        nodes: masterNodes.map(n => ({
+          id: n.id,
+          label: n.label,
+          cluster: n.cluster,
+          description: n.description || '',
+        })),
+      }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text().catch(() => 'Unknown error');
+      throw new Error(`Article mapping error (${response.status}): ${errorText}`);
+    }
+
+    return response.json();
+  },
 };

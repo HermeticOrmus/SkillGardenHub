@@ -35,6 +35,10 @@ const DynamicTree = (function () {
   let isDragging = false, dragStartX = 0, dragStartY = 0, panStartX = 0, panStartY = 0;
   let dragDistance = 0;
 
+  // Illumination state
+  let illuminatedSet = null; // Set of illuminated node IDs, or null = show all
+  let illuminationTime = 0;  // Frame when illumination started (for pulse animation)
+
   // Layout data
   let clusters = [];
   let nodes = [];
@@ -272,10 +276,19 @@ const DynamicTree = (function () {
       const rx = (c.rx || 130) * scaleX * zoom;
       const ry = (c.ry || 100) * scaleY * zoom;
 
+      // Check if any node in this cluster is illuminated
+      const clusterHasLit = !illuminatedSet || (c.nodes || []).some(n => illuminatedSet.has(n.id));
+      const dimFactor = illuminatedSet && !clusterHasLit ? 0.12 : 1;
+
+      if (illuminatedSet && !clusterHasLit) {
+        ctx.globalAlpha = 0.12;
+      }
+
       // Cluster glow
       const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(rx, ry));
       const tierColor = getClusterColor(c);
-      grad.addColorStop(0, tierColor + '15');
+      const glowIntensity = clusterHasLit && illuminatedSet ? '25' : '15';
+      grad.addColorStop(0, tierColor + glowIntensity);
       grad.addColorStop(0.7, tierColor + '08');
       grad.addColorStop(1, tierColor + '00');
       ctx.beginPath();
@@ -284,19 +297,21 @@ const DynamicTree = (function () {
       ctx.fill();
 
       // Dashed border
-      ctx.strokeStyle = tierColor + '30';
-      ctx.lineWidth = 1;
+      ctx.strokeStyle = tierColor + (clusterHasLit && illuminatedSet ? '50' : '30');
+      ctx.lineWidth = clusterHasLit && illuminatedSet ? 1.5 : 1;
       ctx.setLineDash([4, 4]);
       ctx.stroke();
       ctx.setLineDash([]);
 
       // Cluster label
-      ctx.fillStyle = tierColor + '80';
+      ctx.fillStyle = tierColor + (clusterHasLit && illuminatedSet ? 'CC' : '80');
       const fontSize = Math.max(9, 11 * scaleX * zoom);
       ctx.font = `600 ${fontSize}px "Plus Jakarta Sans", sans-serif`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
       ctx.fillText(c.label, cx, cy - ry + 6 * scaleY * zoom);
+
+      ctx.globalAlpha = 1;
     });
   }
 
@@ -317,6 +332,20 @@ const DynamicTree = (function () {
       const to = nodeMap[toId];
       if (!from || !to) return;
 
+      // Determine if this connection is illuminated
+      const fromLit = !illuminatedSet || illuminatedSet.has(fromId);
+      const toLit = !illuminatedSet || illuminatedSet.has(toId);
+      const bothLit = fromLit && toLit;
+      const eitherLit = fromLit || toLit;
+
+      // Skip fully dimmed connections for cleaner look
+      if (illuminatedSet && !eitherLit) {
+        // Draw very faintly
+        ctx.globalAlpha = 0.06;
+      } else if (illuminatedSet && !bothLit) {
+        ctx.globalAlpha = 0.15;
+      }
+
       const x1 = toCanvasX(from.x);
       const y1 = toCanvasY(from.y);
       const x2 = toCanvasX(to.x);
@@ -327,10 +356,11 @@ const DynamicTree = (function () {
 
       // Gradient connection
       const gradient = ctx.createLinearGradient(x1, y1, x2, y2);
-      gradient.addColorStop(0, fromColor + '50');
-      gradient.addColorStop(1, toColor + '50');
+      const alpha = bothLit && illuminatedSet ? '80' : '50';
+      gradient.addColorStop(0, fromColor + alpha);
+      gradient.addColorStop(1, toColor + alpha);
       ctx.strokeStyle = gradient;
-      ctx.lineWidth = 1.5 * zoom;
+      ctx.lineWidth = (bothLit && illuminatedSet ? 2.5 : 1.5) * zoom;
 
       // Subtle bezier curve
       const midX = (x1 + x2) / 2;
@@ -346,11 +376,22 @@ const DynamicTree = (function () {
       ctx.moveTo(x1, y1);
       ctx.quadraticCurveTo(cpX, cpY, x2, y2);
       ctx.stroke();
+
+      ctx.globalAlpha = 1;
     });
   }
 
   function drawNodes() {
-    nodes.forEach(node => {
+    // Draw dimmed nodes first, then illuminated on top (painter's algorithm)
+    const sortedNodes = illuminatedSet
+      ? [...nodes].sort((a, b) => {
+          const aLit = illuminatedSet.has(a.id) ? 1 : 0;
+          const bLit = illuminatedSet.has(b.id) ? 1 : 0;
+          return aLit - bLit; // dimmed first, illuminated last (on top)
+        })
+      : nodes;
+
+    sortedNodes.forEach(node => {
       const cx = toCanvasX(node.x);
       const cy = toCanvasY(node.y);
       const r = nodeRadius(node) * Math.min(scaleX, scaleY) * 1.2 * zoom;
@@ -359,11 +400,23 @@ const DynamicTree = (function () {
       const isHovered = hoveredNode === node;
       const isLarge = node.size === 'large';
 
-      // Outer glow for hovered/large nodes
-      if (isHovered || isLarge) {
-        const glowR = r + (6 + Math.sin(animFrame * 0.04) * 2) * zoom;
+      // Illumination state for this node
+      const isIlluminated = !illuminatedSet || illuminatedSet.has(node.id);
+      const isDimmed = illuminatedSet && !illuminatedSet.has(node.id);
+      const pulsePhase = illuminatedSet ? (animFrame - illuminationTime) * 0.03 : 0;
+
+      // Save context for dimming
+      if (isDimmed) {
+        ctx.globalAlpha = 0.15;
+      }
+
+      // Outer glow for hovered/large/illuminated nodes
+      if (isHovered || isLarge || (isIlluminated && illuminatedSet)) {
+        const pulseAdd = (isIlluminated && illuminatedSet) ? Math.sin(pulsePhase + node.x * 0.01) * 4 : 0;
+        const glowR = r + (6 + Math.sin(animFrame * 0.04) * 2 + pulseAdd) * zoom;
         const glow = ctx.createRadialGradient(cx, cy, r * 0.5, cx, cy, glowR);
-        glow.addColorStop(0, color + '60');
+        const glowAlpha = (isIlluminated && illuminatedSet) ? '90' : '60';
+        glow.addColorStop(0, color + glowAlpha);
         glow.addColorStop(1, color + '00');
         ctx.beginPath();
         ctx.arc(cx, cy, glowR, 0, Math.PI * 2);
@@ -375,15 +428,23 @@ const DynamicTree = (function () {
       ctx.beginPath();
       ctx.arc(cx, cy, r, 0, Math.PI * 2);
 
-      // Filled gradient
-      const grad = ctx.createRadialGradient(cx - r * 0.3, cy - r * 0.3, 0, cx, cy, r);
-      grad.addColorStop(0, lightenColor(color, 40));
-      grad.addColorStop(1, color);
-      ctx.fillStyle = grad;
+      // Filled gradient (grayscale for dimmed)
+      if (isDimmed) {
+        const gray = '#555566';
+        const grad = ctx.createRadialGradient(cx - r * 0.3, cy - r * 0.3, 0, cx, cy, r);
+        grad.addColorStop(0, '#777788');
+        grad.addColorStop(1, gray);
+        ctx.fillStyle = grad;
+      } else {
+        const grad = ctx.createRadialGradient(cx - r * 0.3, cy - r * 0.3, 0, cx, cy, r);
+        grad.addColorStop(0, lightenColor(color, 40));
+        grad.addColorStop(1, color);
+        ctx.fillStyle = grad;
+      }
       ctx.fill();
 
       // Border
-      ctx.strokeStyle = isHovered ? '#FFFFFF' : lightenColor(color, 20);
+      ctx.strokeStyle = isHovered ? '#FFFFFF' : isDimmed ? '#44445560' : lightenColor(color, 20);
       ctx.lineWidth = isHovered ? 2.5 * zoom : 1.5 * zoom;
       ctx.stroke();
 
@@ -392,16 +453,14 @@ const DynamicTree = (function () {
       ctx.textBaseline = 'middle';
 
       if (node.size !== 'small') {
-        // Tier initial or level
-        ctx.fillStyle = '#FFFFFF';
+        ctx.fillStyle = isDimmed ? 'rgba(255,255,255,0.4)' : '#FFFFFF';
         const innerFont = Math.max(8, r * 0.6);
         ctx.font = `700 ${innerFont}px "JetBrains Mono", monospace`;
         ctx.fillText(node.level || '', cx, cy);
       } else {
-        // White dot
         ctx.beginPath();
         ctx.arc(cx, cy, r * 0.3, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(255,255,255,0.85)';
+        ctx.fillStyle = isDimmed ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.85)';
         ctx.fill();
       }
 
@@ -416,7 +475,7 @@ const DynamicTree = (function () {
       ctx.fillStyle = 'rgba(0,0,0,0.6)';
       ctx.fillText(labelText, cx + 0.5, labelY + 0.5);
       // Text
-      ctx.fillStyle = '#FFFFFF';
+      ctx.fillStyle = isDimmed ? 'rgba(255,255,255,0.3)' : '#FFFFFF';
       ctx.fillText(labelText, cx, labelY);
 
       // Level badge for small nodes
@@ -425,8 +484,13 @@ const DynamicTree = (function () {
         const badgeY = cy - r - 2 * zoom;
         ctx.font = `700 ${Math.max(6, 7 * scaleX * zoom)}px "JetBrains Mono", monospace`;
         ctx.textBaseline = 'bottom';
-        ctx.fillStyle = color;
+        ctx.fillStyle = isDimmed ? '#44445560' : color;
         ctx.fillText(node.level, badgeX, badgeY);
+      }
+
+      // Restore alpha
+      if (isDimmed) {
+        ctx.globalAlpha = 1;
       }
     });
   }
@@ -858,5 +922,64 @@ const DynamicTree = (function () {
     render();
   }
 
-  return { init };
+  // --- Illuminate specific nodes ---
+  function illuminate(nodeIds) {
+    if (!nodeIds || nodeIds.length === 0) {
+      illuminatedSet = null;
+      return;
+    }
+
+    illuminatedSet = new Set(nodeIds);
+    illuminationTime = animFrame;
+
+    // Calculate bounding box of illuminated nodes and zoom to fit
+    const litNodes = nodes.filter(n => illuminatedSet.has(n.id));
+    if (litNodes.length === 0) return;
+
+    let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+    litNodes.forEach(n => {
+      minX = Math.min(minX, n.x);
+      maxX = Math.max(maxX, n.x);
+      minY = Math.min(minY, n.y);
+      maxY = Math.max(maxY, n.y);
+    });
+
+    // Add padding
+    const pad = 120;
+    minX -= pad;
+    maxX += pad;
+    minY -= pad;
+    maxY += pad;
+
+    // Calculate zoom to fit illuminated area
+    const spanX = (maxX - minX) * scaleX;
+    const spanY = (maxY - minY) * scaleY;
+    const fitZoom = Math.min(W / spanX, H / spanY, 2);
+    const centerX = (minX + maxX) / 2;
+    const centerY = (minY + maxY) / 2;
+
+    targetZoom = Math.max(0.6, Math.min(fitZoom, 1.8));
+    targetPanX = W / 2 - (offsetX + centerX * scaleX) * targetZoom;
+    targetPanY = H / 2 - (offsetY + centerY * scaleY) * targetZoom;
+  }
+
+  // --- Reset illumination ---
+  function resetIllumination() {
+    illuminatedSet = null;
+    illuminationTime = 0;
+    targetZoom = 1;
+    targetPanX = 0;
+    targetPanY = 0;
+  }
+
+  // --- Get current state ---
+  function getNodes() {
+    return nodes;
+  }
+
+  function getIlluminatedSet() {
+    return illuminatedSet;
+  }
+
+  return { init, illuminate, resetIllumination, getNodes, getIlluminatedSet };
 })();

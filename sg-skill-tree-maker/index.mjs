@@ -64,6 +64,67 @@ async function main() {
     console.error("[SkillTreeMaker] Error:", error);
   });
 
+  // --- Article-to-Tree Mapping Route ---
+  // Takes a topic/article + master tree node list, returns which nodes are illuminated
+  app.post("/map-article", async (request, reply) => {
+    const { topic, nodes } = request.body || {};
+
+    if (!topic) {
+      return reply.status(400).send({ error: "topic is required" });
+    }
+    if (!nodes || !Array.isArray(nodes) || nodes.length === 0) {
+      return reply.status(400).send({ error: "nodes array is required (list of {id, label, cluster, description})" });
+    }
+
+    const nodeList = nodes.map(n => `- ${n.id}: ${n.label} (${n.cluster})${n.description ? ' -- ' + n.description : ''}`).join('\n');
+
+    const message = await client.messages.create({
+      model: "claude-sonnet-4-5-20250929",
+      max_tokens: 2048,
+      system: `You are the SkillGarden Article Mapper. Given an article topic or URL, you analyze which nodes on a pre-built master skill tree are relevant.
+
+You must return a JSON object with:
+{
+  "illuminated": ["node-id-1", "node-id-2", ...],
+  "summary": "A 1-2 sentence summary of what this article/topic covers in the context of the skill tree",
+  "clusters_touched": ["cluster-id-1", "cluster-id-2", ...]
+}
+
+Rules:
+1. Select nodes that the article DIRECTLY discusses or strongly implies
+2. Include prerequisite nodes that someone would need to understand the article
+3. Include 1-2 "stretch" nodes that represent natural next steps from the article
+4. Typically illuminate 8-25 nodes depending on article breadth
+5. Be precise -- don't illuminate nodes with only tangential relevance
+6. Return ONLY valid JSON, no markdown`,
+      messages: [{
+        role: "user",
+        content: `Article/Topic: "${topic}"
+
+Master Tree Nodes:
+${nodeList}
+
+Which nodes does this article illuminate? Return JSON only.`
+      }]
+    });
+
+    const text = message.content[0].type === "text" ? message.content[0].text : "";
+    const result = JSON.parse(text);
+
+    return reply.send({
+      success: true,
+      illuminated: result.illuminated || [],
+      summary: result.summary || "",
+      clusters_touched: result.clusters_touched || [],
+      metadata: {
+        total_nodes: nodes.length,
+        illuminated_count: (result.illuminated || []).length,
+        agent: "sg-skill-tree-maker/map-article",
+      }
+    });
+  });
+
+  // --- Skill Tree Generation Route ---
   app.post("/", async (request, reply) => {
     const { topic, depth, context, inputs } = request.body || {};
     const actualTopic = topic || inputs;
