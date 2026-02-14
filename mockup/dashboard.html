@@ -24,7 +24,6 @@
     <li><a href="#skill-tree">Skill Tree</a></li>
     <li><a href="#credential">Credential</a></li>
     <li><a href="#assess">Assessment</a></li>
-    <li><a href="#generate">Generate</a></li>
     <li><a href="#capture">Capture</a></li>
   </ul>
   <div class="nav-profile">
@@ -41,6 +40,85 @@
   <div class="section-header">
     <h2>Mastery Dashboard</h2>
     <p>Yavuz -- Active Skills</p>
+  </div>
+
+  <!-- Generate Hero (primary action) -->
+  <div class="generate-hero reveal" style="margin-bottom: var(--space-xl);">
+    <div class="create-input-inner" style="max-width: 720px; margin: 0 auto;">
+      <div class="create-header" style="margin-bottom: var(--space-lg);">
+        <h3 style="font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; color: var(--deep-forest); margin-bottom: var(--space-xs); letter-spacing: -0.02em;">Create a Skill Tree</h3>
+        <p style="color: var(--text-secondary); font-size: 0.9rem;">Turn any article, video, or topic into a mastery learning path</p>
+      </div>
+
+      <div class="source-types" style="grid-template-columns: repeat(3, 1fr); max-width: 420px; margin: 0 auto var(--space-lg);">
+        <button class="source-type-card active" data-type="article">
+          <div class="source-type-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+            </svg>
+          </div>
+          <span class="source-type-label">Article</span>
+          <span class="source-type-desc">Paste a URL</span>
+        </button>
+        <button class="source-type-card" data-type="youtube">
+          <div class="source-type-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19.13C5.12 19.56 12 19.56 12 19.56s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/>
+            </svg>
+          </div>
+          <span class="source-type-label">YouTube</span>
+          <span class="source-type-desc">Video URL</span>
+        </button>
+        <button class="source-type-card" data-type="topic">
+          <div class="source-type-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+            </svg>
+          </div>
+          <span class="source-type-label">Topic</span>
+          <span class="source-type-desc">Any subject</span>
+        </button>
+      </div>
+
+      <div class="create-input-area">
+        <div class="create-input-row">
+          <input type="text" id="sourceInput" class="create-url-input" placeholder="Paste an article URL or describe a topic..." autocomplete="off" spellcheck="false" />
+        </div>
+        <div class="create-options-row">
+          <select id="depthSelect" class="create-depth-select">
+            <option value="shallow">Quick (15-20 nodes)</option>
+            <option value="medium" selected>Standard (20-25 nodes)</option>
+            <option value="deep">Deep (25-35 nodes)</option>
+          </select>
+          <button id="generateBtn" class="create-generate-btn" disabled>
+            <span class="btn-text">Generate Skill Tree</span>
+            <span class="btn-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+              </svg>
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Loading indicator -->
+      <div id="generateLoading" style="display: none; align-items: center; gap: var(--space-sm); margin-top: var(--space-md);">
+        <div class="spinner"></div>
+        <span id="generateStatus" style="font-size: 0.85rem; color: var(--text-muted); font-family: var(--font-mono);">Analyzing content...</span>
+      </div>
+
+      <!-- Error -->
+      <div id="generateError" style="display: none; margin-top: var(--space-md); padding: var(--space-md); background: rgba(211, 47, 47, 0.07); border-left: 3px solid #D32F2F; border-radius: var(--radius-md); font-size: 0.85rem; color: #D32F2F;"></div>
+
+      <!-- Example chips -->
+      <div class="create-examples" style="margin-top: var(--space-lg);">
+        <span class="examples-label">Try:</span>
+        <button class="example-chip" data-topic="Machine Learning for Healthcare">ML in Healthcare</button>
+        <button class="example-chip" data-topic="Blockchain and Decentralized Finance">DeFi</button>
+        <button class="example-chip" data-topic="Climate Science and Renewable Energy">Climate Tech</button>
+        <button class="example-chip" data-topic="Quantum Computing Fundamentals">Quantum Computing</button>
+      </div>
+    </div>
   </div>
 
   <!-- Stats Row -->
@@ -235,85 +313,18 @@
   </div>
 </section>
 
-<!-- Article to Skill Tree Generator -->
-<section class="section" id="generate" style="background: var(--warm-white);">
-  <div class="section-header">
-    <h2>Generate Skill Tree from Article</h2>
-    <p>Paste any article, transcript, or learning content -- we'll extract the knowledge graph</p>
-  </div>
-
-  <div class="capture-card reveal" id="article-generator-card">
-    <div class="capture-card-top">
-      <h3>Article Input</h3>
-      <div class="capture-meta">Validator AI extracts concepts and builds your skill tree</div>
-    </div>
-    <div class="capture-body">
-
-      <div style="margin-bottom: var(--space-md);">
-        <label for="skill-name-input" style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: var(--space-sm);">Skill Name</label>
-        <input
-          id="skill-name-input"
-          type="text"
-          placeholder="Skill name (e.g., AI in Finance)"
-          style="width: 100%; padding: var(--space-sm) var(--space-md); border: 1.5px solid var(--border); border-radius: var(--radius-md); font-family: var(--font-body); font-size: 0.95rem; background: var(--canvas); color: var(--text-primary); outline: none; transition: border-color 0.2s;"
-          onfocus="this.style.borderColor='var(--deep-forest)'"
-          onblur="this.style.borderColor='var(--border)'"
-        />
-      </div>
-
-      <div style="margin-bottom: var(--space-lg);">
-        <label for="article-text-input" style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: var(--space-sm);">Article Content</label>
-        <textarea
-          id="article-text-input"
-          placeholder="Paste an article, transcript, or any learning content..."
-          rows="7"
-          style="width: 100%; padding: var(--space-sm) var(--space-md); border: 1.5px solid var(--border); border-radius: var(--radius-md); font-family: var(--font-body); font-size: 0.9rem; background: var(--canvas); color: var(--text-primary); resize: vertical; outline: none; transition: border-color 0.2s; line-height: 1.6;"
-          onfocus="this.style.borderColor='var(--deep-forest)'"
-          onblur="this.style.borderColor='var(--border)'"
-        ></textarea>
-      </div>
-
-      <div style="display: flex; align-items: center; gap: var(--space-md); flex-wrap: wrap;">
-        <button
-          id="generate-tree-btn"
-          class="decay-action"
-          style="background: var(--deep-forest); font-size: 0.95rem; padding: 10px var(--space-xl); min-width: 180px;"
-        >
-          Generate Skill Tree
-        </button>
-
-        <button
-          id="reset-tree-btn"
-          style="background: none; border: 1.5px solid var(--border); border-radius: var(--radius-md); padding: 9px var(--space-lg); font-family: var(--font-body); font-size: 0.85rem; color: var(--text-secondary); cursor: pointer; transition: border-color 0.2s, color 0.2s;"
-          onmouseover="this.style.borderColor='var(--deep-forest)'; this.style.color='var(--deep-forest)'"
-          onmouseout="this.style.borderColor='var(--border)'; this.style.color='var(--text-secondary)'"
-        >
-          Reset to Demo
-        </button>
-
-        <!-- Loading indicator (hidden by default) -->
-        <div id="generate-loading" style="display: none; align-items: center; gap: var(--space-sm);">
-          <div class="spinner"></div>
-          <span id="generate-status" style="font-size: 0.85rem; color: var(--text-muted); font-family: var(--font-mono);">Extracting concepts...</span>
-        </div>
-      </div>
-
-      <!-- Error message (hidden by default) -->
-      <div id="generate-error" style="display: none; margin-top: var(--space-md); padding: var(--space-md); background: rgba(211, 47, 47, 0.07); border-left: 3px solid var(--tier-grandmaster); border-radius: var(--radius-md); font-size: 0.85rem; color: var(--tier-grandmaster);"></div>
-
-    </div>
-  </div>
-</section>
-
 <!-- Skill Tree -->
 <section class="section" id="skill-tree" style="background: var(--warm-white);">
   <div class="section-header">
-    <h2>Skill Tree: AI Boom in Finance</h2>
-    <p>Interconnected knowledge graph -- every node feeds into mastery</p>
+    <h2 id="treeTitle">Skill Tree: AI Boom in Finance</h2>
+    <p id="treeMeta">Interconnected knowledge graph -- every node feeds into mastery</p>
   </div>
 
-  <!-- XP Transparency -->
-  <div class="xp-transparency reveal" style="margin-bottom: var(--space-xl);">
+  <!-- Tree Stats (shown after generation) -->
+  <div id="treeStats" class="tree-stats" style="display: none; margin-bottom: var(--space-lg);"></div>
+
+  <!-- XP Transparency (shown for demo tree) -->
+  <div id="xpTransparency" class="xp-transparency reveal" style="margin-bottom: var(--space-xl);">
     <div class="xp-trans-row">
       <div class="xp-trans-item">
         <span class="xp-trans-label">Your level</span>
@@ -335,10 +346,16 @@
     <div class="xp-trans-note">You've entered Mastery tier. From here, you teach, create frameworks, and face human expert review.</div>
   </div>
 
-  <!-- PoE-Style Interactive Skill Tree Canvas -->
-  <div class="skill-tree-canvas-container reveal">
+  <!-- PoE-Style Interactive Skill Tree Canvas (hardcoded demo) -->
+  <div id="staticTreeContainer" class="skill-tree-canvas-container reveal">
     <canvas id="skillTreeCanvas" aria-label="Interactive skill tree showing interconnected knowledge nodes across AI, Finance, Ethics, and Product Strategy clusters"></canvas>
     <div id="skillTreeLegend" class="tree-legend"></div>
+  </div>
+
+  <!-- Dynamic Skill Tree Canvas (generated via Blaxel agent) -->
+  <div id="dynamicTreeContainer" class="skill-tree-canvas-container" style="display: none;">
+    <canvas id="dynamicTreeCanvas" aria-label="AI-generated interactive skill tree"></canvas>
+    <div id="dynamicTreeLegend" class="tree-legend"></div>
   </div>
 
   <!-- Progression Gates (compact version below canvas) -->
@@ -775,8 +792,14 @@
 <!-- Dashboard Controller (wires everything together) -->
 <script src="services/dashboard-controller.js"></script>
 
+<!-- Blaxel Agent Client -->
+<script src="services/blaxel-client.js"></script>
+
 <!-- PoE-Style Skill Tree (canvas-based interactive graph) -->
 <script src="skill-tree.js"></script>
+
+<!-- Dynamic Skill Tree Renderer (for generated trees) -->
+<script src="dynamic-tree.js"></script>
 
 <!-- Original app.js (scroll reveals, tabs, XP curve, audio bars) -->
 <script src="app.js"></script>
@@ -820,30 +843,70 @@
 </style>
 
 <script>
-// --- Article to Skill Tree: wiring ---
-// Calls the Validator agent (port 3002) to extract concepts and build the tree,
-// then hands the result to window.loadSkillTreeFromAPI from skill-tree.js.
+// --- Hybrid Skill Tree Generator ---
+// Primary: Blaxel agent (sg-skill-tree-maker) via BlaxelClient
+// Fallback: Localhost validator (port 3002) via collaborator's pipeline
+// Renders: DynamicTree for Blaxel, loadSkillTreeFromAPI for validator
 
 (function () {
   'use strict';
 
   var VALIDATOR_URL = 'http://localhost:3002';
 
-  var generateBtn  = document.getElementById('generate-tree-btn');
-  var resetBtn     = document.getElementById('reset-tree-btn');
-  var articleInput = document.getElementById('article-text-input');
-  var skillInput   = document.getElementById('skill-name-input');
-  var loadingEl    = document.getElementById('generate-loading');
-  var statusEl     = document.getElementById('generate-status');
-  var errorEl      = document.getElementById('generate-error');
+  // --- DOM refs (new hero generate UI) ---
+  var sourceInput  = document.getElementById('sourceInput');
+  var generateBtn  = document.getElementById('generateBtn');
+  var depthSelect  = document.getElementById('depthSelect');
+  var loadingEl    = document.getElementById('generateLoading');
+  var statusEl     = document.getElementById('generateStatus');
+  var errorEl      = document.getElementById('generateError');
 
-  if (!generateBtn) return; // guard: elements not present
+  // Tree section refs
+  var treeTitle         = document.getElementById('treeTitle');
+  var treeMeta          = document.getElementById('treeMeta');
+  var treeStats         = document.getElementById('treeStats');
+  var xpTransparency    = document.getElementById('xpTransparency');
+  var staticTreeContainer  = document.getElementById('staticTreeContainer');
+  var dynamicTreeContainer = document.getElementById('dynamicTreeContainer');
+
+  if (!sourceInput || !generateBtn) return;
+
+  // --- Source type selector ---
+  document.querySelectorAll('.source-type-card').forEach(function (card) {
+    card.addEventListener('click', function () {
+      document.querySelectorAll('.source-type-card').forEach(function (c) { c.classList.remove('active'); });
+      card.classList.add('active');
+      var type = card.dataset.type;
+      var placeholders = {
+        article: 'Paste an article URL...',
+        youtube: 'Paste a YouTube video URL...',
+        topic: 'Describe any topic you want to master...',
+      };
+      sourceInput.placeholder = placeholders[type] || placeholders.article;
+      sourceInput.focus();
+    });
+  });
+
+  // --- Enable/disable generate button ---
+  sourceInput.addEventListener('input', function () {
+    generateBtn.disabled = sourceInput.value.trim().length < 3;
+  });
+
+  // --- Example chips ---
+  document.querySelectorAll('.example-chip').forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      sourceInput.value = chip.dataset.topic;
+      sourceInput.dispatchEvent(new Event('input'));
+      // Switch to Topic source type
+      document.querySelectorAll('.source-type-card').forEach(function (c) { c.classList.remove('active'); });
+      var topicCard = document.querySelector('[data-type="topic"]');
+      if (topicCard) topicCard.classList.add('active');
+    });
+  });
 
   // --- UI state helpers ---
-
   function setLoading(isLoading) {
     generateBtn.disabled = isLoading;
-    resetBtn.disabled = isLoading;
     loadingEl.style.display = isLoading ? 'flex' : 'none';
     generateBtn.style.opacity = isLoading ? '0.6' : '1';
   }
@@ -857,12 +920,49 @@
     errorEl.style.display = msg ? 'block' : 'none';
   }
 
-  function clearError() {
-    showError('');
+  function clearError() { showError(''); }
+
+  function scrollToTree() {
+    var treeSection = document.getElementById('skill-tree');
+    if (treeSection) {
+      var navHeight = document.querySelector('.nav') ? document.querySelector('.nav').offsetHeight : 60;
+      var targetY = treeSection.getBoundingClientRect().top + window.pageYOffset - navHeight - 16;
+      window.scrollTo({ top: targetY, behavior: 'smooth' });
+    }
   }
 
-  // --- Validator API calls ---
+  // --- Blaxel agent (primary) ---
+  function generateViaBlaxel(topic, depth) {
+    setStatus('Calling AI agent...');
+    return BlaxelClient.generateSkillTree(topic, { depth: depth });
+  }
 
+  function renderBlaxelTree(result) {
+    if (!result.success || !result.tree) {
+      throw new Error('Agent returned invalid response');
+    }
+
+    // Update section header
+    treeTitle.textContent = 'Skill Tree: ' + (result.tree.topic || 'Generated');
+    treeMeta.textContent = result.metadata.node_count + ' nodes across ' + result.metadata.cluster_count + ' clusters';
+
+    // Show stats bar
+    treeStats.style.display = '';
+    treeStats.innerHTML =
+      '<div class="stat-pill"><span class="stat-pill-val">' + result.metadata.node_count + '</span> Nodes</div>' +
+      '<div class="stat-pill"><span class="stat-pill-val">' + result.metadata.cluster_count + '</span> Clusters</div>' +
+      '<div class="stat-pill"><span class="stat-pill-val">' + result.metadata.connection_count + '</span> Connections</div>';
+
+    // Swap to dynamic tree canvas
+    xpTransparency.style.display = 'none';
+    staticTreeContainer.style.display = 'none';
+    dynamicTreeContainer.style.display = '';
+
+    // Render with DynamicTree
+    DynamicTree.init('dynamicTreeCanvas', 'dynamicTreeLegend', result.tree);
+  }
+
+  // --- Validator fallback ---
   function postToValidator(body) {
     return fetch(VALIDATOR_URL, {
       method: 'POST',
@@ -878,114 +978,101 @@
     });
   }
 
-  function extractConcepts(articleText, skillName) {
-    setStatus('Extracting concepts...');
-    return postToValidator({
-      action: 'extract_concepts',
-      articleText: articleText,
-      skillName: skillName,
-    });
-  }
-
-  function buildTree(concepts) {
-    setStatus('Building skill tree...');
-    return postToValidator({
-      action: 'build_tree',
-      concepts: concepts,
-    });
-  }
-
-  // --- Generate handler ---
-
-  function handleGenerate() {
-    var articleText = articleInput.value.trim();
-    var skillName   = skillInput.value.trim();
-
-    clearError();
-
-    if (!articleText) {
-      showError('Please paste some article text before generating.');
-      articleInput.focus();
-      return;
-    }
-    if (!skillName) {
-      showError('Please enter a skill name (e.g., "AI in Finance").');
-      skillInput.focus();
-      return;
-    }
-
-    setLoading(true);
-
-    extractConcepts(articleText, skillName)
+  function generateViaValidator(topic) {
+    setStatus('Falling back to validator...');
+    return postToValidator({ action: 'extract_concepts', articleText: topic, skillName: topic.substring(0, 40) })
       .then(function (conceptsResponse) {
-        // Response may be { concepts: [...] } or { data: { concepts: [...] } } or just an array
         var concepts = conceptsResponse.concepts
           || (conceptsResponse.data && conceptsResponse.data.concepts)
           || (Array.isArray(conceptsResponse) ? conceptsResponse : null);
-
         if (!concepts || !concepts.length) {
-          throw new Error('No concepts returned. The article may be too short or unclear.');
+          throw new Error('No concepts returned from validator.');
         }
-
-        return buildTree(concepts);
-      })
-      .then(function (treeData) {
-        // Attach the skillName so the tree header can update
-        treeData.skillName = skillName;
-
-        setStatus('Rendering tree...');
-
-        // Hand off to the canvas renderer
-        if (typeof window.loadSkillTreeFromAPI === 'function') {
-          window.loadSkillTreeFromAPI(treeData);
-        } else {
-          throw new Error('Skill tree renderer not ready. Please refresh the page.');
-        }
-
-        // Scroll to the skill tree section smoothly
-        var treeSection = document.getElementById('skill-tree');
-        if (treeSection) {
-          var navHeight = document.querySelector('.nav') ? document.querySelector('.nav').offsetHeight : 60;
-          var targetY = treeSection.getBoundingClientRect().top + window.pageYOffset - navHeight - 16;
-          window.scrollTo({ top: targetY, behavior: 'smooth' });
-        }
-
-        setLoading(false);
-      })
-      .catch(function (err) {
-        setLoading(false);
-        var message = err && err.message ? err.message : String(err);
-        showError('Failed to generate skill tree: ' + message);
-        console.error('[SkillGarden] generate error:', err);
+        setStatus('Building tree via validator...');
+        return postToValidator({ action: 'build_tree', concepts: concepts });
       });
   }
 
-  // --- Reset handler ---
+  function renderValidatorTree(treeData, topic) {
+    treeData.skillName = topic.substring(0, 40);
+    treeTitle.textContent = 'Skill Tree: ' + treeData.skillName;
+    treeMeta.textContent = 'Generated via local validator';
 
-  function handleReset() {
-    clearError();
-    if (typeof window.resetSkillTree === 'function') {
-      window.resetSkillTree();
-    }
-    // Scroll to the skill tree section
-    var treeSection = document.getElementById('skill-tree');
-    if (treeSection) {
-      var navHeight = document.querySelector('.nav') ? document.querySelector('.nav').offsetHeight : 60;
-      var targetY = treeSection.getBoundingClientRect().top + window.pageYOffset - navHeight - 16;
-      window.scrollTo({ top: targetY, behavior: 'smooth' });
+    // Use the static tree canvas with loadSkillTreeFromAPI
+    xpTransparency.style.display = 'none';
+    staticTreeContainer.style.display = '';
+    dynamicTreeContainer.style.display = 'none';
+    treeStats.style.display = 'none';
+
+    if (typeof window.loadSkillTreeFromAPI === 'function') {
+      window.loadSkillTreeFromAPI(treeData);
+    } else {
+      throw new Error('Skill tree renderer not ready.');
     }
   }
 
+  // --- Main generate handler (hybrid) ---
+  function handleGenerate() {
+    var topic = sourceInput.value.trim();
+    if (!topic) return;
+
+    clearError();
+    setLoading(true);
+
+    // Try Blaxel agent first
+    generateViaBlaxel(topic, depthSelect.value)
+      .then(function (result) {
+        setStatus('Rendering tree...');
+        renderBlaxelTree(result);
+        setLoading(false);
+        scrollToTree();
+      })
+      .catch(function (blaxelErr) {
+        console.warn('[SkillGarden] Blaxel agent failed, trying validator fallback:', blaxelErr.message);
+        setStatus('Agent unavailable, trying fallback...');
+
+        // Fallback to localhost validator
+        generateViaValidator(topic)
+          .then(function (treeData) {
+            renderValidatorTree(treeData, topic);
+            setLoading(false);
+            scrollToTree();
+          })
+          .catch(function (validatorErr) {
+            setLoading(false);
+            showError('Both generators failed. Blaxel: ' + blaxelErr.message + ' | Validator: ' + validatorErr.message);
+            console.error('[SkillGarden] Both pipelines failed:', { blaxel: blaxelErr, validator: validatorErr });
+          });
+      });
+  }
+
+  // --- Reset to demo tree ---
+  function handleReset() {
+    clearError();
+
+    // Restore original header
+    treeTitle.textContent = 'Skill Tree: AI Boom in Finance';
+    treeMeta.textContent = 'Interconnected knowledge graph -- every node feeds into mastery';
+    treeStats.style.display = 'none';
+
+    // Show static tree, hide dynamic
+    xpTransparency.style.display = '';
+    staticTreeContainer.style.display = '';
+    dynamicTreeContainer.style.display = 'none';
+
+    if (typeof window.resetSkillTree === 'function') {
+      window.resetSkillTree();
+    }
+    scrollToTree();
+  }
+
+  // Expose reset for external use
+  window.resetToDemo = handleReset;
+
   // --- Event listeners ---
   generateBtn.addEventListener('click', handleGenerate);
-  resetBtn.addEventListener('click', handleReset);
-
-  // Allow Ctrl+Enter in the textarea to trigger generation
-  articleInput.addEventListener('keydown', function (e) {
-    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-      e.preventDefault();
-      handleGenerate();
-    }
+  sourceInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && !generateBtn.disabled) handleGenerate();
   });
 
 })();

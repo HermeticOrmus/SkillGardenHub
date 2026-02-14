@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SkillGarden: Turn any content into a mastery skill tree.">
+  <meta name="theme-color" content="#1B4332">
+  <title>SkillGarden -- Create Skill Tree</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <a href="index.html" class="nav-logo">Skill<span>Garden</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="create.html" class="active">Create</a></li>
+    <li><a href="dashboard.html">Dashboard</a></li>
+  </ul>
+  <a href="create.html" class="nav-cta-btn" style="background: var(--verified); color: white; padding: 6px 16px; border-radius: var(--radius-md); font-size: 0.8rem; font-weight: 600; text-decoration: none;">New Tree</a>
+</nav>
+
+<!-- Create Flow -->
+<div class="create-page">
+
+  <!-- Input Panel (visible initially) -->
+  <div id="inputPanel" class="create-input-panel">
+    <div class="create-input-inner">
+
+      <div class="create-header">
+        <h1>Create a Skill Tree</h1>
+        <p>Turn any article, video, or topic into a mastery learning path</p>
+      </div>
+
+      <!-- Source Type Selector -->
+      <div class="source-types">
+        <button class="source-type-card active" data-type="article">
+          <div class="source-type-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+            </svg>
+          </div>
+          <span class="source-type-label">Article</span>
+          <span class="source-type-desc">Paste a URL</span>
+        </button>
+        <button class="source-type-card" data-type="youtube">
+          <div class="source-type-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19.13C5.12 19.56 12 19.56 12 19.56s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/>
+            </svg>
+          </div>
+          <span class="source-type-label">YouTube</span>
+          <span class="source-type-desc">Video URL</span>
+        </button>
+        <button class="source-type-card" data-type="pdf">
+          <div class="source-type-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 15v-2h2a1 1 0 1 1 0 2H9z"/><path d="M15 11v4"/>
+            </svg>
+          </div>
+          <span class="source-type-label">PDF</span>
+          <span class="source-type-desc">Upload file</span>
+        </button>
+        <button class="source-type-card" data-type="topic">
+          <div class="source-type-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+            </svg>
+          </div>
+          <span class="source-type-label">Topic</span>
+          <span class="source-type-desc">Any subject</span>
+        </button>
+      </div>
+
+      <!-- URL Input Area -->
+      <div class="create-input-area">
+        <div class="create-input-row">
+          <input
+            type="text"
+            id="sourceInput"
+            class="create-url-input"
+            placeholder="Paste an article URL or describe a topic..."
+            autocomplete="off"
+            spellcheck="false"
+          />
+        </div>
+        <div class="create-options-row">
+          <select id="depthSelect" class="create-depth-select">
+            <option value="shallow">Quick (15-20 nodes)</option>
+            <option value="medium" selected>Standard (20-25 nodes)</option>
+            <option value="deep">Deep (25-35 nodes)</option>
+          </select>
+          <button id="generateBtn" class="create-generate-btn" disabled>
+            <span class="btn-text">Generate Skill Tree</span>
+            <span class="btn-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+              </svg>
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Added Sources Preview -->
+      <div id="sourcesPreview" class="sources-preview" style="display: none;">
+        <div class="sources-preview-header">
+          <span class="sources-count">1 source added</span>
+        </div>
+        <div id="sourcesList" class="sources-list"></div>
+      </div>
+
+      <!-- Example Topics -->
+      <div class="create-examples">
+        <span class="examples-label">Try:</span>
+        <button class="example-chip" data-topic="Machine Learning for Healthcare">ML in Healthcare</button>
+        <button class="example-chip" data-topic="Blockchain and Decentralized Finance">DeFi</button>
+        <button class="example-chip" data-topic="Climate Science and Renewable Energy">Climate Tech</button>
+        <button class="example-chip" data-topic="Quantum Computing Fundamentals">Quantum Computing</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div id="loadingPanel" class="create-loading" style="display: none;">
+    <div class="loading-inner">
+      <div class="loading-orb">
+        <div class="orb-ring ring-1"></div>
+        <div class="orb-ring ring-2"></div>
+        <div class="orb-ring ring-3"></div>
+        <div class="orb-core"></div>
+      </div>
+      <h2 class="loading-title">Generating your skill tree...</h2>
+      <p class="loading-sub" id="loadingStatus">Analyzing content and mapping knowledge domains</p>
+      <div class="loading-steps">
+        <div class="loading-step active" id="step1">
+          <span class="step-dot"></span>
+          <span>Analyzing content</span>
+        </div>
+        <div class="loading-step" id="step2">
+          <span class="step-dot"></span>
+          <span>Mapping knowledge clusters</span>
+        </div>
+        <div class="loading-step" id="step3">
+          <span class="step-dot"></span>
+          <span>Building node connections</span>
+        </div>
+        <div class="loading-step" id="step4">
+          <span class="step-dot"></span>
+          <span>Rendering skill tree</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Result: Skill Tree -->
+  <div id="resultPanel" class="create-result" style="display: none;">
+    <div class="result-header">
+      <div>
+        <h2 id="resultTitle">Skill Tree</h2>
+        <p id="resultMeta" class="result-meta"></p>
+      </div>
+      <div class="result-actions">
+        <button id="newTreeBtn" class="result-action-btn">New Tree</button>
+      </div>
+    </div>
+    <div class="skill-tree-canvas-container">
+      <canvas id="dynamicTreeCanvas" aria-label="AI-generated interactive skill tree"></canvas>
+      <div id="dynamicTreeLegend" class="tree-legend"></div>
+    </div>
+    <div id="treeStats" class="tree-stats"></div>
+  </div>
+
+  <!-- Error State -->
+  <div id="errorPanel" class="create-error" style="display: none;">
+    <div class="error-inner">
+      <h3>Generation failed</h3>
+      <p id="errorMessage"></p>
+      <button id="retryBtn" class="create-generate-btn" style="margin-top: var(--space-md);">
+        <span class="btn-text">Try Again</span>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Scripts -->
+<script src="config.js"></script>
+<script src="services/blaxel-client.js"></script>
+<script src="dynamic-tree.js"></script>
+<script>
+(function() {
+  'use strict';
+
+  // --- DOM refs ---
+  const sourceInput = document.getElementById('sourceInput');
+  const generateBtn = document.getElementById('generateBtn');
+  const depthSelect = document.getElementById('depthSelect');
+  const inputPanel = document.getElementById('inputPanel');
+  const loadingPanel = document.getElementById('loadingPanel');
+  const resultPanel = document.getElementById('resultPanel');
+  const errorPanel = document.getElementById('errorPanel');
+  const resultTitle = document.getElementById('resultTitle');
+  const resultMeta = document.getElementById('resultMeta');
+  const errorMessage = document.getElementById('errorMessage');
+  const newTreeBtn = document.getElementById('newTreeBtn');
+  const retryBtn = document.getElementById('retryBtn');
+  const loadingStatus = document.getElementById('loadingStatus');
+  const sourcesPreview = document.getElementById('sourcesPreview');
+  const sourcesList = document.getElementById('sourcesList');
+  const treeStats = document.getElementById('treeStats');
+
+  // --- Source type selector ---
+  document.querySelectorAll('.source-type-card').forEach(card => {
+    card.addEventListener('click', () => {
+      document.querySelectorAll('.source-type-card').forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+
+      const type = card.dataset.type;
+      const placeholders = {
+        article: 'Paste an article URL...',
+        youtube: 'Paste a YouTube video URL...',
+        pdf: 'PDF upload coming soon -- try a URL or topic for now',
+        topic: 'Describe any topic you want to master...',
+      };
+      sourceInput.placeholder = placeholders[type] || placeholders.article;
+      sourceInput.focus();
+    });
+  });
+
+  // --- Enable/disable generate button ---
+  sourceInput.addEventListener('input', () => {
+    generateBtn.disabled = sourceInput.value.trim().length < 3;
+
+    // Show source preview
+    if (sourceInput.value.trim().length > 3) {
+      sourcesPreview.style.display = 'block';
+      const isUrl = sourceInput.value.trim().match(/^https?:\/\//);
+      sourcesList.innerHTML = `
+        <div class="source-item">
+          <span class="source-item-icon">${isUrl ? '🔗' : '📝'}</span>
+          <span class="source-item-text">${escapeHtml(sourceInput.value.trim().substring(0, 80))}${sourceInput.value.trim().length > 80 ? '...' : ''}</span>
+        </div>
+      `;
+    } else {
+      sourcesPreview.style.display = 'none';
+    }
+  });
+
+  // --- Example chips ---
+  document.querySelectorAll('.example-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      sourceInput.value = chip.dataset.topic;
+      sourceInput.dispatchEvent(new Event('input'));
+      // Select "Topic" source type
+      document.querySelectorAll('.source-type-card').forEach(c => c.classList.remove('active'));
+      document.querySelector('[data-type="topic"]').classList.add('active');
+    });
+  });
+
+  // --- Generate flow ---
+  generateBtn.addEventListener('click', startGeneration);
+  sourceInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !generateBtn.disabled) startGeneration();
+  });
+  newTreeBtn.addEventListener('click', resetToInput);
+  retryBtn.addEventListener('click', startGeneration);
+
+  async function startGeneration() {
+    const topic = sourceInput.value.trim();
+    if (!topic) return;
+
+    showPanel('loading');
+    animateLoadingSteps();
+
+    try {
+      const result = await BlaxelClient.generateSkillTree(topic, {
+        depth: depthSelect.value,
+      });
+
+      if (!result.success || !result.tree) {
+        throw new Error('Agent returned invalid response');
+      }
+
+      // Render the tree
+      showPanel('result');
+      resultTitle.textContent = result.tree.topic || 'Skill Tree';
+      resultMeta.textContent = `${result.metadata.node_count} nodes across ${result.metadata.cluster_count} clusters`;
+
+      // Stats bar
+      treeStats.innerHTML = `
+        <div class="stat-pill"><span class="stat-pill-val">${result.metadata.node_count}</span> Nodes</div>
+        <div class="stat-pill"><span class="stat-pill-val">${result.metadata.cluster_count}</span> Clusters</div>
+        <div class="stat-pill"><span class="stat-pill-val">${result.metadata.connection_count}</span> Connections</div>
+        <div class="stat-pill"><span class="stat-pill-val">7</span> Tiers</div>
+      `;
+
+      // Initialize the dynamic tree renderer
+      DynamicTree.init('dynamicTreeCanvas', 'dynamicTreeLegend', result.tree);
+
+    } catch (err) {
+      console.error('Generation failed:', err);
+      errorMessage.textContent = err.message || 'Failed to generate skill tree. Please try again.';
+      showPanel('error');
+    }
+  }
+
+  function showPanel(name) {
+    inputPanel.style.display = name === 'input' ? '' : 'none';
+    loadingPanel.style.display = name === 'loading' ? 'flex' : 'none';
+    resultPanel.style.display = name === 'result' ? '' : 'none';
+    errorPanel.style.display = name === 'error' ? 'flex' : 'none';
+  }
+
+  function resetToInput() {
+    showPanel('input');
+    sourceInput.focus();
+  }
+
+  function animateLoadingSteps() {
+    const steps = ['step1', 'step2', 'step3', 'step4'];
+    const messages = [
+      'Analyzing content and extracting key concepts',
+      'Identifying knowledge clusters and domains',
+      'Building prerequisite connections between nodes',
+      'Laying out your interactive skill tree',
+    ];
+
+    let i = 0;
+    function nextStep() {
+      if (i < steps.length) {
+        steps.forEach(s => document.getElementById(s).classList.remove('active', 'done'));
+        for (let j = 0; j < i; j++) document.getElementById(steps[j]).classList.add('done');
+        document.getElementById(steps[i]).classList.add('active');
+        loadingStatus.textContent = messages[i];
+        i++;
+        if (i < steps.length) setTimeout(nextStep, 2500 + Math.random() * 1500);
+      }
+    }
+    nextStep();
+  }
+
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+})();
+</script>
+
+</body>
+</html>
