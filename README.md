@@ -1,4 +1,22 @@
-# SkillGarden Hub
+<p align="center">
+  <img src="https://ormus.solutions/mascot/pixellab_liquid_to_lotus.gif" alt="SkillGarden" width="128" style="image-rendering: pixelated;" />
+</p>
+
+<h1 align="center">SkillGarden</h1>
+
+<p align="center">
+  <em>Learn what's true. Prove what you know. AI-powered skill credentialing.</em>
+</p>
+
+<p align="center">
+  <a href="https://github.com/HermeticOrmus/SkillGardenHub/stargazers"><img src="https://img.shields.io/github/stars/HermeticOrmus/SkillGardenHub?style=flat-square&color=aa8142" alt="Stars" /></a>
+  <a href="https://github.com/HermeticOrmus/SkillGardenHub/blob/main/LICENSE"><img src="https://img.shields.io/github/license/HermeticOrmus/SkillGardenHub?style=flat-square&color=aa8142" alt="License" /></a>
+  <a href="https://github.com/HermeticOrmus/SkillGardenHub/commits"><img src="https://img.shields.io/github/last-commit/HermeticOrmus/SkillGardenHub?style=flat-square&color=aa8142" alt="Last Commit" /></a>
+  <img src="https://img.shields.io/badge/React-aa8142?style=flat-square&logo=react&logoColor=white" alt="React" />
+  <img src="https://img.shields.io/badge/TypeScript-aa8142?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript" />
+</p>
+
+---
 
 > **Learn What's True. Prove What You Know.**
 
